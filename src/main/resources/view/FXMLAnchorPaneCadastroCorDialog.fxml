@@ -9,10 +9,11 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="142.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneCadastroCorDialogController">
+<AnchorPane id="AnchorPane" prefHeight="157.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneCadastroCorDialogController">
    <children>
-      <GridPane layoutX="34.0" layoutY="37.0" prefHeight="34.0" prefWidth="373.0">
+      <GridPane layoutX="34.0" layoutY="54.0" prefHeight="34.0" prefWidth="373.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.20001220703125" minWidth="10.0" prefWidth="101.4000244140625" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="288.5999755859375" />
@@ -21,7 +22,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="102.0" text="Nome:">
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="102.0" text="Nome: ">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -35,5 +36,10 @@
             <Button fx:id="btCancelar" layoutX="83.0" mnemonicParsing="false" onAction="#handleBtCancelar" prefHeight="25.0" prefWidth="69.0" text="Cancelar" />
          </children>
       </Group>
+      <Label alignment="CENTER" layoutX="88.0" layoutY="25.0" prefHeight="18.0" prefWidth="318.0" text="Cadastro de Cor">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

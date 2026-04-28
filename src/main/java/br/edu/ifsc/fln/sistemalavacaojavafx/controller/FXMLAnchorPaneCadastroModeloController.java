@@ -7,7 +7,6 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ModeloDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Marca;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Modelo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,14 +25,7 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.ResourceBundle;
 
-/**
- * FXML Controller class
- *
- * @author mpisc
- */
 public class FXMLAnchorPaneCadastroModeloController implements Initializable {
-
-
 
     @FXML
     private Button btAlterar;
@@ -69,20 +61,20 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
     private TableColumn<Modelo, String> tableColumnModeloMarca;
 
     @FXML
+    private TableColumn<Modelo, String> tableColumnModeloCategoria;
+
+    @FXML
     private TableView<Modelo> tableViewMarcas;
-    
-    private List<Marca> listaMarcas;
-    private ObservableList<Marca> observableListMarcas;
+
+    private List<Modelo> listaMarcas;
+    private ObservableList<Modelo> observableListMarcas;
     private final Database database = DatabaseFactory.getDatabase("mysql");
     private final Connection connection = database.conectar();
-    private final MarcaDAO marcaDAO = new MarcaDAO();
-    
-    /**
-     * Initializes the controller class.
-     */
+    private final ModeloDAO modeloDAO = new ModeloDAO();
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        marcaDAO.setConnection(connection);
+        modeloDAO.setConnection(connection);
         carregarTableViewMarca();
         
         tableViewMarcas.getSelectionModel().selectedItemProperty().addListener(
@@ -92,16 +84,16 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
     public void carregarTableViewMarca() {
         tableColumnMarcaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         
-        listaMarcas = marcaDAO.listar();
+        listaMarcas = modeloDAO.listar();
         
         observableListMarcas = FXCollections.observableArrayList(listaMarcas);
         tableViewMarcas.setItems(observableListMarcas);
     }
     
-    public void selecionarItemTableViewMarcas(Marca marca) {
-        if (marca != null) {
-            lbMarcaId.setText(String.valueOf(marca.getId()));
-            lbMarcaNome.setText(marca.getNome());
+    public void selecionarItemTableViewMarcas(Modelo modelo) {
+        if (modelo != null) {
+            lbMarcaId.setText(String.valueOf(modelo.getId()));
+            lbMarcaNome.setText(modelo.getNome());
         } else {
             lbMarcaId.setText("");
             lbMarcaNome.setText("");
@@ -110,10 +102,10 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
     
     @FXML
     public void handleBtInserir() throws IOException {
-        Marca marca = new Marca();
-        boolean btConfirmarClicked = showFXMLAnchorPaneCadastroMarcaDialog(marca);
+        Modelo modelo = new Modelo();
+        boolean btConfirmarClicked = showFXMLAnchorPaneCadastroMarcaDialog(modelo);
         if (btConfirmarClicked) {
-            marcaDAO.inserir(marca);
+            modeloDAO.inserir(modelo);
             carregarTableViewMarca();
         }
 
@@ -121,48 +113,48 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
     
     @FXML 
     public void handleBtAlterar() throws IOException {
-        Marca marca = tableViewMarcas.getSelectionModel().getSelectedItem();
-        if (marca != null) {
-            boolean btConfirmarClicked = showFXMLAnchorPaneCadastroMarcaDialog(marca);
+        Modelo modelo = tableViewMarcas.getSelectionModel().getSelectedItem();
+        if (modelo != null) {
+            boolean btConfirmarClicked = showFXMLAnchorPaneCadastroMarcaDialog(modelo);
             if (btConfirmarClicked) {
-                marcaDAO.alterar(marca);
+                modeloDAO.alterar(modelo);
                 carregarTableViewMarca();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Esta operação requer a seleção \nde uma Marca na tabela ao lado");
+            alert.setContentText("Esta operação requer a seleção \nde uma Modelo na tabela ao lado");
             alert.show();
         }
     }
     
     @FXML
     public void handleBtExcluir() throws IOException {
-        Marca marca = tableViewMarcas.getSelectionModel().getSelectedItem();
-        if (marca != null) {
-            marcaDAO.remover(marca);
+        Modelo modelo = tableViewMarcas.getSelectionModel().getSelectedItem();
+        if (modelo != null) {
+            modeloDAO.remover(modelo);
             carregarTableViewMarca();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Esta operação requer a seleção \nde uma Marca na tabela ao lado");
+            alert.setContentText("Esta operação requer a seleção \nde uma Modelo na tabela ao lado");
             alert.show();
         }
     }
 
-    private boolean showFXMLAnchorPaneCadastroMarcaDialog(Marca marca) throws IOException {
+    private boolean showFXMLAnchorPaneCadastroMarcaDialog(Modelo modelo) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(FXMLAnchorPaneCadastroModeloController.class.getResource("/view/FXMLAnchorPaneCadastroMarcaDialog.fxml"));
         AnchorPane page = (AnchorPane) loader.load();
 
         //criação de um estágio de diálogo (StageDialog)
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Cadastro de Marca");
+        dialogStage.setTitle("Cadastro de Modelo");
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
 
-        //enviando o obejto Marca para o controller
+        //enviando o obejto Modelo para o controller
         FXMLAnchorPaneCadastroMarcaDialogController controller = loader.getController();
         controller.setDialogStage(dialogStage);
-        controller.setMarca(marca);
+        controller.setMarca(modelo);
 
         //apresenta o diálogo e aguarda a confirmação do usuário
         dialogStage.showAndWait();

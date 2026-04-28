@@ -25,14 +25,8 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.ResourceBundle;
 
-/**
- * FXML Controller class
- *
- * @author mpisc
- */
 public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
 
-    
     @FXML
     private Button btnAlterar;
 
@@ -59,10 +53,7 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
     private final Database database = DatabaseFactory.getDatabase("mysql");
     private final Connection connection = database.conectar();
     private final MarcaDAO marcaDAO = new MarcaDAO();
-    
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         marcaDAO.setConnection(connection);

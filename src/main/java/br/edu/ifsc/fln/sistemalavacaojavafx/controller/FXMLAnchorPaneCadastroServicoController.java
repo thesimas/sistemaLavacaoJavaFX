@@ -121,7 +121,6 @@ public class FXMLAnchorPaneCadastroServicoController implements Initializable {
             servicoDAO.inserir(servico);
             carregarTableViewServicos();
         }
-
     }
 
     @FXML
@@ -174,5 +173,4 @@ public class FXMLAnchorPaneCadastroServicoController implements Initializable {
 
         return controller.isBtConfirmarClicked();
     }
-
 }

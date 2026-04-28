@@ -14,11 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author mpisc
- */
 public class FXMLAnchorPaneCadastroCorDialogController implements Initializable {
 
     @FXML
@@ -33,10 +28,7 @@ public class FXMLAnchorPaneCadastroCorDialogController implements Initializable 
     private Stage dialogStage;
     private boolean btConfirmarClicked = false;
     private Cor cor;
-    
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -66,7 +58,6 @@ public class FXMLAnchorPaneCadastroCorDialogController implements Initializable 
         this.cor = cor;
         this.tfNome.setText(cor.getNome());
     }
-    
 
     @FXML
     public void handleBtConfirmar() {

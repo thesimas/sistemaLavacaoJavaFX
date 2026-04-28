@@ -15,11 +15,6 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/**
- * FXML Controller class
- *
- * @author mpisc
- */
 public class FXMLAnchorPaneCadastroMarcaDialogController implements Initializable {
 
     @FXML
@@ -34,10 +29,7 @@ public class FXMLAnchorPaneCadastroMarcaDialogController implements Initializabl
     private Stage dialogStage;
     private boolean btConfirmarClicked = false;
     private Marca marca;
-    
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -67,7 +59,6 @@ public class FXMLAnchorPaneCadastroMarcaDialogController implements Initializabl
         this.marca = marca;
         this.tfNome.setText(marca.getNome());
     }
-    
 
     @FXML
     public void handleBtConfirmar() {

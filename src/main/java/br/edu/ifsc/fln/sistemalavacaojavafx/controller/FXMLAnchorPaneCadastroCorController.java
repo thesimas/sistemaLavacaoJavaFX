@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.CorDAO;
@@ -28,14 +24,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author mpisc
- */
 public class FXMLAnchorPaneCadastroCorController implements Initializable {
 
-    
     @FXML
     private Button btnAlterar;
 
@@ -62,10 +52,7 @@ public class FXMLAnchorPaneCadastroCorController implements Initializable {
     private final Database database = DatabaseFactory.getDatabase("mysql");
     private final Connection connection = database.conectar();
     private final CorDAO corDAO = new CorDAO();
-    
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         corDAO.setConnection(connection);
