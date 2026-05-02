@@ -3,9 +3,6 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ServicoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
@@ -14,10 +11,7 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Servico;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import static java.lang.Integer.parseInt;
 
 public class FXMLVBoxMainAppController implements Initializable {
 
@@ -30,21 +24,8 @@ public class FXMLVBoxMainAppController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        String sql = "SELECT pontos FROM parametros_sistema";
-        PreparedStatement stmt = null;
-        try {
-            stmt = connection.prepareStatement(sql);
-            stmt.execute();
-            ResultSet resultado = stmt.getResultSet();
-            if(resultado.next()){
-                Servico.setPontos(resultado.getInt("pontos"));
-            }
-            resultado.close();
-            stmt.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+//        ServicoDAO servicoDAO = new ServicoDAO();
+//        Servico.setPontos((servicoDAO.buscarPontosPadrao()));
     }
     
     @FXML

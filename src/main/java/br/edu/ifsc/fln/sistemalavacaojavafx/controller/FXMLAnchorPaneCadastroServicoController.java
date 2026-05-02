@@ -61,15 +61,12 @@ public class FXMLAnchorPaneCadastroServicoController implements Initializable {
 
     private List<Servico> listaServicos;
     private ObservableList<Servico> observableListServicos;
-    private final Database database = DatabaseFactory.getDatabase("mysql");
-    private final Connection connection = database.conectar();
+
     private final ServicoDAO servicoDAO = new ServicoDAO();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        servicoDAO.setConnection(connection);
         carregarTableViewServicos();
-
         tableViewServicos.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> selecionarItemTableViewServicos(newValue));
     }

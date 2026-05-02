@@ -49,13 +49,10 @@ public class FXMLAnchorPaneCadastroCorController implements Initializable {
     
     private List<Cor> listaCores;
     private ObservableList<Cor> observableListCores;
-    private final Database database = DatabaseFactory.getDatabase("mysql");
-    private final Connection connection = database.conectar();
     private final CorDAO corDAO = new CorDAO();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        corDAO.setConnection(connection);
         carregarTableViewCor();
         
         tableViewCores.getSelectionModel().selectedItemProperty().addListener(

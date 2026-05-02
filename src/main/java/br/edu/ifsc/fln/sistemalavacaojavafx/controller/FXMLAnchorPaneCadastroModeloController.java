@@ -7,7 +7,10 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ModeloDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.ETipoCombustivel;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Marca;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Modelo;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -49,73 +52,86 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
     private Label lbModeloMarca;
 
     @FXML
-    private Label lbMotorPotencia;
+    private Label lbModeloMotorPotencia;
 
     @FXML
-    private Label lbMotorTipoCombustivel;
-
-    @FXML
-    private TableColumn<Modelo, String> tableColumnModeloDescricao;
-
-    @FXML
-    private TableColumn<Modelo, String> tableColumnModeloMarca;
+    private Label lbModeloMotorTipoCombustivel;
 
     @FXML
     private TableColumn<Modelo, String> tableColumnModeloCategoria;
 
     @FXML
-    private TableView<Modelo> tableViewMarcas;
+    private TableColumn<Modelo, String> tableColumnModeloDescricao;
 
-    private List<Modelo> listaMarcas;
-    private ObservableList<Modelo> observableListMarcas;
-    private final Database database = DatabaseFactory.getDatabase("mysql");
-    private final Connection connection = database.conectar();
+    @FXML
+        private TableColumn<Modelo, String> tableColumnModeloMarca;
+
+    @FXML
+        private TableView<Modelo> tableViewModelos;
+
+    private List<Modelo> listaModelos;
+    private ObservableList<Modelo> observableListModelos;
     private final ModeloDAO modeloDAO = new ModeloDAO();
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        modeloDAO.setConnection(connection);
         carregarTableViewMarca();
         
-        tableViewMarcas.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> selecionarItemTableViewMarcas(newValue));
-    }     
+        tableViewModelos.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> selecionarItemTableViewModelos(newValue));
+    }
+
+
     
     public void carregarTableViewMarca() {
-        tableColumnMarcaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+
+        tableColumnModeloDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+        tableColumnModeloMarca.setCellValueFactory(cellData-> {
+            Marca marca = cellData.getValue().getMarca();
+            return new SimpleStringProperty(marca.getNome());
+        });
+        tableColumnModeloCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         
-        listaMarcas = modeloDAO.listar();
+        listaModelos = modeloDAO.listar();
         
-        observableListMarcas = FXCollections.observableArrayList(listaMarcas);
-        tableViewMarcas.setItems(observableListMarcas);
+        observableListModelos = FXCollections.observableArrayList(listaModelos);
+        tableViewModelos.setItems(observableListModelos);
     }
     
-    public void selecionarItemTableViewMarcas(Modelo modelo) {
+    public void selecionarItemTableViewModelos(Modelo modelo) {
         if (modelo != null) {
-            lbMarcaId.setText(String.valueOf(modelo.getId()));
-            lbMarcaNome.setText(modelo.getNome());
+            lbModeloId.setText(String.valueOf(modelo.getId()));
+            lbModeloDescricao.setText(modelo.getDescricao());
+            lbModeloCategoria.setText(String.valueOf(modelo.getCategoria()));
+            lbModeloMarca.setText(String.valueOf(modelo.getMarca().getNome()));
+            lbModeloMotorPotencia.setText(String.valueOf(modelo.getMotor().getPotencia()));
+            lbModeloMotorTipoCombustivel.setText(String.valueOf(modelo.getMotor().getTipoCombustivel()));
         } else {
-            lbMarcaId.setText("");
-            lbMarcaNome.setText("");
+            lbModeloId.setText("");
+            lbModeloDescricao.setText("");
+            lbModeloCategoria.setText("");
+            lbModeloMarca.setText("");
+            lbModeloMotorPotencia.setText("");
+            lbModeloMotorTipoCombustivel.setText("");
         }
     }
     
     @FXML
     public void handleBtInserir() throws IOException {
-        Modelo modelo = new Modelo();
-        boolean btConfirmarClicked = showFXMLAnchorPaneCadastroMarcaDialog(modelo);
+        Modelo modelo = new Modelo(0 , ETipoCombustivel.GASOLINA);
+        boolean btConfirmarClicked = showFXMLAnchorPaneCadastroModeloDialog(modelo);
         if (btConfirmarClicked) {
             modeloDAO.inserir(modelo);
             carregarTableViewMarca();
         }
-
     }
     
     @FXML 
     public void handleBtAlterar() throws IOException {
-        Modelo modelo = tableViewMarcas.getSelectionModel().getSelectedItem();
+        Modelo modelo = tableViewModelos.getSelectionModel().getSelectedItem();
         if (modelo != null) {
-            boolean btConfirmarClicked = showFXMLAnchorPaneCadastroMarcaDialog(modelo);
+            boolean btConfirmarClicked = showFXMLAnchorPaneCadastroModeloDialog(modelo);
             if (btConfirmarClicked) {
                 modeloDAO.alterar(modelo);
                 carregarTableViewMarca();
@@ -129,7 +145,7 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
     
     @FXML
     public void handleBtExcluir() throws IOException {
-        Modelo modelo = tableViewMarcas.getSelectionModel().getSelectedItem();
+        Modelo modelo = tableViewModelos.getSelectionModel().getSelectedItem();
         if (modelo != null) {
             modeloDAO.remover(modelo);
             carregarTableViewMarca();
@@ -140,9 +156,9 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
         }
     }
 
-    private boolean showFXMLAnchorPaneCadastroMarcaDialog(Modelo modelo) throws IOException {
+    private boolean showFXMLAnchorPaneCadastroModeloDialog(Modelo modelo) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(FXMLAnchorPaneCadastroModeloController.class.getResource("/view/FXMLAnchorPaneCadastroMarcaDialog.fxml"));
+        loader.setLocation(FXMLAnchorPaneCadastroModeloController.class.getResource("/view/FXMLAnchorPaneCadastroModeloDialog.fxml"));
         AnchorPane page = (AnchorPane) loader.load();
 
         //criação de um estágio de diálogo (StageDialog)
@@ -151,10 +167,10 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
 
-        //enviando o obejto Modelo para o controller
-        FXMLAnchorPaneCadastroMarcaDialogController controller = loader.getController();
+        //enviando o objeto Modelo para o controller
+        FXMLAnchorPaneCadastroModeloDialogController controller = loader.getController();
         controller.setDialogStage(dialogStage);
-        controller.setMarca(modelo);
+        controller.setModelo(modelo);
 
         //apresenta o diálogo e aguarda a confirmação do usuário
         dialogStage.showAndWait();

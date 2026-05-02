@@ -1,5 +1,7 @@
 package br.edu.ifsc.fln.sistemalavacaojavafx.model.dao;
 
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Marca;
 
 import java.sql.Connection;
@@ -25,50 +27,89 @@ public class MarcaDAO {
 
     public boolean inserir(Marca marca) {
         String sql = "INSERT INTO marca(nome) VALUES(?)";
+        Database database = DatabaseFactory.getDatabase("mysql");
+        Connection connection = database.conectar();
         try {
+            connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, marca.getNome());
             stmt.execute();
+            connection.commit();
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try{
+                connection.rollback();
+            }catch(SQLException ex1){
+                throw new RuntimeException(ex1);
+            }
             return false;
+        }finally{
+            database.desconectar(connection);
         }
     }
 
     public boolean alterar(Marca marca) {
         String sql = "UPDATE marca SET nome=? WHERE id=?";
+        Database database = DatabaseFactory.getDatabase("mysql");
+        Connection connection = database.conectar();
         try {
+            connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, marca.getNome());
             stmt.setInt(2, marca.getId());
             stmt.execute();
+            connection.commit();
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try{
+                connection.rollback();
+            }catch(SQLException ex1){
+                throw new RuntimeException(ex1);
+            }
             return false;
+        }finally {
+
+            database.desconectar(connection);
         }
     }
 
     public boolean remover(Marca marca) {
         String sql = "DELETE FROM marca WHERE id=?";
+        Database database = DatabaseFactory.getDatabase("mysql");
+        Connection connection = database.conectar();
         try {
+            connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, marca.getId());
             stmt.execute();
+            connection.commit();
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            try{
+                connection.rollback();
+            }catch(SQLException ex1){
+                throw new RuntimeException(ex1);
+            }
             return false;
+        } finally {
+            database.desconectar(connection);
         }
     }
 
     public List<Marca> listar() {
-        String sql = "SELECT * FROM marca";
         List<Marca> retorno = new ArrayList<>();
+        String sql = "SELECT * FROM marca";
+
+        Database database = DatabaseFactory.getDatabase("mysql");
+        Connection connection = database.conectar();
+
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet resultado = stmt.executeQuery();
+
             while (resultado.next()) {
                 Marca marca = new Marca();
                 marca.setId(resultado.getInt("id"));
@@ -77,6 +118,9 @@ public class MarcaDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            database.desconectar(connection);
         }
         return retorno;
     }
@@ -88,6 +132,8 @@ public class MarcaDAO {
     
     public Marca buscar(int id) {
         String sql = "SELECT * FROM marca WHERE id=?";
+        Database database = DatabaseFactory.getDatabase("mysql");
+        Connection connection = database.conectar();
         Marca retorno = new Marca();
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -99,6 +145,8 @@ public class MarcaDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            database.desconectar(connection);
         }
         return retorno;        
     }

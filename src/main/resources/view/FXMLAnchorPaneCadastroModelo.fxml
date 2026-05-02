@@ -13,13 +13,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="388.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneCadastroMarcaController">
+<AnchorPane id="AnchorPane" prefHeight="388.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneCadastroModeloController">
    <children>
       <SplitPane dividerPositions="0.4398395721925133" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="tableViewMarcas" layoutX="-32.0" prefHeight="386.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tableViewModelos" layoutX="-32.0" prefHeight="386.0" prefWidth="250.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="tableColumnModeloDescricao" prefWidth="75.0" text="Descrição" />
                         <TableColumn fx:id="tableColumnModeloMarca" prefWidth="75.0" text="Marca" />
@@ -73,7 +73,7 @@
                         <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="108.0" text="Marca: " GridPane.rowIndex="2" />
                         <Label fx:id="lbModeloCategoria" prefHeight="18.0" prefWidth="169.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="107.0" text="Categoria: " GridPane.rowIndex="3" />
-                        <Label fx:id="lbModeloMarca" prefHeight="18.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="lbModeloMarca" prefHeight="18.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>
                   </GridPane>
                   <Group layoutX="78.0" layoutY="338.0" AnchorPane.bottomAnchor="21.399999999999977" AnchorPane.rightAnchor="49.80000000000001">
@@ -103,7 +103,7 @@
                               <Insets right="5.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label fx:id="lbMotorPotencia" prefHeight="12.0" prefWidth="197.0" GridPane.columnIndex="1">
+                        <Label fx:id="lbModeloMotorPotencia" prefHeight="12.0" prefWidth="197.0" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets left="5.0" />
                            </GridPane.margin>
@@ -113,7 +113,7 @@
                               <Insets right="5.0" />
                            </GridPane.margin>
                         </Label>
-                        <Label fx:id="lbMotorTipoCombustivel" prefHeight="18.0" prefWidth="186.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label fx:id="lbModeloMotorTipoCombustivel" prefHeight="18.0" prefWidth="186.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets left="5.0" />
                            </GridPane.margin>

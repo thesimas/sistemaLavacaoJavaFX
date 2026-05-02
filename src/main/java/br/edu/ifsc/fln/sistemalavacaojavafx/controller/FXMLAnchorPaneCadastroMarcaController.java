@@ -50,13 +50,10 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
     
     private List<Marca> listaMarcas;
     private ObservableList<Marca> observableListMarcas;
-    private final Database database = DatabaseFactory.getDatabase("mysql");
-    private final Connection connection = database.conectar();
     private final MarcaDAO marcaDAO = new MarcaDAO();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        marcaDAO.setConnection(connection);
         carregarTableViewMarca();
         
         tableViewMarcas.getSelectionModel().selectedItemProperty().addListener(

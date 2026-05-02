@@ -6,16 +6,12 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Marca;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class FXMLAnchorPaneCadastroMarcaDialogController implements Initializable {
+public class FXMLAnchorPaneCadastroMarcaDialogController {
 
     @FXML
     private Button btCancelar;
@@ -30,10 +26,6 @@ public class FXMLAnchorPaneCadastroMarcaDialogController implements Initializabl
     private boolean btConfirmarClicked = false;
     private Marca marca;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }       
 
     public boolean isBtConfirmarClicked() {
         return btConfirmarClicked;
@@ -74,8 +66,7 @@ public class FXMLAnchorPaneCadastroMarcaDialogController implements Initializabl
     public void handleBtCancelar() {
         dialogStage.close();
     }
-    
-    //método para validar a entrada de dados
+
     private boolean validarEntradaDeDados() {
         String errorMessage = "";
         if (this.tfNome.getText() == null || this.tfNome.getText().length() == 0) {

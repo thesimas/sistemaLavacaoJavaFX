@@ -10,6 +10,9 @@ public class Motor {
         this.tipoCombustivel = tipoCombustivel;
     }
 
+    public Motor() {
+    }
+
     public int getPotencia() {
         return potencia;
     }
