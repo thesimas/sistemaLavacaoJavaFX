@@ -155,6 +155,13 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
                 lbClienteLegenda.setText(((PessoaJuridica)cliente).getInscricaoEstadual());
             }
 
+            List<Veiculo> veiculosCliente = cliente.getListaDeVeiculos();
+            if (veiculosCliente != null) {
+                ObservableList<Veiculo> veiculos = FXCollections.observableArrayList(veiculosCliente);
+                tableViewClientesVeiculos.setItems(veiculos);
+            }else {
+                tableViewClientesVeiculos.setItems(FXCollections.observableArrayList());
+            }
             lbClientePontos.setText(String.valueOf(cliente.getPontuacao().getQuantidade()));
         } else {
             lbClienteId.setText("");
@@ -165,32 +172,27 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             lbClienteDocumento.setText("");
             lbClienteLegenda.setText("");
             lbClientePontos.setText("");
-        }
-
-        List<Veiculo> veiculosCliente = cliente.getListaDeVeiculos();
-        if (veiculosCliente != null) {
-            ObservableList<Veiculo> veiculos = FXCollections.observableArrayList(veiculosCliente);
-            tableViewClientesVeiculos.setItems(veiculos);
+            tableViewClientesVeiculos.setItems(FXCollections.observableArrayList());
         }
     }
     
     @FXML
     public void handleBtInserir() throws IOException {
         Cliente cliente = null;
-        boolean btConfirmarClicked = showFXMLAnchorPaneCadastroClienteDialog(cliente);
-        if (btConfirmarClicked) {
-            clienteDAO.inserir(cliente);
+        Cliente clienteNovo = showFXMLAnchorPaneCadastroClienteDialog(cliente);
+        if (clienteNovo != null) {
+            clienteDAO.inserir(clienteNovo);
             carregarTableViewClientes();
         }
     }
     
     @FXML 
     public void handleBtAlterar() throws IOException {
-        Cliente cliente = tableViewClientes.getSelectionModel().getSelectedItem();
-        if (cliente != null) {
-            boolean btConfirmarClicked = showFXMLAnchorPaneCadastroClienteDialog(cliente);
-            if (btConfirmarClicked) {
-                clienteDAO.alterar(cliente);
+        Cliente clienteSelecionado = tableViewClientes.getSelectionModel().getSelectedItem();
+        if (clienteSelecionado != null) {
+            Cliente clienteAltualizado = showFXMLAnchorPaneCadastroClienteDialog(clienteSelecionado);
+            if (clienteAltualizado != null) {
+                clienteDAO.alterar(clienteAltualizado);
                 carregarTableViewClientes();
             }
         } else {
@@ -219,7 +221,7 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
         }
     }
 
-    private boolean showFXMLAnchorPaneCadastroClienteDialog(Cliente cliente) throws IOException {
+    private Cliente showFXMLAnchorPaneCadastroClienteDialog(Cliente cliente) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(FXMLAnchorPaneCadastroClienteController.class.getResource("/view/FXMLAnchorPaneCadastroClienteDialog.fxml"));
         AnchorPane page = (AnchorPane) loader.load();
@@ -235,6 +237,9 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
         //apresenta o diálogo e aguarda a confirmação do usuário
         dialogStage.showAndWait();
 
-        return controller.isBtConfirmarClicked();
+        if(controller.isBtConfirmarClicked()){
+            return controller.getCliente();
+        }
+        return null;
     }
 }

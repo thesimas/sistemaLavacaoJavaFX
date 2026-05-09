@@ -24,7 +24,7 @@ public class ClienteDAO {
     }
 
     public boolean inserir(Cliente cliente) {
-        String sqlCliente = "INSERT INTO cliente(nome, email, celular, email, data_cadastro) VALUES(?, ?, ?, ?);";
+        String sqlCliente = "INSERT INTO cliente(nome, email, celular, data_cadastro) VALUES(?, ?, ?, ?);";
         String sqlPessoaFisica = "INSERT INTO pessoaFisica(id_cliente, cpf, data_nascimento) VALUES((SELECT max(id) FROM cliente), ?, ?);";
         String sqlPessoaJuridica = "INSERT INTO pessoaJuridica(id_cliente, cnpj, inscricao_estadual) VALUES((SELECT max(id) FROM cliente), ?, ?);";
         String sqlPontuacao = "INSERT INTO pontuacao(id_cliente, quantidade) VALUES((SELECT max(id) FROM cliente), ?);";
@@ -51,7 +51,7 @@ public class ClienteDAO {
                 stmt.execute();
             }
             stmt =  connection.prepareStatement(sqlPontuacao);
-            stmt.setString(1, String.valueOf(cliente.getPontuacao()));
+            stmt.setInt(1, cliente.getPontuacao().getQuantidade());
             stmt.execute();
             connection.commit();
             return true;
@@ -99,7 +99,7 @@ public class ClienteDAO {
                 stmt.execute();
             }
             stmt = connection.prepareStatement(sqlPontuacao);
-            stmt.setString(1, String.valueOf(cliente.getPontuacao().getQuantidade()));
+            stmt.setInt(1, cliente.getPontuacao().getQuantidade());
             stmt.setInt(2, cliente.getId());
             stmt.execute();
             connection.commit();

@@ -17,6 +17,10 @@
 
 <AnchorPane id="AnchorPane" prefHeight="394.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneCadastroClienteDialogController">
    <children>
+      <Label fx:id="tfTitulo" alignment="CENTER" layoutY="14.0" prefHeight="20.0" prefWidth="442.0" text="Cadastro de Cliente">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
       <GridPane layoutX="7.0" layoutY="43.0" prefHeight="271.0" prefWidth="375.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.20001220703125" minWidth="10.0" prefWidth="155.99998779296874" />
@@ -80,7 +84,7 @@
                </opaqueInsets>
             </Label>
             <TextField fx:id="tfClienteNascimentoInscricaoEstadual" prefHeight="26.0" prefWidth="169.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <javafx.scene.layout.HBox alignment="CENTER_LEFT" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <javafx.scene.layout.HBox fx:id="hbBotoes" alignment="CENTER_LEFT" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
                   <RadioButton fx:id="rbPessoaFisica" mnemonicParsing="false" onAction="#handleRbPessoaFisica" text="Pessoa Fisica">
                      <toggleGroup>
@@ -98,9 +102,5 @@
             <Button fx:id="btCancelar" layoutX="83.0" mnemonicParsing="false" onAction="#handleBtCancelar" prefHeight="25.0" prefWidth="69.0" text="Cancelar" />
          </children>
       </Group>
-      <Label fx:id="tfTitulo" alignment="CENTER" layoutY="14.0" prefHeight="20.0" prefWidth="442.0" text="Cadastro de Cliente">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font></Label>
    </children>
 </AnchorPane>

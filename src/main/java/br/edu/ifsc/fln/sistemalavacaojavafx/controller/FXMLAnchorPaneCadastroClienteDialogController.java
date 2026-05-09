@@ -4,11 +4,13 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Cliente;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.PessoaFisica;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.PessoaJuridica;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.ExceptionLavacao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -58,10 +60,10 @@ public class FXMLAnchorPaneCadastroClienteDialogController implements Initializa
     private Label lbNascimentoInscricao;
 
     @FXML
-    private GridPane gpBotaoTipoCliente;
+    private ToggleGroup tgGrupoBotao;
 
     @FXML
-    private ToggleGroup tgGrupoBotao;
+    private HBox hbBotoes;
 
     @FXML
     private Label tfTitulo;
@@ -81,10 +83,14 @@ public class FXMLAnchorPaneCadastroClienteDialogController implements Initializa
             this.tfClienteCelular.setText(cliente.getCelular());
             this.tfClienteEmail.setText(cliente.getEmail());
             this.dpDataCadastro.setValue(cliente.getDataCadastro());
-            this.tfClientePontos.setText(String.valueOf(cliente.getPontuacao()));
+            if (cliente.getPontuacao() != null) {
+                this.tfClientePontos.setText(String.valueOf(cliente.getPontuacao().getQuantidade()));
+            } else {
+                this.tfClientePontos.setText("0");
+            }
             if(this.rbPessoaFisica.isSelected()){
                 this.rbPessoaFisica.setSelected(true);
-                this.gpBotaoTipoCliente.setDisable(true);
+                this.hbBotoes.setDisable(true);
                 this.lbCpfCnpj.setText("CPF:");
                 this.lbNascimentoInscricao.setText("Data de Nascimento:");
                 this.tfClienteCpfCnpj.setText(((PessoaFisica)cliente).getCpf());
@@ -92,7 +98,7 @@ public class FXMLAnchorPaneCadastroClienteDialogController implements Initializa
                 this.tfClienteNascimentoInscricaoEstadual.setText(((PessoaFisica) cliente).getDataNascimento().format(formatador));
             }else {
                 this.rbPessoaJuridica.setSelected(true);
-                this.gpBotaoTipoCliente.setDisable(true);
+                this.hbBotoes.setDisable(true);
                 this.lbCpfCnpj.setText("CNPJ:");
                 this.lbNascimentoInscricao.setText("Inscricao Estadual:");
                 this.tfClienteCpfCnpj.setText(((PessoaJuridica)cliente).getCnpj());
@@ -144,24 +150,31 @@ public class FXMLAnchorPaneCadastroClienteDialogController implements Initializa
 
     @FXML
     void handleBtConfirmar(ActionEvent event) {
-        if(validarEntradaDeDados()){
-            if(rbPessoaFisica.isSelected()){
-                this.cliente = new PessoaFisica();
+        if (validarEntradaDeDados()) {
+            if (rbPessoaFisica.isSelected()) {
+                if (cliente == null) {
+                    this.cliente = new PessoaFisica();
+                }
                 this.cliente.setNome(tfClienteNome.getText());
                 this.cliente.setCelular(tfClienteCelular.getText());
                 this.cliente.setEmail(tfClienteEmail.getText());
                 this.cliente.setDataCadastro(dpDataCadastro.getValue());
-                ((PessoaFisica)cliente).setCpf(tfClienteCpfCnpj.getText());
-                ((PessoaFisica) cliente).setDataNascimento(LocalDate.parse(tfClienteNascimentoInscricaoEstadual.getText()));
-            }else {
-                this.cliente = new PessoaJuridica();
+                ((PessoaFisica) cliente).setCpf(tfClienteCpfCnpj.getText());
+
+                DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                ((PessoaFisica) cliente).setDataNascimento(LocalDate.parse(tfClienteNascimentoInscricaoEstadual.getText(), formatador));
+            } else {
+                if (cliente == null) {
+                    this.cliente = new PessoaJuridica();
+                }
                 this.cliente.setNome(tfClienteNome.getText());
                 this.cliente.setCelular(tfClienteCelular.getText());
                 this.cliente.setEmail(tfClienteEmail.getText());
                 this.cliente.setDataCadastro(dpDataCadastro.getValue());
-                ((PessoaJuridica)cliente).setCnpj(tfClienteCpfCnpj.getText());
-                ((PessoaJuridica)cliente).setInscricaoEstadual(tfClienteNascimentoInscricaoEstadual.getText());
+                ((PessoaJuridica) cliente).setCnpj(tfClienteCpfCnpj.getText());
+                ((PessoaJuridica) cliente).setInscricaoEstadual(tfClienteNascimentoInscricaoEstadual.getText());
             }
+            this.cliente.getPontuacao().setQuantidade(Integer.parseInt(tfClientePontos.getText()));
             btConfirmarClicked = true;
             dialogStage.close();
         }

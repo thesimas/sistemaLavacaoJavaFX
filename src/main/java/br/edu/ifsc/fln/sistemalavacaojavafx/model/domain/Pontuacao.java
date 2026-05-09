@@ -39,7 +39,9 @@ public class Pontuacao {
         return quantidade;
     }
 
-    // Sem setQuantidade, pois só será possivel adicionar a pontuação por meio dos métodos.
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
 
     @Override
     public String toString() {

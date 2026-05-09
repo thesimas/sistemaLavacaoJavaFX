@@ -20,6 +20,7 @@ public abstract class Cliente implements IDados{
 
     //Construtor Vazio apenas para inserir dados via SET e manipular ele melhor nas Classes DAO
     public Cliente() {
+        this.pontuacao = new Pontuacao();
     }
 
     public Cliente(int id, String nome, String celular, String email, LocalDate dataCadastro) {
