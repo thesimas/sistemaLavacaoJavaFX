@@ -3,6 +3,8 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.model.dao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.ExceptionLavacao;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -202,6 +204,7 @@ public class ClienteDAO {
         String celular = rs.getString("celular");
         String email = rs.getString("email");
         Date dataCadastro = rs.getDate("data_cadastro");
+        int pontuacao = rs.getInt("quantidade");
 
         if(rs.getString("cnpj") == null || rs.getString("cnpj").isEmpty()){
 
@@ -220,6 +223,13 @@ public class ClienteDAO {
         for (int x = 0; x < veiculos.size(); x++) {
             Veiculo veiculo = veiculos.get(x);
             cliente.addVeiculo(veiculo);
+        }
+
+        //Associando os pontos ao cliente.
+        try {
+            cliente.getPontuacao().adicionar(pontuacao);
+        } catch (ExceptionLavacao e) {
+            throw new RuntimeException(e);
         }
 
         return cliente;
