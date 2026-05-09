@@ -74,6 +74,10 @@ public class FXMLAnchorPaneCadastroModeloDialogController implements Initializab
         this.spPotencia.getValueFactory().setValue(modelo.getMotor().getPotencia());
     }
 
+    public Modelo getModelo() {
+        return modelo;
+    }
+
     public boolean isBtConfirmarClicked() {
         return btConfirmarClicked;
     }

@@ -40,7 +40,7 @@ public class FXMLAnchorPaneCadastroServicoDialogController implements Initializa
         cbCategoria.setItems(FXCollections.observableArrayList(ECategoria.values()));
         cbCategoria.getSelectionModel().select(ECategoria.PADRAO);
         spValor.setEditable(true);
-        spPontos.setEditable(true);
+        spPontos.setDisable(true);
     }       
 
     public boolean isBtConfirmarClicked() {
@@ -87,8 +87,7 @@ public class FXMLAnchorPaneCadastroServicoDialogController implements Initializa
     public void handleBtCancelar() {
         dialogStage.close();
     }
-    
-    //método para validar a entrada de dados
+
     private boolean validarEntradaDeDados() {
         String errorMessage = "";
         if (this.tfDescricao.getText() == null || this.tfDescricao.getText().length() == 0) {

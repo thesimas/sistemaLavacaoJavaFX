@@ -31,7 +31,6 @@ public class FXMLAnchorPaneCadastroCorDialogController implements Initializable 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }       
 
     public boolean isBtConfirmarClicked() {
@@ -73,8 +72,7 @@ public class FXMLAnchorPaneCadastroCorDialogController implements Initializable 
     public void handleBtCancelar() {
         dialogStage.close();
     }
-    
-    //método para validar a entrada de dados
+
     private boolean validarEntradaDeDados() {
         String errorMessage = "";
         if (this.tfNome.getText() == null || this.tfNome.getText().length() == 0) {

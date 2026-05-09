@@ -26,7 +26,6 @@ public class FXMLAnchorPaneCadastroMarcaDialogController {
     private boolean btConfirmarClicked = false;
     private Marca marca;
 
-
     public boolean isBtConfirmarClicked() {
         return btConfirmarClicked;
     }
