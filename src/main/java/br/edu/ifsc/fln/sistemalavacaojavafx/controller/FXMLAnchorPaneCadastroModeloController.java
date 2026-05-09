@@ -64,15 +64,14 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
     private TableColumn<Modelo, String> tableColumnModeloDescricao;
 
     @FXML
-        private TableColumn<Modelo, String> tableColumnModeloMarca;
+    private TableColumn<Modelo, String> tableColumnModeloMarca;
 
     @FXML
-        private TableView<Modelo> tableViewModelos;
+    private TableView<Modelo> tableViewModelos;
 
     private List<Modelo> listaModelos;
     private ObservableList<Modelo> observableListModelos;
     private final ModeloDAO modeloDAO = new ModeloDAO();
-
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -82,8 +81,6 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
                 (observable, oldValue, newValue) -> selecionarItemTableViewModelos(newValue));
     }
 
-
-    
     public void carregarTableViewMarca() {
 
         tableColumnModeloDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao"));
@@ -147,8 +144,13 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
     public void handleBtExcluir() throws IOException {
         Modelo modelo = tableViewModelos.getSelectionModel().getSelectedItem();
         if (modelo != null) {
-            modeloDAO.remover(modelo);
-            carregarTableViewMarca();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Deseja realemente excluir esse marca ?");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.OK) {
+                modeloDAO.remover(modelo);
+                carregarTableViewMarca();
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Esta operação requer a seleção \nde uma Modelo na tabela ao lado");

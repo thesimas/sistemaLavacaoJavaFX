@@ -99,7 +99,7 @@ public class CorDAO {
 
     public List<Cor> listar() {
         String sql = "SELECT * FROM cor";
-        List<Cor> retorno = new ArrayList<>();
+        List<Cor> CoresRetornada = new ArrayList<>();
 
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -111,7 +111,7 @@ public class CorDAO {
                 Cor cor = new Cor();
                 cor.setId(resultado.getInt("id"));
                 cor.setNome(resultado.getString("nome"));
-                retorno.add(cor);
+                CoresRetornada.add(cor);
             }
             connection.commit();
         } catch (SQLException ex) {
@@ -124,12 +124,12 @@ public class CorDAO {
         }finally {
             database.desconectar(connection);
         }
-        return retorno;
+        return CoresRetornada;
     }
 
     public Cor buscar(Cor cor) {
-        Cor retorno = buscar(cor.getId());
-        return retorno;
+        Cor CorRetornada = buscar(cor.getId());
+        return CorRetornada;
     }
     
     public Cor buscar(int id) {
@@ -137,15 +137,15 @@ public class CorDAO {
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         
-        Cor retorno = new Cor();
+        Cor CorRetornada = new Cor();
         try {
             connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet resultado = stmt.executeQuery();
             if (resultado.next()) {
-                retorno.setId(resultado.getInt("id"));
-                retorno.setNome(resultado.getString("nome"));
+                CorRetornada.setId(resultado.getInt("id"));
+                CorRetornada.setNome(resultado.getString("nome"));
             }
             connection.commit();
         } catch (SQLException ex) {
@@ -158,6 +158,6 @@ public class CorDAO {
         }finally {
             database.desconectar(connection);
         }
-        return retorno;        
+        return CorRetornada;
     }
 }

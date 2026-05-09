@@ -15,11 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -109,8 +105,13 @@ public class FXMLAnchorPaneCadastroCorController implements Initializable {
     public void handleBtExcluir() throws IOException {
         Cor cor = tableViewCores.getSelectionModel().getSelectedItem();
         if (cor != null) {
-            corDAO.remover(cor);
-            carregarTableViewCor();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Deseja realmente excluir essa Cor?");
+            alert.showAndWait();
+            if(alert.getResult() == ButtonType.OK) {
+                corDAO.remover(cor);
+                carregarTableViewCor();
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Esta operação requer a seleção \nde uma Cor na tabela ao lado");

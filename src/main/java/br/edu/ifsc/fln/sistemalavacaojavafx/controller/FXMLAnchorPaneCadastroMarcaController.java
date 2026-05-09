@@ -110,8 +110,13 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
     public void handleBtExcluir() throws IOException {
         Marca marca = tableViewMarcas.getSelectionModel().getSelectedItem();
         if (marca != null) {
-            marcaDAO.remover(marca);
-            carregarTableViewMarca();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Deseja realmente excluir esse marca ?");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.OK) {
+                marcaDAO.remover(marca);
+                carregarTableViewMarca();
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Esta operação requer a seleção \nde uma Marca na tabela ao lado");
@@ -130,7 +135,7 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
 
-        //enviando o obejto Marca para o controller
+        //enviando o objeto Marca para o controller
         FXMLAnchorPaneCadastroMarcaDialogController controller = loader.getController();
         controller.setDialogStage(dialogStage);
         controller.setMarca(marca);

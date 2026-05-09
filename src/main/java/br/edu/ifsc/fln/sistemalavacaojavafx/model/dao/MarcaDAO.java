@@ -100,7 +100,7 @@ public class MarcaDAO {
     }
 
     public List<Marca> listar() {
-        List<Marca> retorno = new ArrayList<>();
+        List<Marca> marcasRetornada = new ArrayList<>();
         String sql = "SELECT * FROM marca";
 
         Database database = DatabaseFactory.getDatabase("mysql");
@@ -114,7 +114,7 @@ public class MarcaDAO {
                 Marca marca = new Marca();
                 marca.setId(resultado.getInt("id"));
                 marca.setNome(resultado.getString("nome"));
-                retorno.add(marca);
+                marcasRetornada.add(marca);
             }
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -122,32 +122,32 @@ public class MarcaDAO {
 
             database.desconectar(connection);
         }
-        return retorno;
+        return marcasRetornada;
     }
 
     public Marca buscar(Marca marca) {
-        Marca retorno = buscar(marca.getId());
-        return retorno;
+        Marca marcaRetornada = buscar(marca.getId());
+        return marcaRetornada;
     }
     
     public Marca buscar(int id) {
         String sql = "SELECT * FROM marca WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
-        Marca retorno = new Marca();
+        Marca marcaRetornada = new Marca();
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet resultado = stmt.executeQuery();
             if (resultado.next()) {
-                retorno.setId(resultado.getInt("id"));
-                retorno.setNome(resultado.getString("nome"));
+                marcaRetornada.setId(resultado.getInt("id"));
+                marcaRetornada.setNome(resultado.getString("nome"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally {
             database.desconectar(connection);
         }
-        return retorno;        
+        return marcaRetornada;        
     }
 }

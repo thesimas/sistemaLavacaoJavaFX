@@ -61,7 +61,6 @@ public class FXMLAnchorPaneCadastroServicoController implements Initializable {
 
     private List<Servico> listaServicos;
     private ObservableList<Servico> observableListServicos;
-
     private final ServicoDAO servicoDAO = new ServicoDAO();
 
     @Override
@@ -140,8 +139,13 @@ public class FXMLAnchorPaneCadastroServicoController implements Initializable {
     public void handleBtExcluir() throws IOException {
         Servico servico = tableViewServicos.getSelectionModel().getSelectedItem();
         if (servico != null) {
-            servicoDAO.remover(servico);
-            carregarTableViewServicos();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Deseja realmente excluir esse Serviço?");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.OK) {
+                servicoDAO.remover(servico);
+                carregarTableViewServicos();
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Esta operação requer a seleção \nde uma Servico na tabela ao lado");

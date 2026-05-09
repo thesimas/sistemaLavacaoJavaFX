@@ -18,6 +18,10 @@ public abstract class Cliente implements IDados{
     protected List<Veiculo> listaDeVeiculos; // Associção Bidirecional com multiplicidade 1(cliente) para Muitos(veiculo).
     protected Pontuacao pontuacao; // Associação Unidirecional
 
+    //Construtor Vazio apenas para inserir dados via SET e manipular ele melhor nas Classes DAO
+    public Cliente() {
+    }
+
     public Cliente(int id, String nome, String celular, String email, LocalDate dataCadastro) {
         this.id = id;
         this.nome = nome;
@@ -42,6 +46,10 @@ public abstract class Cliente implements IDados{
         StringBuilder dados = new StringBuilder(getDados());
         dados.append("Observação.....: "+ observacao);
         return dados.toString();
+    }
+
+    public String getTipo (){
+        return "Indefinido";
     }
 
     public void addVeiculo(Veiculo veiculo) {
@@ -99,7 +107,7 @@ public abstract class Cliente implements IDados{
     }
 
     public List<Veiculo> getListaDeVeiculos() {
-        return listaDeVeiculos;
+        return listaDeVeiculos.isEmpty() ? null : listaDeVeiculos;
     }
 
     public void setListaDeVeiculos(List<Veiculo> listaDeVeiculos) {
@@ -114,12 +122,13 @@ public abstract class Cliente implements IDados{
 
     @Override
     public String toString() {
+
         return "Informaçãoes do Cliente:\n" +
                 "Identificação......: " + id +
                 " | Nome..............: " + nome +
                 " | Celular...........: " + celular +
                 " | E-mail............: " + email +
                 " | Data de Cadastro..: " + dataCadastro +
-                " | Número de Veículos: " + listaDeVeiculos.size();
+                " | Número de Veículos: " + getListaDeVeiculos();
     }
 }

@@ -2,11 +2,10 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
 import java.util.ResourceBundle;
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ServicoDAO;
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
+
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ConfiguracaoDAO;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Configuracao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Servico;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,17 +14,17 @@ import javafx.scene.layout.AnchorPane;
 
 public class FXMLVBoxMainAppController implements Initializable {
 
-
     @FXML
     private AnchorPane anchorPane;
 
-    private final Database database = DatabaseFactory.getDatabase("mysql");
-    private final Connection connection = database.conectar();
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        ServicoDAO servicoDAO = new ServicoDAO();
-//        Servico.setPontos((servicoDAO.buscarPontosPadrao()));
+        ConfiguracaoDAO configuracaoDAO = new ConfiguracaoDAO();
+        Configuracao configuracaoAtual = new Configuracao();
+        configuracaoAtual = configuracaoDAO.buscar(1);
+        if (configuracaoAtual != null) {
+            Servico.setPontos(configuracaoAtual.getPontos());
+        }
     }
     
     @FXML
@@ -53,6 +52,18 @@ public class FXMLVBoxMainAppController implements Initializable {
     }
 
     @FXML
+    public void handleMenuItemCadastroVeiculo() throws IOException {
+        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/FXMLAnchorPaneCadastroVeiculo.fxml"));
+        anchorPane.getChildren().setAll(a);
+    }
+
+    @FXML
+    public void handleMenuItemCadastroCliente() throws IOException {
+        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/FXMLAnchorPaneCadastroCliente.fxml"));
+        anchorPane.getChildren().setAll(a);
+    }
+
+    @FXML
     public void handleMenuItemProcessoEstoque() throws IOException {
         //TODO not implemented yet
     }
@@ -73,15 +84,8 @@ public class FXMLVBoxMainAppController implements Initializable {
     }
 
     @FXML
-    public void handleMenuItemConfigPontos() throws IOException {
-        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("view/FXMLAnchorPane"));
+    public void handleMenuItemConfigDefinir() throws IOException {
+        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/FXMLAnchorPaneConfiguracao.fxml"));
         anchorPane.getChildren().setAll(a);
     }
-
-    @FXML
-    public void handleMenuItemConfigValores() throws IOException {
-        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("view/FXMLAnchorPane"));
-        anchorPane.getChildren().setAll(a);
-    }
-
 }

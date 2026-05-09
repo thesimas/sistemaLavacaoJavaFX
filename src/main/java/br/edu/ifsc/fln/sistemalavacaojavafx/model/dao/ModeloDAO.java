@@ -26,16 +26,16 @@ public class ModeloDAO {
     }
 
     public boolean inserir(Modelo modelo) {
-        String sql = "INSERT INTO modelo(descricao, categoria, marca) VALUES(?, ?, ?);";
-        String sqlMotor = "INSERT INTO motor(id, potencia, tipo_combustivel) VALUES(SELECT MAX(id) FROM modelo), ? ?);";
+        String sql = "INSERT INTO modelo(descricao, categoria, id_marca) VALUES(?, ?, ?);";
+        String sqlMotor = "INSERT INTO motor(id_modelo, potencia, tipo_combustivel) VALUES(SELECT MAX(id) FROM modelo), ? ?);";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
             connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, modelo.getDescricao());
-            stmt.setString(2, modelo.getCategoria().getDescricao());
-            stmt.setString(3, modelo.getMarca().getNome());
+            stmt.setString(2, String.valueOf(ECategoria.valueOf(modelo.getCategoria().name())));
+            stmt.setInt(3, modelo.getMarca().getId());
             stmt.execute();
             // Garantindo a composição, devemos registrar o motor ao criar um modelo;
             stmt = connection.prepareStatement(sqlMotor);
@@ -45,7 +45,7 @@ public class ModeloDAO {
             connection.commit();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
                 connection.rollback();
             }catch(SQLException ex1){
@@ -58,19 +58,25 @@ public class ModeloDAO {
     }
 
     public boolean alterar(Modelo modelo) {
-        String sql = "UPDATE modelo SET nome=? WHERE id=?";
+        String sql = "UPDATE modelo SET descricao=?, categoria=?, id_marca=? WHERE id=?";
+        String sqlMotor = "UPDATE motor SET potencia=?, tipo_combustivel=? WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
             connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, modelo.getDescricao());
-            stmt.setInt(2, modelo.getId());
+            stmt.setString(2, String.valueOf(modelo.getCategoria()));
+            stmt.setInt(3, modelo.getMarca().getId());
+            stmt.setInt(4, modelo.getId());
             stmt.execute();
+            stmt = connection.prepareStatement(sqlMotor);
+            stmt.setString(1, String.valueOf(modelo.getMotor().getPotencia()));
+            stmt.setString(2, String.valueOf(modelo.getMotor().getTipoCombustivel()));
             connection.commit();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
                 connection.rollback();
             }catch(SQLException ex1){
@@ -94,7 +100,7 @@ public class ModeloDAO {
             connection.commit();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
                 connection.rollback();
             }catch(SQLException ex1){
@@ -113,7 +119,7 @@ public class ModeloDAO {
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
 
-        List<Modelo> retorno = new ArrayList<>();
+        List<Modelo> modelosRetornado = new ArrayList<>();
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -134,23 +140,23 @@ public class ModeloDAO {
                 marca.setNome(resultado.getString("nome_marca"));
                 modelo.setMarca(marca);
 
-                retorno.add(modelo);
+                modelosRetornado.add(modelo);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally {
             database.desconectar(connection);
         }
-        return retorno;
+        return modelosRetornado;
     }
 
     public Modelo buscar(Modelo modelo) {
-        Modelo retorno = buscar(modelo.getId());
-        return retorno;
+        Modelo modeloRetorno = buscar(modelo.getId());
+        return modeloRetorno;
     }
 
     public Modelo buscar(int id) {
-        String sql = "SELECT * FROM modelo WHERE id=?";
+        String sql = "SELECT * FROM modelo JOIN motor ON modelo.id = motor.id_modelo WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
 
@@ -172,7 +178,7 @@ public class ModeloDAO {
             }
             return modeloRetorno;
         } catch (SQLException ex) {
-            Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally {
             database.desconectar(connection);
         }

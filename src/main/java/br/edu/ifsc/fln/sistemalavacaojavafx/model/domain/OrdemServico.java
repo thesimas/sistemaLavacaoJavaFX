@@ -58,6 +58,8 @@ public class OrdemServico {
         } else if (status == EStatus.CANCELADA) {
             throw new ExceptionLavacao("Não é possivel adcionar itens na OS, pois ela está cancelada!");
         }else {
+            //Quando eu fizer a lógica de calcular o valor do serviço pela categoria, terei que consultar
+            // o banco de dados da tabela configuracoes_sistema, pois ela guarda as porcentagens de cada categoria.
 
             double valor = servico.calculaValorPelaCategoria(veiculo.getModelo().getCategoria());
             int pontosCliente = servico.getPontos();

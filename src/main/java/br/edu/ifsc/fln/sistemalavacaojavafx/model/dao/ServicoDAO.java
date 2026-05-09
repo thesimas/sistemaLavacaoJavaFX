@@ -120,7 +120,6 @@ public class ServicoDAO {
                 servico.setDescricao(resultado.getString("descricao"));
                 servico.setCategoria(ECategoria.valueOf(resultado.getString("categoria")));
                 servico.setValor(resultado.getDouble("valor"));
-//                servico.setPontos(resultado.getInt("pontos"));
                 retorno.add(servico);
             }
             connection.commit();
