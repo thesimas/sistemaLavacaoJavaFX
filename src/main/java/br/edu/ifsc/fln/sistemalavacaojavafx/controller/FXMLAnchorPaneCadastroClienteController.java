@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -83,7 +84,7 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
     private TableColumn<Veiculo, String> tableColumnClienteVeiculoPlaca;
 
     @FXML
-    private TableView<Cliente> tableViewClientesVeiculos;
+    private TableView<Veiculo> tableViewClientesVeiculos;
 
     private List<Cliente> listaClientes;
     private ObservableList<Cliente> observableListClientes;
@@ -95,8 +96,6 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
         
         tableViewClientes.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> selecionarItemTableViewClientes(newValue));
-
-        tableViewClientesVeiculos.getSelectionModel().selectedItemProperty().addListener((observableValue, cliente, newValue) -> selecionarItemTableViewClientes(newValue));
 
     }
 
@@ -143,8 +142,6 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             lbClienteCelular.setText(cliente.getCelular());
             lbClienteEmail.setText(cliente.getEmail());
             lbClienteDataCadastro.setText(String.valueOf(cliente.getDataCadastro()));
-//            List<Veiculo> veiculosCliente = cliente.getListaDeVeiculos();
-//            observableListClientesVeiculos = FXCollections.observableArrayList(veiculosCliente);
 
             if (cliente instanceof PessoaFisica) {
                 lbCnpj.setText("CPF:");
@@ -168,6 +165,12 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             lbClienteDocumento.setText("");
             lbClienteLegenda.setText("");
             lbClientePontos.setText("");
+        }
+
+        List<Veiculo> veiculosCliente = cliente.getListaDeVeiculos();
+        if (veiculosCliente != null) {
+            ObservableList<Veiculo> veiculos = FXCollections.observableArrayList(veiculosCliente);
+            tableViewClientesVeiculos.setItems(veiculos);
         }
     }
     

@@ -215,7 +215,7 @@ public class ClienteDAO {
         }
         // Associando o Cliente ao veiculo.
         VeiculoDAO veiculoDAO = new VeiculoDAO();
-        List<Veiculo> veiculos = veiculoDAO.listar();
+        List<Veiculo> veiculos = veiculoDAO.buscarVeiculoCliente(id);
 
         for (int x = 0; x < veiculos.size(); x++) {
             Veiculo veiculo = veiculos.get(x);
