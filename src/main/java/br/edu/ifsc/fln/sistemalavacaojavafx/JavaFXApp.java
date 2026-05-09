@@ -11,7 +11,7 @@ public class JavaFXApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(JavaFXApp.class.getResource("/view/FXMLVBoxMainApp.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 530);
+        Scene scene = new Scene(fxmlLoader.load(), 640, 530);
         stage.setTitle("Sistema Norteador (Lavação) - IFSC Campus Florianópolis");
         stage.setScene(scene);
         stage.show();
