@@ -41,8 +41,8 @@
                         <Insets right="5.0" />
                     </GridPane.margin>
                 </Label>
-                <ComboBox fx:id="cbMarca" prefHeight="25.0" prefWidth="289.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ComboBox fx:id="cbCategoria" prefHeight="25.0" prefWidth="289.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <ComboBox fx:id="cbMarca" prefHeight="25.0" prefWidth="289.0" promptText="Selecione a Marca" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cbCategoria" prefHeight="25.0" prefWidth="289.0" promptText="Selecione a Categoria" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="97.0" text="Categoria:" GridPane.rowIndex="2" />
             </children>
         </GridPane>
@@ -71,12 +71,12 @@
                   <Insets right="5.0" />
                </GridPane.margin>
             </Label>
-            <Label text="Combustivel:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+            <Label text="Combustível:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
             </Label>
-            <ComboBox fx:id="cbTipoCombustivel" prefHeight="25.0" prefWidth="289.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cbTipoCombustivel" prefHeight="25.0" prefWidth="289.0" promptText="Selecione o Tipo de Combustível" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Spinner fx:id="spPotencia" prefHeight="26.0" prefWidth="262.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
