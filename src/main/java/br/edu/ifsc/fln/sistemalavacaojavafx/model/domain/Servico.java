@@ -1,5 +1,7 @@
 package br.edu.ifsc.fln.sistemalavacaojavafx.model.domain;
 
+import java.util.HashMap;
+
 public class Servico {
     private int id;
     private String descricao;
@@ -15,6 +17,19 @@ public class Servico {
         this.descricao = descricao;
         this.valor = valor;
         this.categoria = categoria;
+    }
+
+    public double CalcularValorPelaCategoria(ECategoria categoria, Configuracao configuracao) {
+
+        if(categoria == ECategoria.PADRAO) {
+            return this.valor;
+        }
+
+        HashMap<ECategoria, Double> porcentagens = configuracao.getPorcentagens();
+
+        double precoFinal = this.valor * porcentagens.get(categoria);
+
+        return precoFinal;
     }
 
     // Lógica do valor do serviço referente a categoria do veiculo.
