@@ -18,6 +18,9 @@ public class Veiculo implements IDados{
         this.cliente = cliente;
     }
 
+    public Veiculo() {
+    }
+
     @Override
     public String getDados(){
         StringBuilder dados = new StringBuilder();

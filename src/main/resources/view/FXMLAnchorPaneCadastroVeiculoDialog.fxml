@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="352.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneCadastroVeiculoDialogController">
+   <children>
+      <GridPane layoutX="7.0" layoutY="43.0" prefHeight="243.0" prefWidth="375.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.20001220703125" minWidth="10.0" prefWidth="101.6" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.8000038146972" minWidth="10.0" prefWidth="273.6" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="34.39999999999999" minHeight="10.0" prefHeight="33.60001220703124" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="43.199987792968756" minHeight="10.0" prefHeight="30.399981689453114" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="42.400006103515636" minHeight="10.0" prefHeight="41.600018310546886" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="60.400000000000006" minHeight="10.0" prefHeight="60.400000000000006" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="102.0" text="Placa:  ">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <TextField fx:id="tfPlaca" prefHeight="26.0" prefWidth="169.0" GridPane.columnIndex="1" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="127.0" text="Cliente(Dono): " GridPane.rowIndex="1">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="102.0" text="Marca: " GridPane.rowIndex="2">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <ComboBox fx:id="cbMarca" onAction="#eventoMarca" prefHeight="26.0" prefWidth="293.0" promptText="Selecionar Marca" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="cbCliente" prefHeight="19.0" prefWidth="286.0" promptText="Selecionar Propretário do Veículo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="102.0" text="Modelo: " GridPane.rowIndex="3">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <ComboBox fx:id="cbModelo" disable="true" prefHeight="19.0" prefWidth="286.0" promptText="Selecionar Modelo" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="102.0" text="Cor: " GridPane.rowIndex="4">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <ComboBox fx:id="cbCor" prefHeight="19.0" prefWidth="286.0" promptText="Selecionar Cor" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="102.0" text="Observações: " GridPane.rowIndex="5">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <TextArea fx:id="taObservacoes" prefHeight="61.0" prefWidth="254.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+         </children>
+      </GridPane>
+      <Group layoutX="230.0" layoutY="303.0" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="60.0">
+         <children>
+            <Button fx:id="btConfirmar" mnemonicParsing="false" onAction="#handleBtConfirmar" prefHeight="25.0" prefWidth="70.0" text="Confirmar" />
+            <Button fx:id="btCancelar" layoutX="83.0" mnemonicParsing="false" onAction="#handleBtCancelar" prefHeight="25.0" prefWidth="69.0" text="Cancelar" />
+         </children>
+      </Group>
+      <Label alignment="CENTER" layoutY="14.0" prefHeight="20.0" prefWidth="442.0" text="Cadastro de Veículo">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+   </children>
+</AnchorPane>
