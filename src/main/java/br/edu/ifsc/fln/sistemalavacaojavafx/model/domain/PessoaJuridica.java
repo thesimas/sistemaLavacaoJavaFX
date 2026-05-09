@@ -6,10 +6,22 @@ public class PessoaJuridica extends Cliente{
     private String cnpj;
     private String inscricaoEstadual;
 
+    public PessoaJuridica() {
+    }
+
     public PessoaJuridica(int id, String nome, String celular, String email, LocalDate dataCadastro, String cnpj, String inscricaoEstadual) {
         super(id, nome, celular, email, dataCadastro);
         this.cnpj = cnpj;
         this.inscricaoEstadual = inscricaoEstadual;
+    }
+
+    public PessoaJuridica(int id, String nome, String celular, String email, LocalDate dataCadastro) {
+        super(id, nome, celular, email, dataCadastro);
+    }
+
+    @Override
+    public String getTipo(){
+        return "Pessoa Juridica";
     }
 
     @Override

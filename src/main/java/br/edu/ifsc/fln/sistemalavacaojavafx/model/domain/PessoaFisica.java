@@ -6,10 +6,23 @@ public class PessoaFisica extends Cliente{
     private String cpf;
     private LocalDate dataNascimento;
 
+
+    public PessoaFisica() {
+    }
+
     public PessoaFisica(int id, String nome, String celular, String email, LocalDate dataCadastro, String cpf, LocalDate dataNascimento) {
         super(id, nome, celular, email, dataCadastro);
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
+    }
+
+    public PessoaFisica(int id, String nome, String celular, String email, LocalDate dataCadastro) {
+        super(id, nome, celular, email, dataCadastro);
+    }
+
+    @Override
+    public String getTipo(){
+        return "Pessoa Fisica";
     }
 
     @Override
