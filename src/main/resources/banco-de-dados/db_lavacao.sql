@@ -2,10 +2,14 @@ drop database if exists db_lavacao;
 create database if not exists db_lavacao;
 use db_lavacao;
 
-create table parametros_sistema
+create table configuracao_sistema
 (
-    id     int not null primary key,
-    pontos int
+    id     int not null primary key auto_increment,
+    pontos int,
+    porcentagem_pequeno float,
+    porcentagem_medio float,
+    porcentagem_grande float,
+    porcentagem_moto float
 ) engine = innoDB;
 
 create table cor
@@ -138,8 +142,8 @@ VALUES ('Lavação Moto Simples', 40.00, 'MOTO');
 INSERT INTO servico(descricao, valor, categoria)
 VALUES ('Lavação Caminhonete', 180.00, 'GRANDE');
 
-INSERT INTO parametros_sistema(id, pontos)
-VALUES (1, 20);
+INSERT INTO configuracao_sistema (id, pontos, porcentagem_pequeno, porcentagem_medio, porcentagem_grande, porcentagem_moto)
+VALUES (1, 20, 1, 1, 1, 1);
 
 INSERT INTO modelo (descricao, categoria, id_marca) VALUES ('Onix', 'PEQUENO', 1);
 INSERT INTO modelo (descricao, categoria, id_marca) VALUES ('Civic', 'MEDIO', 2);
@@ -168,10 +172,10 @@ INSERT INTO pessoaJuridica (id_cliente, cnpj, inscricao_estadual) VALUES
 (4, '98.765.432/0001-11', '987654321');
 
 INSERT INTO pontuacao (id_cliente, quantidade) VALUES
-(1, 0),
+(1, 40),
 (2, 50),
 (3, 120),
-(4, 0);
+(4, 20);
 
 INSERT INTO veiculo (placa, observacoes, id_cor, id_modelo, id_cliente) VALUES
 ('ABC-1234', 'Carro de uso diário', 1, 1, 1),                 -- Veículo do Luciano (Onix Prata)
