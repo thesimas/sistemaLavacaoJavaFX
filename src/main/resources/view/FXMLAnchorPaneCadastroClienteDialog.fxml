@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="394.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneCadastroClienteDialogController">
+   <children>
+      <GridPane layoutX="7.0" layoutY="43.0" prefHeight="271.0" prefWidth="375.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="190.20001220703125" minWidth="10.0" prefWidth="155.99998779296874" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.8000038146972" minWidth="10.0" prefWidth="220.00001220703126" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="43.4" minHeight="10.0" prefHeight="43.4" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="58.39999999999999" minHeight="10.0" prefHeight="35.39999999999999" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="43.199987792968756" minHeight="7.400000000000006" prefHeight="39.199981689453125" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="42.400006103515636" minHeight="10.0" prefHeight="38.399993896484375" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="42.400006103515636" minHeight="10.0" prefHeight="38.399993896484375" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="60.400000000000006" minHeight="10.0" prefHeight="36.79998779296875" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="74.80000000000001" minHeight="10.0" prefHeight="60.00001220703123" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="144.0" text="Nome:">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <TextField fx:id="tfClienteNome" prefHeight="26.0" prefWidth="169.0" GridPane.columnIndex="1" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="144.0" text="Celular:" GridPane.rowIndex="1">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <TextField fx:id="tfClienteCelular" prefHeight="26.0" prefWidth="169.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="144.0" text="Email:" GridPane.rowIndex="2">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <TextField fx:id="tfClienteEmail" prefHeight="26.0" prefWidth="169.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="144.0" text="Pontos:" GridPane.rowIndex="3">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <TextField fx:id="tfClientePontos" prefHeight="26.0" prefWidth="169.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="144.0" text="Data de Cadastro:" GridPane.rowIndex="4">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <DatePicker fx:id="dpDataCadastro" prefHeight="26.0" prefWidth="245.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="lbCpfCnpj" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="144.0" text="CNPJ/CPF:" GridPane.rowIndex="6">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <TextField fx:id="tfClienteCpfCnpj" prefHeight="26.0" prefWidth="169.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="144.0" text="Tipo de Cliente:" GridPane.rowIndex="5">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <Label fx:id="lbNascimentoInscricao" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="144.0" text="Nascimento/Inscrição Estadual::" GridPane.rowIndex="7">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+            <TextField fx:id="tfClienteNascimentoInscricaoEstadual" prefHeight="26.0" prefWidth="169.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <javafx.scene.layout.HBox alignment="CENTER_LEFT" spacing="15.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <children>
+                  <RadioButton fx:id="rbPessoaFisica" mnemonicParsing="false" onAction="#handleRbPessoaFisica" text="Pessoa Fisica">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="tgGrupoBotao" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="rbPessoaJuridica" mnemonicParsing="false" onAction="#handleRbPessoaJuridica" text="Pessoa Juridica" toggleGroup="$tgGrupoBotao" />
+               </children>
+            </javafx.scene.layout.HBox>
+         </children>
+      </GridPane>
+      <Group layoutX="230.0" layoutY="303.0" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="60.0">
+         <children>
+            <Button fx:id="btConfirmar" mnemonicParsing="false" onAction="#handleBtConfirmar" prefHeight="25.0" prefWidth="70.0" text="Confirmar" />
+            <Button fx:id="btCancelar" layoutX="83.0" mnemonicParsing="false" onAction="#handleBtCancelar" prefHeight="25.0" prefWidth="69.0" text="Cancelar" />
+         </children>
+      </Group>
+      <Label fx:id="tfTitulo" alignment="CENTER" layoutY="14.0" prefHeight="20.0" prefWidth="442.0" text="Cadastro de Cliente">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+   </children>
+</AnchorPane>
