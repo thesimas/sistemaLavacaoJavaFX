@@ -27,7 +27,7 @@ public class ModeloDAO {
 
     public boolean inserir(Modelo modelo) {
         String sql = "INSERT INTO modelo(descricao, categoria, id_marca) VALUES(?, ?, ?);";
-        String sqlMotor = "INSERT INTO motor(id_modelo, potencia, tipo_combustivel) VALUES(SELECT MAX(id) FROM modelo), ? ?);";
+        String sqlMotor = "INSERT INTO motor (id_modelo, potencia, tipo_combustivel) VALUES ((SELECT MAX(id) FROM modelo), ?, ?);";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
@@ -39,8 +39,8 @@ public class ModeloDAO {
             stmt.execute();
             // Garantindo a composição, devemos registrar o motor ao criar um modelo;
             stmt = connection.prepareStatement(sqlMotor);
-            stmt.setInt(2, modelo.getMotor().getPotencia());
-            stmt.setString(3, String.valueOf(modelo.getMotor().getTipoCombustivel()));
+            stmt.setInt(1, modelo.getMotor().getPotencia());
+            stmt.setString(2, String.valueOf(modelo.getMotor().getTipoCombustivel()));
             stmt.execute();
             connection.commit();
             return true;
@@ -59,7 +59,7 @@ public class ModeloDAO {
 
     public boolean alterar(Modelo modelo) {
         String sql = "UPDATE modelo SET descricao=?, categoria=?, id_marca=? WHERE id=?";
-        String sqlMotor = "UPDATE motor SET potencia=?, tipo_combustivel=? WHERE id=?";
+        String sqlMotor = "UPDATE motor SET potencia=?, tipo_combustivel=? WHERE id_modelo=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
@@ -73,6 +73,8 @@ public class ModeloDAO {
             stmt = connection.prepareStatement(sqlMotor);
             stmt.setString(1, String.valueOf(modelo.getMotor().getPotencia()));
             stmt.setString(2, String.valueOf(modelo.getMotor().getTipoCombustivel()));
+            stmt.setInt(3, modelo.getId());
+            stmt.execute();
             connection.commit();
             return true;
         } catch (SQLException ex) {
