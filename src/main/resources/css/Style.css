@@ -1,0 +1,11 @@
+. root {
+    -fx-background-color: lightgray;
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.menu-bar {
+    -fx-alignment: center;
+    -fx-background-color: #d2eef5;
+    /*-fx-font-weight: bold;*/
+    -fx-font-size: 14px;
+}

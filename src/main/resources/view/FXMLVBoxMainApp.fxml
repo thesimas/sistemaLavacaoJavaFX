@@ -11,7 +11,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLVBoxMainAppController">
    <children>
-      <MenuBar prefHeight="51.0" prefWidth="700.0">
+      <MenuBar>
         <menus>
           <Menu mnemonicParsing="false" text="Cadastros">
             <items>
@@ -57,9 +57,6 @@
          <VBox.margin>
             <Insets />
          </VBox.margin>
-         <padding>
-            <Insets bottom="5.0" left="90.0" top="5.0" />
-         </padding>
       </MenuBar>
       <AnchorPane fx:id="anchorPane" prefHeight="474.0" prefWidth="700.0" />
    </children>

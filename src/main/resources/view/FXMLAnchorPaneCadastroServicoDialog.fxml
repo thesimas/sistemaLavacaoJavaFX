@@ -44,7 +44,7 @@
                   <Insets />
                </opaqueInsets>
             </Label>
-            <ComboBox fx:id="cbCategoria" prefHeight="19.0" prefWidth="286.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="cbCategoria" prefHeight="19.0" prefWidth="286.0" promptText="Selecione a Categoria" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="102.0" text="Pontos:  " GridPane.rowIndex="3">
                <opaqueInsets>
                   <Insets />

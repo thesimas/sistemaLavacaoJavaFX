@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Servico;
 import java.io.IOException;
+import java.util.Objects;
 
 public class JavaFXApp extends Application {
     @Override
@@ -13,6 +14,7 @@ public class JavaFXApp extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(JavaFXApp.class.getResource("/view/FXMLVBoxMainApp.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 640, 530);
         stage.setTitle("Sistema Norteador (Lavação) - IFSC Campus Florianópolis");
+        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

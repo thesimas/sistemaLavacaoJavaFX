@@ -129,9 +129,7 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
             this.cbModelo.getSelectionModel().select(veiculo.getModelo());
             this.cbCor.getSelectionModel().select(veiculo.getCor());
             this.taObservacoes.setText(veiculo.getObservacoes());
-            if(cbMarca.getSelectionModel().getSelectedItem() != null){
-                this.cbMarca.getSelectionModel().select(veiculo.getModelo().getMarca());
-            }
+            this.cbMarca.getSelectionModel().select(veiculo.getModelo().getMarca());
         }
     }
 
