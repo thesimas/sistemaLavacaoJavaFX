@@ -161,7 +161,7 @@ public class FXMLAnchorPaneCadastroVeiculoController implements Initializable {
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Esta operação requer a seleção \nde uma Veiculo na tabela ao lado");
+            alert.setContentText("Esta operação requer a seleção de um Veiculo na tabela ao lado!");
             alert.show();
         }
     }
@@ -179,7 +179,7 @@ public class FXMLAnchorPaneCadastroVeiculoController implements Initializable {
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Esta operação requer a seleção \nde uma Veiculo na tabela ao lado");
+            alert.setContentText("Esta operação requer a seleção de um Veiculo na tabela ao lado!");
             alert.show();
         }
     }

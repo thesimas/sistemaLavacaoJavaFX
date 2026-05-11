@@ -3,9 +3,31 @@
     -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/*.telaFundo {*/
+/*    -fx-background-image: url('../diagramas/Diagrama de classe completo - Lavacao.png');*/
+/*    -fx-background-size: cover;*/
+/*    -fx-background-position: center center;*/
+/*    -fx-background-repeat: no-repeat;*/
+/*}*/
+
 .menu-bar {
     -fx-alignment: center;
     -fx-background-color: #d2eef5;
-    /*-fx-font-weight: bold;*/
     -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+    -fx-font-weight: bold;
+}
+
+.menu-item {
+    -fx-font-weight: lighter;
+}
+
+.separator {
+    -fx-background-color: lightblue;
+}
+
+.label {
+    -fx-text-alignment: center;
 }

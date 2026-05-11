@@ -135,7 +135,7 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Esta operação requer a seleção \nde uma Modelo na tabela ao lado");
+            alert.setContentText("Esta operação requer a seleção de um Modelo na tabela ao lado!");
             alert.show();
         }
     }
@@ -153,7 +153,7 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Esta operação requer a seleção \nde uma Modelo na tabela ao lado");
+            alert.setContentText("Esta operação requer a seleção de um Modelo na tabela ao lado!");
             alert.show();
         }
     }

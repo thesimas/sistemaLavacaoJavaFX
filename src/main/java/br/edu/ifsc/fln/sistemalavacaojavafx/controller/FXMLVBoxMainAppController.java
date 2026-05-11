@@ -10,12 +10,16 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Servico;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class FXMLVBoxMainAppController implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
+
+    @FXML
+    private ImageView imagemFundo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -41,18 +45,30 @@ public class FXMLVBoxMainAppController implements Initializable {
     @FXML
     public void handleMenuItemCadastroMarca() throws IOException {
                 AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/FXMLAnchorPaneCadastroMarca.fxml"));
+        AnchorPane.setTopAnchor(a, 0.0);
+        AnchorPane.setBottomAnchor(a, 0.0);
+        AnchorPane.setLeftAnchor(a, 0.0);
+        AnchorPane.setRightAnchor(a, 0.0);
         anchorPane.getChildren().setAll(a);
     }
 
     @FXML
     public void handleMenuItemCadastroServico() throws IOException {
         AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/FXMLAnchorPaneCadastroServico.fxml"));
+        AnchorPane.setTopAnchor(a, 0.0);
+        AnchorPane.setBottomAnchor(a, 0.0);
+        AnchorPane.setLeftAnchor(a, 0.0);
+        AnchorPane.setRightAnchor(a, 0.0);
         anchorPane.getChildren().setAll(a);
     }
 
     @FXML
     public void handleMenuItemCadastroModelo() throws IOException {
         AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/FXMLAnchorPaneCadastroModelo.fxml"));
+        AnchorPane.setTopAnchor(a, 0.0);
+        AnchorPane.setBottomAnchor(a, 0.0);
+        AnchorPane.setLeftAnchor(a, 0.0);
+        AnchorPane.setRightAnchor(a, 0.0);
         anchorPane.getChildren().setAll(a);
     }
 
@@ -99,6 +115,10 @@ public class FXMLVBoxMainAppController implements Initializable {
     @FXML
     public void handleMenuItemConfigDefinir() throws IOException {
         AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/FXMLAnchorPaneConfiguracao.fxml"));
+        AnchorPane.setTopAnchor(a, 0.0);
+        AnchorPane.setBottomAnchor(a, 0.0);
+        AnchorPane.setLeftAnchor(a, 0.0);
+        AnchorPane.setRightAnchor(a, 0.0);
         anchorPane.getChildren().setAll(a);
     }
 }

@@ -197,7 +197,7 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Esta operação requer a seleção \nde uma Cliente na tabela ao lado");
+            alert.setContentText("Esta operação requer a seleção de um Cliente na tabela ao lado!");
             alert.show();
         }
     }
@@ -216,7 +216,7 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Esta operação requer a seleção \nde uma Cliente na tabela ao lado");
+            alert.setContentText("Esta operação requer a seleção de um Cliente na tabela ao lado!");
             alert.show();
         }
     }

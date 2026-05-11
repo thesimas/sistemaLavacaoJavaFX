@@ -101,7 +101,7 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Esta operação requer a seleção \nde uma Marca na tabela ao lado");
+            alert.setContentText("Esta operação requer a seleção de uma Marca na tabela ao lado!");
             alert.show();
         }
     }
@@ -119,7 +119,7 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Esta operação requer a seleção \nde uma Marca na tabela ao lado");
+            alert.setContentText("Esta operação requer a seleção de uma Marca na tabela ao lado!");
             alert.show();
         }
     }
