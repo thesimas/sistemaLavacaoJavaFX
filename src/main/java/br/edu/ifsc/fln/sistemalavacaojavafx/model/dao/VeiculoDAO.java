@@ -39,7 +39,6 @@ public class VeiculoDAO {
             stmt.setInt(4, veiculo.getModelo().getId());
             stmt.setInt(5, veiculo.getCliente().getId());
             stmt.execute();
-
             connection.commit();
             return true;
         } catch (SQLException ex) {

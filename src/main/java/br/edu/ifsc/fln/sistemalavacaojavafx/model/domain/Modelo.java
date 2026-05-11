@@ -62,7 +62,7 @@ public class Modelo {
                 "Identificação: " + id +
                 " | Descrição do Modelo: " + descricao +
                 " | Motor: " + motor +
-                " | Categoria do Veículo: " + categoria +
-                " | Marca - " + marca ;
+                " | Categoria do Veículo: " + categoria.name() +
+                " | Marca - " + marca.getNome() ;
     }
 }

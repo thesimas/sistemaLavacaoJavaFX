@@ -63,6 +63,7 @@ public class FXMLAnchorPaneCadastroModeloDialogController implements Initializab
                 return null;
             }
         });
+        spPotencia.setEditable(true);
     }
 
     public void setModelo(Modelo modelo) {

@@ -83,6 +83,7 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
                 return null;
             }
         });
+
         cbModelo.setItems(FXCollections.observableArrayList(modeloDAO.listar()));
         cbModelo.setConverter(new  StringConverter<Modelo>() {
             @Override
@@ -125,11 +126,13 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
         if(veiculo != null){
             this.veiculo = veiculo;
             this.tfPlaca.setText(veiculo.getPlaca());
-            this.cbCliente.getSelectionModel().select(veiculo.getCliente());
-            this.cbModelo.getSelectionModel().select(veiculo.getModelo());
             this.cbCor.getSelectionModel().select(veiculo.getCor());
+            this.cbCliente.getSelectionModel().select(veiculo.getCliente());
             this.taObservacoes.setText(veiculo.getObservacoes());
-            this.cbMarca.getSelectionModel().select(veiculo.getModelo().getMarca());
+            if(veiculo.getModelo() != null){
+                this.cbModelo.getSelectionModel().select(veiculo.getModelo());
+                this.cbMarca.getSelectionModel().select(veiculo.getModelo().getMarca());
+            }
         }
     }
 
