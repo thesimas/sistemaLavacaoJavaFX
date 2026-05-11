@@ -226,11 +226,7 @@ public class ClienteDAO {
         }
 
         //Associando os pontos ao cliente.
-        try {
-            cliente.getPontuacao().adicionar(pontuacao);
-        } catch (ExceptionLavacao e) {
-            throw new RuntimeException(e);
-        }
+        cliente.getPontuacao().setQuantidade(pontuacao);
 
         return cliente;
     }
