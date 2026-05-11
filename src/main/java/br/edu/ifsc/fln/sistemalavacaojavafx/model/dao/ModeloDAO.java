@@ -187,28 +187,29 @@ public class ModeloDAO {
         return null;
     }
 
-    public Modelo buscarModeloPorMarca(int id_marca) {
-        String sql = "SELECT * FROM modelo JOIN motor ON modelo.id = motor.id_modelo WHERE id_marca=?";
+    public List<Modelo> buscarModeloPorMarca(Marca marca) {
+        String sql = "SELECT modelo.id as id_modelo, marca.id as id_marca, modelo.*, motor.*, marca.* FROM modelo JOIN motor ON modelo.id = motor.id_modelo JOIN marca ON modelo.id_marca = marca.id WHERE modelo.id_marca =?;";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, id_marca);
+            stmt.setInt(1, marca.getId());
             ResultSet resultado = stmt.executeQuery();
-            Modelo modeloRetorno = new Modelo(resultado.getInt("potencia"), ETipoCombustivel.valueOf(resultado.getString("tipo_combustivel")));
-            if (resultado.next()) {
-                modeloRetorno.setId(resultado.getInt("id"));
-                modeloRetorno.setDescricao(resultado.getString("descricao"));
-                modeloRetorno.setCategoria(ECategoria.valueOf(resultado.getString("categoria")));
-
+            List<Modelo> modelos = new ArrayList<>();
+            while (resultado.next()) {
+                Modelo modelo = new Modelo(resultado.getInt("potencia"), ETipoCombustivel.valueOf(resultado.getString("tipo_combustivel")));
+                modelo.setId(resultado.getInt("id_modelo"));
+                modelo.setDescricao(resultado.getString("descricao"));
+                modelo.setCategoria(ECategoria.valueOf(resultado.getString("categoria")));
                 // Associando marca ao Modelo
-                Marca marca = new Marca();
-                marca.setId(resultado.getInt("id_marca"));
-                marca.setNome(resultado.getString("nome_marca"));
-                modeloRetorno.setMarca(marca);
+                Marca marcaReal = new Marca();
+                marcaReal.setId(resultado.getInt("id_marca"));
+                marcaReal.setNome(resultado.getString("nome"));
+                modelo.setMarca(marcaReal);
+                modelos.add(modelo);
             }
-            return modeloRetorno;
+            return modelos;
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
         }finally {

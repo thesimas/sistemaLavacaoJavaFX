@@ -1,11 +1,9 @@
 package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ClienteDAO;
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.CorDAO;
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.MarcaDAO;
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ModeloDAO;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.*;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializable {
@@ -83,21 +82,6 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
                 return null;
             }
         });
-
-        cbModelo.setItems(FXCollections.observableArrayList(modeloDAO.listar()));
-        cbModelo.setConverter(new  StringConverter<Modelo>() {
-            @Override
-            public String toString(Modelo modelo) {
-                if(modelo == null){
-                    return "";
-                }
-                return modelo.getDescricao();
-            }
-            @Override
-            public Modelo fromString(String string) {
-                return null;
-            }
-        });
         cbMarca.setItems(FXCollections.observableArrayList(marcaDAO.listar()));
         cbMarca.setConverter(new StringConverter<Marca>() {
             @Override
@@ -109,6 +93,31 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
             }
             @Override
             public Marca fromString(String string) {
+                return null;
+            }
+        });
+        cbMarca.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                ModeloDAO modelDAO = new ModeloDAO();
+                List<Modelo> modelosDaMarca = modelDAO.buscarModeloPorMarca(newValue);
+
+                ObservableList<Modelo> modelos = FXCollections.observableArrayList(modelosDaMarca);
+                cbModelo.setItems(modelos);
+            }else {
+                cbModelo.setItems(FXCollections.observableArrayList());
+            }
+        });
+        cbModelo.setItems(FXCollections.observableArrayList(modeloDAO.listar()));
+        cbModelo.setConverter(new  StringConverter<Modelo>() {
+            @Override
+            public String toString(Modelo modelo) {
+                if(modelo == null){
+                    return "";
+                }
+                return modelo.getDescricao();
+            }
+            @Override
+            public Modelo fromString(String string) {
                 return null;
             }
         });
