@@ -66,7 +66,7 @@ CREATE TABLE cliente
     data_cadastro date
 ) Engine = innoDB;
 
-CREATE TABLE pessoaFisica
+CREATE TABLE pessoa_fisica
 (
     id_cliente      int         not null references cliente (id),
     cpf             varchar(20) not null,
@@ -77,7 +77,7 @@ CREATE TABLE pessoaFisica
         ON DELETE CASCADE
 ) Engine = innoDB;
 
-CREATE TABLE pessoaJuridica
+CREATE TABLE pessoa_juridica
 (
     id_cliente         int         not null references cliente (id),
     cnpj               varchar(20) not null,
@@ -101,7 +101,7 @@ CREATE TABLE pontuacao
 CREATE TABLE veiculo
 (
     id          int        not null auto_increment primary key,
-    placa       varchar(8) not null,
+    placa       varchar(8) not null unique,
     observacoes varchar(255),
     id_cor      int,
     id_modelo   int,
@@ -110,6 +110,31 @@ CREATE TABLE veiculo
     constraint fk_modelo foreign key (id_modelo) references modelo (id),
     constraint fk_cor foreign key (id_cor) references cor (id)
 
+) engine = innoDB;
+
+CREATE TABLE ordem_de_servico
+(
+    id               INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    numero           LONG UNIQUE,
+    total            DOUBLE,
+    data_agendamento DATE,
+    desconto         DOUBLE,
+    status           ENUM ('ABERTA', 'FECHADA', 'CANCELADA') DEFAULT 'ABERTA',
+    id_veiculo       int NOT NULL,
+    constraint fk_veiculo foreign key (id_veiculo) references veiculo (id)
+) engine = innoDB;
+
+CREATE TABLE itens_servico
+(
+    id_ordem_de_servico int not null references ordem_de_servico (id),
+    valor_servico       DOUBLE,
+    observacoes         varchar(255),
+    id_servico          int,
+    constraint fk_servico foreign key (id_servico) references servico (id),
+    constraint pk_itens_servico primary key (id_ordem_de_servico),
+    constraint fk_itens_servico foreign key (id_ordem_de_servico) references ordem_de_servico (id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 ) engine = innoDB;
 
 INSERT INTO cor(nome)

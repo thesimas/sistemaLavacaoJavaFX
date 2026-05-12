@@ -24,8 +24,8 @@ public class ClienteDAO {
 
     public boolean inserir(Cliente cliente) {
         String sqlCliente = "INSERT INTO cliente(nome, email, celular, data_cadastro) VALUES(?, ?, ?, ?);";
-        String sqlPessoaFisica = "INSERT INTO pessoaFisica(id_cliente, cpf, data_nascimento) VALUES((SELECT max(id) FROM cliente), ?, ?);";
-        String sqlPessoaJuridica = "INSERT INTO pessoaJuridica(id_cliente, cnpj, inscricao_estadual) VALUES((SELECT max(id) FROM cliente), ?, ?);";
+        String sqlPessoaFisica = "INSERT INTO pessoa_fisica(id_cliente, cpf, data_nascimento) VALUES((SELECT max(id) FROM cliente), ?, ?);";
+        String sqlPessoaJuridica = "INSERT INTO pessoa_juridica(id_cliente, cnpj, inscricao_estadual) VALUES((SELECT max(id) FROM cliente), ?, ?);";
         String sqlPontuacao = "INSERT INTO pontuacao(id_cliente, quantidade) VALUES((SELECT max(id) FROM cliente), ?);";
 
         Database database = DatabaseFactory.getDatabase("mysql");
@@ -69,8 +69,8 @@ public class ClienteDAO {
 
     public boolean alterar(Cliente cliente) {
         String sqlCliente = "UPDATE cliente SET nome=?, celular=?, email=?, data_cadastro=?  WHERE id=?";
-        String sqlPessoaFisica = "UPDATE pessoaFisica SET cpf=?, data_nascimento=?  WHERE id_cliente=?";
-        String sqlPessoaJuridica = "UPDATE pessoaJuridica SET cnpj=?, inscricao_estadual=?  WHERE id_cliente=?";
+        String sqlPessoaFisica = "UPDATE pessoa_fisica SET cpf=?, data_nascimento=?  WHERE id_cliente=?";
+        String sqlPessoaJuridica = "UPDATE pessoa_juridica SET cnpj=?, inscricao_estadual=?  WHERE id_cliente=?";
         String sqlPontuacao =  "UPDATE pontuacao SET quantidade=? WHERE id_cliente=?";
 
         Database database = DatabaseFactory.getDatabase("mysql");
@@ -141,9 +141,9 @@ public class ClienteDAO {
     }
 
     public List<Cliente> listar() {
-        String sql = "SELECT cliente.id AS id_principal, cliente.*, pessoaFisica.*, pessoaJuridica.*, pontuacao.* FROM cliente " +
-                "LEFT JOIN pessoaFisica ON cliente.id = pessoaFisica.id_cliente " +
-                "LEFT JOIN pessoaJuridica ON cliente.id = pessoaJuridica.id_cliente " +
+        String sql = "SELECT cliente.id AS id_principal, cliente.*, pessoa_fisica.*, pessoa_juridica.*, pontuacao.* FROM cliente " +
+                "LEFT JOIN pessoa_fisica ON cliente.id = pessoa_fisica.id_cliente " +
+                "LEFT JOIN pessoa_juridica ON cliente.id = pessoa_juridica.id_cliente " +
                 "LEFT JOIN pontuacao ON cliente.id = pontuacao.id_cliente;";
 
         Database database = DatabaseFactory.getDatabase("mysql");
@@ -172,9 +172,9 @@ public class ClienteDAO {
     }
 
     public Cliente buscar(int id) {
-        String sql = "SELECT cliente.id AS id_principal, cliente.*, pessoaFisica.*, pessoaJuridica.*, pontuacao.* FROM cliente " +
-                "LEFT JOIN pessoaFisica ON pessoaFisica.id_cliente = cliente.id " +
-                "LEFT JOIN pessoaJuridica ON pessoaJuridica.id_cliente = cliente.id " +
+        String sql = "SELECT cliente.id AS id_principal, cliente.*, pessoa_fisica.*, pessoa_juridica.*, pontuacao.* FROM cliente " +
+                "LEFT JOIN pessoa_fisica ON pessoa_fisica.id_cliente = cliente.id " +
+                "LEFT JOIN pessoa_juridica ON pessoa_juridica.id_cliente = cliente.id " +
                 "LEFT JOIN pontuacao ON pontuacao.id_cliente = cliente.id WHERE id=?;";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();

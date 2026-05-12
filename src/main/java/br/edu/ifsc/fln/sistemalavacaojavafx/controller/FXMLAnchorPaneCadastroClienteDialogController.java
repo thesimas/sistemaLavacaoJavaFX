@@ -4,12 +4,10 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Cliente;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.PessoaFisica;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.PessoaJuridica;
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.ExceptionLavacao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
