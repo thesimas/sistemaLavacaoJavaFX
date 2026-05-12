@@ -49,9 +49,7 @@ public abstract class Cliente implements IDados{
         return dados.toString();
     }
 
-    public String getTipo (){
-        return "Indefinido";
-    }
+    public abstract String getTipo ();
 
     public void addVeiculo(Veiculo veiculo) {
         this.listaDeVeiculos.add(veiculo);

@@ -3,7 +3,6 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.model.dao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.ExceptionLavacao;
 
 import java.sql.*;
 import java.util.ArrayList;

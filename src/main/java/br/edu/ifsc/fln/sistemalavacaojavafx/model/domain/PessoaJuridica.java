@@ -7,6 +7,7 @@ public class PessoaJuridica extends Cliente{
     private String inscricaoEstadual;
 
     public PessoaJuridica() {
+        super();
     }
 
     public PessoaJuridica(int id, String nome, String celular, String email, LocalDate dataCadastro, String cnpj, String inscricaoEstadual) {

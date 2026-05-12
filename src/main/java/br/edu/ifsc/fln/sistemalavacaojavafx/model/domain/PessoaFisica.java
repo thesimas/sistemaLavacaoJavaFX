@@ -8,6 +8,7 @@ public class PessoaFisica extends Cliente{
 
 
     public PessoaFisica() {
+        super();
     }
 
     public PessoaFisica(int id, String nome, String celular, String email, LocalDate dataCadastro, String cpf, LocalDate dataNascimento) {
