@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneProcessoOrdemServicoController">
+   <children>
+      <SplitPane dividerPositions="0.5031328320802004" prefHeight="507.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="506.0" prefWidth="275.0">
+               <children>
+                  <TableView fx:id="tableViewOrdensDeServicos" prefHeight="506.0" prefWidth="318.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn fx:id="tableColumnOSnumero" prefWidth="111.20007330179214" text="Número" />
+                        <TableColumn fx:id="tableColumnStatus" prefWidth="84.0" text="Status" />
+                        <TableColumn fx:id="tableColumnOSCliente" prefWidth="99.20001220703125" text="Cliente" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="471.0" prefWidth="333.0">
+               <children>
+                  <Label alignment="CENTER" layoutX="1.0" layoutY="4.0" prefHeight="20.0" prefWidth="333.0" text="Detalhes da Ordem de Serviço">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <GridPane layoutX="26.0" layoutY="24.0" prefHeight="138.0" prefWidth="271.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.799951171875" minWidth="3.200000000000003" prefWidth="115.79996337890626" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.40000000000003" minWidth="10.0" prefWidth="156.60003662109372" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="32.80001220703125" minHeight="10.0" prefHeight="25.400006103515626" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="42.4" minHeight="5.200006103515626" prefHeight="30.199993896484376" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="64.79999389648438" minHeight="10.0" prefHeight="28.39998779296875" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="55.99999389648437" minHeight="10.0" prefHeight="30.999987792968753" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="55.99999389648437" minHeight="10.0" prefHeight="26.200012207031264" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="114.0" text="Número" GridPane.halignment="RIGHT">
+                           <GridPane.margin>
+                              <Insets right="5.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label fx:id="lbOrdemServicoNumero" prefHeight="18.0" prefWidth="186.0" GridPane.columnIndex="1">
+                           <GridPane.margin>
+                              <Insets left="5.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="108.0" text="Valor Total:" GridPane.rowIndex="2" />
+                        <Label fx:id="lbOrdemServicoValorTotal" prefHeight="18.0" prefWidth="169.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="107.0" text="Data:" GridPane.rowIndex="1" />
+                        <Label fx:id="lbData" prefHeight="18.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="107.0" text="Desconto:" GridPane.rowIndex="3" />
+                        <Label fx:id="lbOrdemServicoDesconto" prefHeight="18.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="107.0" text="Status:" GridPane.rowIndex="4" />
+                        <Label fx:id="lbOrdemServicoStatus" prefHeight="18.0" prefWidth="189.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     </children>
+                  </GridPane>
+                  <Label alignment="CENTER" layoutX="-5.0" layoutY="302.0" prefHeight="20.0" prefWidth="333.0" text="Itens da Ordem de Serviço">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="tableViewOrdemDeServicoItemOs" layoutX="23.0" layoutY="334.0" prefHeight="108.0" prefWidth="271.0">
+                    <columns>
+                      <TableColumn fx:id="tableColumnOSItemOsServico" prefWidth="139.20001602172852" text="Serviço" />
+                      <TableColumn fx:id="tableColumnOSItemOsServicoValor" minWidth="6.103515625E-5" prefWidth="130.3999481201172" text="Valor" />
+                    </columns>
+                  </TableView>
+                  <Label alignment="CENTER" layoutX="1.0" layoutY="169.0" prefHeight="20.0" prefWidth="333.0" text="Detalhes do Cliente">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <GridPane layoutX="21.0" layoutY="189.0" prefHeight="91.0" prefWidth="271.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="107.0" text="Nome:" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="107.0" text="Placa:" GridPane.rowIndex="1" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="107.0" text="Modelo:" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
+                  <Group AnchorPane.bottomAnchor="21.399999999999977" AnchorPane.rightAnchor="49.80000000000001">
+                     <children>
+                        <Button fx:id="btInserir" mnemonicParsing="false" onAction="#handleBtInserir" prefHeight="26.0" prefWidth="63.0" text="Inserir" />
+                        <Button fx:id="btAlterar" layoutX="71.0" mnemonicParsing="false" onAction="#handleBtAlterar" prefHeight="26.0" prefWidth="63.0" text="Alterar" />
+                        <Button fx:id="btExcluir" layoutX="142.0" mnemonicParsing="false" onAction="#handleBtExcluir" prefHeight="26.0" prefWidth="63.0" text="Excluir" />
+                     </children>
+                  </Group>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
