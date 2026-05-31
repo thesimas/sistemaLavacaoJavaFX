@@ -114,8 +114,7 @@ CREATE TABLE veiculo
 
 CREATE TABLE ordem_de_servico
 (
-    id               INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    numero           LONG UNIQUE,
+    numero           BIGINT PRIMARY KEY UNIQUE,
     total            DOUBLE,
     data_agendamento DATE,
     desconto         DOUBLE,
@@ -124,15 +123,15 @@ CREATE TABLE ordem_de_servico
     constraint fk_veiculo foreign key (id_veiculo) references veiculo (id)
 ) engine = innoDB;
 
-CREATE TABLE itens_servico
+CREATE TABLE item_os
 (
-    id_ordem_de_servico int not null references ordem_de_servico (id),
+    numero_ordem_de_servico bigint not null references ordem_de_servico (numero),
     valor_servico       DOUBLE,
     observacoes         varchar(255),
     id_servico          int,
     constraint fk_servico foreign key (id_servico) references servico (id),
-    constraint pk_itens_servico primary key (id_ordem_de_servico),
-    constraint fk_itens_servico foreign key (id_ordem_de_servico) references ordem_de_servico (id)
+    constraint pk_item_os primary key (numero_ordem_de_servico),
+    constraint fk_item_os foreign key (numero_ordem_de_servico) references ordem_de_servico (numero)
         ON UPDATE CASCADE
         ON DELETE CASCADE
 ) engine = innoDB;
@@ -255,7 +254,7 @@ VALUES ('Luciano Silva', '(48) 99999-1111', 'luciano.silva@email.com', '2026-05-
        ('Logística Express', '(48) 3222-3333', 'frota@logexpress.com.br', '2026-05-13'),
        ('Executivo Transportes', '(48) 3222-4444', 'admin@executivotransp.com.br', '2026-05-14');
 
-INSERT INTO pessoaFisica (id_cliente, cpf, data_nascimento)
+INSERT INTO pessoa_fisica (id_cliente, cpf, data_nascimento)
 VALUES (1, '111.222.333-44', '1998-08-15'),
        (2, '555.666.777-88', '1985-03-22'),
        (5, '111.999.888-77', '1990-01-20'),
@@ -263,7 +262,7 @@ VALUES (1, '111.222.333-44', '1998-08-15'),
        (7, '333.777.666-55', '1978-11-30'),
        (8, '444.666.555-44', '2001-03-10');
 
-INSERT INTO pessoaJuridica (id_cliente, cnpj, inscricao_estadual)
+INSERT INTO pessoa_juridica (id_cliente, cnpj, inscricao_estadual)
 VALUES (3, '12.345.678/0001-99', '123456789'),
        (4, '98.765.432/0001-11', '987654321'),
        (9, '11.222.333/0001-44', '111222333'),

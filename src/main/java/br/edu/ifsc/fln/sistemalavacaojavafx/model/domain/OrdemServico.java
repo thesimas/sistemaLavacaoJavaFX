@@ -29,6 +29,10 @@ public class OrdemServico {
         this.veiculo = veiculo; // associação unidirecional por meio de agregação.
     }
 
+    public OrdemServico() {
+        this.itensOrdemServico = new ArrayList<>();
+    }
+
     public double calcularServico() throws  ExceptionLavacao {
         // CONCEITO: Tratamento de Exceções Personalizadas
         // Valido a regra de negócio antes de executar. Se a lista estiver vazia,
