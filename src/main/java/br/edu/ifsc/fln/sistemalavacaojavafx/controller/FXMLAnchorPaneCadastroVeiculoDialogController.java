@@ -98,8 +98,7 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
         });
         cbMarca.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
-                ModeloDAO modelDAO = new ModeloDAO();
-                List<Modelo> modelosDaMarca = modelDAO.buscarModeloPorMarca(newValue);
+                List<Modelo> modelosDaMarca = modeloDAO.buscarModeloPorMarca(newValue);
 
                 ObservableList<Modelo> modelos = FXCollections.observableArrayList(modelosDaMarca);
                 cbModelo.setItems(modelos);

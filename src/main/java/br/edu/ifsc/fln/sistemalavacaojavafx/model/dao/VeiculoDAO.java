@@ -117,7 +117,7 @@ public class VeiculoDAO {
                 " INNER JOIN marca ON modelo.id_marca = marca.id" +
                 " INNER JOIN motor ON modelo.id = motor.id_modelo" +
                 " INNER JOIN cliente ON veiculo.id_cliente = cliente.id" +
-                " LEFT JOIN pessoaJuridica pj ON veiculo.id_cliente = pj.id_cliente;";
+                " LEFT JOIN pessoa_juridica pj ON veiculo.id_cliente = pj.id_cliente;";
 
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();

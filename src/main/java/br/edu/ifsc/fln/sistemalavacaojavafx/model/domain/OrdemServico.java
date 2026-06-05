@@ -130,6 +130,14 @@ public class OrdemServico {
         }
     }
 
+    public double getTotalServicoSemDesconto() throws  ExceptionLavacao {
+        double totalServico = 0;
+        for(ItemOS itemOrdem : itensOrdemServico){
+            totalServico += itemOrdem.getValorServico();
+        }
+        return totalServico;
+    }
+
     public void setTotal(double total) {
         this.total = total;
     }

@@ -219,15 +219,18 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(FXMLAnchorPaneCadastroClienteController.class.getResource("/view/FXMLAnchorPaneCadastroClienteDialog.fxml"));
         AnchorPane page = (AnchorPane) loader.load();
+
         //criação de um estágio de diálogo (StageDialog)
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Cadastro de Cliente");
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
+
         //enviando o objeto Cliente para o controller
         FXMLAnchorPaneCadastroClienteDialogController controller = loader.getController();
         controller.setDialogStage(dialogStage);
         controller.setCliente(cliente);
+
         //apresenta o diálogo e aguarda a confirmação do usuário
         dialogStage.showAndWait();
 

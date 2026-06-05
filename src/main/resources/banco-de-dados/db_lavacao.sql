@@ -125,16 +125,17 @@ CREATE TABLE ordem_de_servico
 
 CREATE TABLE item_os
 (
-    numero_ordem_de_servico bigint not null references ordem_de_servico (numero),
+    id                  INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    numero_ordem_de_servico BIGINT NOT NULL,
     valor_servico       DOUBLE,
-    observacoes         varchar(255),
-    id_servico          int,
-    constraint fk_servico foreign key (id_servico) references servico (id),
-    constraint pk_item_os primary key (numero_ordem_de_servico),
-    constraint fk_item_os foreign key (numero_ordem_de_servico) references ordem_de_servico (numero)
+    observacoes         VARCHAR(255),
+    id_servico          INT,
+
+    CONSTRAINT fk_servico FOREIGN KEY (id_servico) REFERENCES servico (id),
+    CONSTRAINT fk_item_os FOREIGN KEY (numero_ordem_de_servico) REFERENCES ordem_de_servico (numero)
         ON UPDATE CASCADE
         ON DELETE CASCADE
-) engine = innoDB;
+) ENGINE = InnoDB;
 
 INSERT INTO cor(nome)
 VALUES ('Prata'),
@@ -300,3 +301,22 @@ VALUES ('ABC-1234', 'Carro de uso diário', 1, 1, 1),
        ('HHH-8888', 'Furgão de entregas', 6, 28, 11),
        ('III-9999', 'Carro da diretoria (Blindado)', 7, 32, 12),
        ('JJJ-0000', 'Veículo de apoio', 1, 10, 12);
+
+INSERT INTO ordem_de_servico (numero, total, data_agendamento, desconto, status, id_veiculo)
+VALUES
+    (2026001, 430.00, '2026-06-10', 0.00, 'FECHADA', 1),  -- OS do Onix (Luciano)
+    (2026002, 250.00, '2026-06-11', 0.00, 'ABERTA', 2),   -- OS do Civic (Marina)
+    (2026003, 120.00, '2026-06-12', 0.00, 'ABERTA', 10);  -- OS do veiculo da frota Uber
+
+INSERT INTO item_os (numero_ordem_de_servico, valor_servico, observacoes, id_servico)
+VALUES
+    -- Itens da OS 2026001 (Total = 430.00)
+    (2026001, 350.00, 'Polimento cristalizado com foco no capô', 1), -- Serviço 1: Polimento
+    (2026001, 80.00, 'Lavação de motor a seco', 3),                  -- Serviço 3: Lavação Motor
+
+    -- Item da OS 2026002 (Total = 250.00)
+    (2026002, 250.00, 'Cliente pediu atenção especial aos tapetes', 2), -- Serviço 2: Higienização
+
+    -- Itens da OS 2026003 (Total = 120.00)
+    (2026003, 40.00, 'Lavação rápida', 4),                           -- Serviço 4: Lavação Simples
+    (2026003, 80.00, 'Incluir motor para revisão mecânica', 3);      -- Serviço 3: Lavação Motor

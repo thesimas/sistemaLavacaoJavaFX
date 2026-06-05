@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="394.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneCadastroClienteDialogController">
+<AnchorPane id="AnchorPane" prefHeight="394.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneCadastroClienteDialogController">
    <children>
       <Label fx:id="tfTitulo" alignment="CENTER" layoutY="14.0" prefHeight="20.0" prefWidth="442.0" text="Cadastro de Cliente">
          <font>

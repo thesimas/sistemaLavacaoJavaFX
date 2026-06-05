@@ -94,17 +94,12 @@ public class FXMLVBoxMainAppController implements Initializable {
 
     @FXML
     public void handleMenuItemProcessoOrdemDeServico() throws IOException {
-        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/FXMLAnchorPaneProcessoOrdemDeServico.fxml"));
+        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/FXMLAnchorPaneProcessoOrdemDeSevico.fxml"));
         AnchorPane.setTopAnchor(a, 0.0);
         AnchorPane.setBottomAnchor(a, 0.0);
         AnchorPane.setLeftAnchor(a, 0.0);
         AnchorPane.setRightAnchor(a, 0.0);
         anchorPane.getChildren().setAll(a);
-    }
-
-    @FXML
-    public void handleMenuItemProcessoVenda() throws IOException {
-        //TODO not implemented yet
     }
 
     @FXML

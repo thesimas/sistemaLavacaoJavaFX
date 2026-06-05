@@ -15,6 +15,17 @@ public class ItemOS {
         this.servico = servico;
     }
 
+    public ItemOS(String observacoes, OrdemServico ordemServico, Servico servico) {
+        this.observacoes = observacoes;
+        this.ordemServico = ordemServico;
+        this.servico = servico;
+    }
+
+    public ItemOS(OrdemServico ordemServico, Servico servico) {
+        this.ordemServico = ordemServico;
+        this.servico = servico;
+    }
+
     public double getValorServico() {
         return valorServico;
     }
