@@ -58,9 +58,9 @@ public class OrdemServico {
     // Sobrecarga de construtor addItemOS;
     public void addItemOS(String observacoes, Servico servico) throws  ExceptionLavacao{
         if(status == EStatus.FECHADA){
-            throw new ExceptionLavacao("Não é possivel adcionar itens na OS, pois ela está fechada!");
+            throw new ExceptionLavacao("Não é possivel adicionar itens na OS, pois ela está fechada!");
         } else if (status == EStatus.CANCELADA) {
-            throw new ExceptionLavacao("Não é possivel adcionar itens na OS, pois ela está cancelada!");
+            throw new ExceptionLavacao("Não é possivel adicionar itens na OS, pois ela está cancelada!");
         }else {
             //Quando eu fizer a lógica de calcular o valor do serviço pela categoria, terei que consultar
             // o banco de dados da tabela configuracoes_sistema, pois ela guarda as porcentagens de cada categoria.

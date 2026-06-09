@@ -139,7 +139,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
             try {
                 lbOrdemServicoValorTotal.setText(String.valueOf(ordemServico.getTotal()));
             } catch (ExceptionLavacao e) {
-                throw new RuntimeException(e);
+                AlertDialog.exceptionMessage(e);
             }
             // Preenchendo a tabela secundaria, quando o usuario clicar em uma ordem de serviço.
             ObservableList<ItemOS>  observableListItemOS = FXCollections.observableArrayList(ordemServico.getItensOS());
@@ -151,7 +151,10 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
             lbOrdemServicoDesconto.setText("");
             lbOrdemServicoValorTotal.setText("");
             lbData.setText("");
-            tableViewOrdemDeServicoItemOs.setItems(null);
+            lbNomeCliente.setText("");
+            lbVeiculoModeloDescricao.setText("");
+            lbVeiculoPlaca.setText("");
+            tableViewOrdemDeServicoItemOs.setItems(FXCollections.observableArrayList());
         }
     }
 

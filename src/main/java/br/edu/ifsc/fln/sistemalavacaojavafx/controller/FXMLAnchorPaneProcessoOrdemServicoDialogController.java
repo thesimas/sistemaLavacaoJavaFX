@@ -103,7 +103,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         ServicoDAO servicoDAO = new ServicoDAO();
         VeiculoDAO veiculoDAO = new VeiculoDAO();
         ClienteDAO clienteDAO = new ClienteDAO();
-                                                                                            // Minimo, maximo, valorInicial, step
+        // Minimo, maximo, valorInicial, step
         spValorAlterado.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 1000.0, 0.0));
         spDesconto.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 100.0, 0.0));
 
@@ -117,11 +117,12 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         cbServico.setConverter(new StringConverter<Servico>() {
             @Override
             public String toString(Servico servico) {
-                if(servico == null) {
+                if (servico == null) {
                     return "Selecione um Servico";
                 }
                 return servico.getDescricao();
             }
+
             @Override
             public Servico fromString(String s) {
                 return null;
@@ -133,7 +134,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText("Selecione um Servico");
-                }else {
+                } else {
                     setText(item.getDescricao());
                 }
             }
@@ -152,6 +153,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                 }
                 return cliente.getNome();
             }
+
             @Override
             public Cliente fromString(String s) {
                 return null;
@@ -179,7 +181,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                 }
                 ObservableList<Veiculo> veiculos = FXCollections.observableArrayList(veiculosCliente);
                 cbPlaca.setItems(veiculos);
-            }else {
+            } else {
                 cbPlaca.setItems(FXCollections.observableArrayList());
             }
         });
@@ -218,7 +220,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
             return new SimpleStringProperty(itemLinha.getObservacoes());
         });
 
-        if(cbServico.getSelectionModel().getSelectedItem() == null) {
+        if (cbServico.getSelectionModel().getSelectedItem() == null) {
             tfObservacoesServico.setDisable(true);
             spValorAlterado.setDisable(true);
         }
@@ -230,9 +232,9 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
     }
 
     public void setOrdemDeServico(OrdemServico ordemServico) {
-        if(ordemServico != null){
+        if (ordemServico != null) {
             this.ordemServico = ordemServico;
-            if(ordemServico.getVeiculo() != null){
+            if (ordemServico.getVeiculo() != null) {
                 //Desabilitando o campo do numero da OS, pois isso irá impedir do usuario alterar esse campo, caso clique em alterar uma OS.
                 tfNumeroOs.setDisable(true);
                 this.cbPlaca.setValue(ordemServico.getVeiculo());
@@ -244,23 +246,23 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                 this.cbStatus.setValue(ordemServico.getStatus());
                 this.spDesconto.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 100, ordemServico.getDesconto()));
             }
-            if(ordemServico.getDataAgendamento() != null){
+            if (ordemServico.getDataAgendamento() != null) {
                 this.dpData.setValue(ordemServico.getDataAgendamento());
-            }else {
+            } else {
                 this.dpData.setValue(LocalDate.now());
             }
-            if(!ordemServico.getItensOS().isEmpty()){
+            if (!ordemServico.getItensOS().isEmpty()) {
                 ObservableList<ItemOS> itemOS = FXCollections.observableArrayList(this.ordemServico.getItensOS());
                 tableViewOrdemServicoServicos.setItems(itemOS);
                 try {
                     this.lbValorTotal.setText(String.valueOf(ordemServico.getTotal()));
                 } catch (ExceptionLavacao e) {
-                    throw new RuntimeException(e);
+                    AlertDialog.exceptionMessage(e);
                 }
                 try {
                     this.lbSubtotal.setText(String.valueOf(ordemServico.getTotalServicoSemDesconto()));
                 } catch (ExceptionLavacao e) {
-                    throw new RuntimeException(e);
+                    AlertDialog.exceptionMessage(e);
                 }
             }
         }
@@ -293,7 +295,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         try {
             lbValorTotal.setText(String.valueOf(ordemServico.calcularServico()));
         } catch (ExceptionLavacao e) {
-            throw new RuntimeException(e);
+            AlertDialog.exceptionMessage(e);
         }
     }
 
@@ -304,7 +306,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
 
     @FXML
     void handleBtConfirmar(ActionEvent event) {
-        if(validarEntradaDeDados()){
+        if (validarEntradaDeDados()) {
             ordemServico.setNumero(Long.parseLong(tfNumeroOs.getText()));
             ordemServico.setStatus(cbStatus.getSelectionModel().getSelectedItem());
             ordemServico.setVeiculo(cbPlaca.getSelectionModel().getSelectedItem());
@@ -319,10 +321,10 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
 
     @FXML
     void eventoSelecaoServico(ActionEvent event) {
-        if(cbServico.getSelectionModel().getSelectedItem() == null) {
+        if (cbServico.getSelectionModel().getSelectedItem() == null) {
             tfObservacoesServico.setDisable(true);
             spValorAlterado.setDisable(true);
-        }else {
+        } else {
             tfObservacoesServico.setDisable(false);
             spValorAlterado.setDisable(false);
         }
@@ -330,9 +332,9 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
 
     @FXML
     void eventoPlaca(ActionEvent event) {
-        if(cbPlaca.getSelectionModel().getSelectedItem() == null){
+        if (cbPlaca.getSelectionModel().getSelectedItem() == null) {
             cbPlaca.setDisable(true);
-        }else {
+        } else {
             tfMarca.setText(cbPlaca.getSelectionModel().getSelectedItem().getModelo().getMarca().getNome());
             tfModelo.setText(cbPlaca.getSelectionModel().getSelectedItem().getModelo().getDescricao());
             tfCategoria.setText(cbPlaca.getSelectionModel().getSelectedItem().getModelo().getCategoria().name());
@@ -340,88 +342,79 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
     }
 
     @FXML
-    void handleBtAdicionarServico(ActionEvent event) {
-        if(cbPlaca.getSelectionModel().getSelectedItem() != null){
-            // Associando o cliente ao veiculo para evitar erros da pontuação.
-            cbPlaca.getSelectionModel().getSelectedItem().setCliente(this.cbCliente.getValue());
-            this.ordemServico.setVeiculo(cbPlaca.getSelectionModel().getSelectedItem());
-            Servico servicoSelecionado = cbServico.getSelectionModel().getSelectedItem();
-            String observacao = tfObservacoesServico.getText();
-            Double valorAlterado = spValorAlterado.getValue();
+    void handleBtAdicionarServico(ActionEvent event) throws ExceptionLavacao{
+        try{
+            if (cbStatus.getSelectionModel().getSelectedItem() != EStatus.ABERTA) {
+                if (cbPlaca.getSelectionModel().getSelectedItem() != null) {
+                    // Associando o cliente ao veiculo para evitar erros da pontuação.
+                    cbPlaca.getSelectionModel().getSelectedItem().setCliente(this.cbCliente.getValue());
+                    this.ordemServico.setVeiculo(cbPlaca.getSelectionModel().getSelectedItem());
+                    Servico servicoSelecionado = cbServico.getSelectionModel().getSelectedItem();
+                    String observacao = tfObservacoesServico.getText();
+                    Double valorAlterado = spValorAlterado.getValue();
 
-            if(servicoSelecionado != null){
-                if(valorAlterado != null && valorAlterado > 0){
-                    try {
-                        this.ordemServico.addItemOS(valorAlterado, observacao, servicoSelecionado);
-                    } catch (ExceptionLavacao e) {
-                        throw new RuntimeException(e);
+                    if (servicoSelecionado != null) {
+                        if (valorAlterado != null && valorAlterado > 0) {
+                            this.ordemServico.addItemOS(valorAlterado, observacao, servicoSelecionado);
+                        }else {
+                            this.ordemServico.addItemOS(observacao, servicoSelecionado);
+                        }
+                        ObservableList<ItemOS> itemOS = FXCollections.observableArrayList(this.ordemServico.getItensOS());
+                        tableViewOrdemServicoServicos.setItems(itemOS);
+
+                        // Limpar os campos assim que o usuario adcionar um serviço.
+                        cbServico.getSelectionModel().clearSelection();
+                        cbServico.setValue(null);
+                        tfObservacoesServico.setText("");
+                        spValorAlterado.getValueFactory().setValue(null);
+
+                        lbSubtotal.setText(String.valueOf(ordemServico.getTotalServicoSemDesconto()));
+                        lbValorTotal.setText(String.valueOf(ordemServico.getTotal()));
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Erro");
+                        alert.setContentText("Selecione um Servico.");
+                        alert.showAndWait();
                     }
-                }else {
-                    try {
-                        this.ordemServico.addItemOS(observacao, servicoSelecionado);
-                    } catch (ExceptionLavacao e) {
-                        throw new RuntimeException(e);
-                    }
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Para adicionar um serviço, o veiculo devera ser selecionado.");
+                    alert.showAndWait();
                 }
-                ObservableList<ItemOS> itemOS = FXCollections.observableArrayList(this.ordemServico.getItensOS());
-                tableViewOrdemServicoServicos.setItems(itemOS);
-
-                // Limpar os campos assim que o usuario adcionar um serviço.
-                cbServico.getSelectionModel().clearSelection();
-                cbServico.setValue(null);
-                tfObservacoesServico.setText("");
-                spValorAlterado.getValueFactory().setValue(null);
-
-                try {
-                    lbSubtotal.setText(String.valueOf(ordemServico.getTotalServicoSemDesconto()));
-                } catch (ExceptionLavacao e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    lbValorTotal.setText(String.valueOf(ordemServico.getTotal()));
-                } catch (ExceptionLavacao e) {
-                    throw new RuntimeException(e);
-                }
-            }else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Erro");
-                alert.setContentText("Selecione um Servico.");
-                alert.showAndWait();
             }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Para adicionar um serviço, o veiculo devera ser selecionado.");
-            alert.showAndWait();
+        } catch (ExceptionLavacao exceptionLavacao){
+            AlertDialog.exceptionMessage(exceptionLavacao);
         }
     }
 
     @FXML
     void handleBtRemoverServico(ActionEvent event) {
-        if(tableViewOrdemServicoServicos.getSelectionModel().getSelectedItem() != null){
+
+        if (tableViewOrdemServicoServicos.getSelectionModel().getSelectedItem() != null) {
             ItemOS itemRemovido = tableViewOrdemServicoServicos.getSelectionModel().getSelectedItem();
             try {
                 this.ordemServico.removeItemOS(itemRemovido);
             } catch (ExceptionLavacao e) {
-                throw new RuntimeException(e);
+                AlertDialog.exceptionMessage(e);
             }
 
             ObservableList<ItemOS> itemOS = FXCollections.observableArrayList(this.ordemServico.getItensOS());
             tableViewOrdemServicoServicos.setItems(itemOS);
 
-            if(ordemServico.getItensOS().isEmpty()){
+            if (ordemServico.getItensOS().isEmpty()) {
                 lbSubtotal.setText("0");
                 lbValorTotal.setText("0");
                 this.ordemServico.setTotal(0);
-            }else {
+            } else {
                 try {
                     lbSubtotal.setText(String.valueOf(ordemServico.getTotalServicoSemDesconto()));
                 } catch (ExceptionLavacao e) {
-                    throw new RuntimeException(e);
+                    AlertDialog.exceptionMessage(e);
                 }
                 try {
                     lbValorTotal.setText(String.valueOf(ordemServico.getTotal()));
                 } catch (ExceptionLavacao e) {
-                    throw new RuntimeException(e);
+                    AlertDialog.exceptionMessage(e);
                 }
             }
 
@@ -451,8 +444,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
 
         if (errorMessage.length() == 0) {
             return true;
-        }
-        else {
+        } else {
             //exibindo uma mensagem de erro
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro no cadastro");
