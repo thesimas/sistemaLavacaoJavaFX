@@ -86,7 +86,7 @@ public class FXMLAnchorPaneCadastroClienteDialogController implements Initializa
             } else {
                 this.tfClientePontos.setText("0");
             }
-            if(this.rbPessoaFisica.isSelected()){
+            if(cliente instanceof PessoaFisica){
                 this.rbPessoaFisica.setSelected(true);
                 this.hbBotoes.setDisable(true);
                 this.lbCpfCnpj.setText("CPF:");
