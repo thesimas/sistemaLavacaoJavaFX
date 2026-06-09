@@ -2,7 +2,9 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.OrdemServicoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.ExceptionLavacao;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -111,7 +113,11 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
             return new SimpleStringProperty(itemOS.getServico().getDescricao());
         });
 
-        ordensDeServicos = ordemServicoDAO.listar();
+        try {
+            ordensDeServicos = ordemServicoDAO.listar();
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         observableListOrdensDeServicos = FXCollections.observableArrayList(ordensDeServicos);
         tableViewOrdensDeServicos.setItems(observableListOrdensDeServicos);
     }
@@ -155,7 +161,11 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
         if(ordemServicoSelecionada != null) {
             OrdemServico ordemServicoAtualizada = showFXMLAnchorPaneProcessoOrdemServicoDialog(ordemServicoSelecionada);
             if (ordemServicoAtualizada != null) {
-                ordemServicoDAO.alterar(ordemServicoAtualizada);
+                try {
+                    ordemServicoDAO.alterar(ordemServicoAtualizada);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewOrdensDeServico();
                 System.out.println("Ordem de Serviço alterada com sucesso");
             }
@@ -174,7 +184,11 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
             alert.setContentText("Deseja realmente excluir essa Ordem de Serviço?");
             alert.showAndWait();
             if(alert.getResult() == ButtonType.OK){
-                ordemServicoDAO.excluir(ordemServico);
+                try {
+                    ordemServicoDAO.excluir(ordemServico);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewOrdensDeServico();
                 System.out.println("Ordem de Serviço excluida com sucesso");
             }
@@ -190,7 +204,11 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
         OrdemServico ordemServico = new OrdemServico();
         OrdemServico ordemServicoNova = showFXMLAnchorPaneProcessoOrdemServicoDialog(ordemServico);
         if (ordemServicoNova != null) {
-            ordemServicoDAO.inserir(ordemServicoNova);
+            try {
+                ordemServicoDAO.inserir(ordemServicoNova);
+            } catch (DAOException e) {
+                AlertDialog.exceptionMessage(e);
+            }
             carregarTableViewOrdensDeServico();
         }
     }

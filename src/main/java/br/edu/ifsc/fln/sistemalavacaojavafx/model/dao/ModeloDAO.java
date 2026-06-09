@@ -43,6 +43,7 @@ public class ModeloDAO {
             stmt.setInt(1, modelo.getMotor().getPotencia());
             stmt.setString(2, String.valueOf(modelo.getMotor().getTipoCombustivel()));
             stmt.execute();
+            stmt.close();
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -75,6 +76,7 @@ public class ModeloDAO {
             stmt.setString(2, String.valueOf(modelo.getMotor().getTipoCombustivel()));
             stmt.setInt(3, modelo.getId());
             stmt.execute();
+            stmt.close();
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,6 +100,7 @@ public class ModeloDAO {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, modelo.getId());
             stmt.execute();
+            stmt.close();
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -142,6 +145,8 @@ public class ModeloDAO {
 
                 modelosRetornado.add(modelo);
             }
+            stmt.close();
+            resultado.close();
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Não foi possível listar os modelos no banco de dados!\nMotivo: ",ex);
@@ -177,6 +182,8 @@ public class ModeloDAO {
                 marca.setNome(resultado.getString("nome_marca"));
                 modeloRetorno.setMarca(marca);
             }
+            resultado.close();
+            stmt.close();
             return modeloRetorno;
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -208,6 +215,8 @@ public class ModeloDAO {
                 modelo.setMarca(marcaReal);
                 modelos.add(modelo);
             }
+            stmt.close();
+            resultado.close();
             return modelos;
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);

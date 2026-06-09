@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="650.0" styleClass="telaFundo" stylesheets="@../css/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLVBoxMainAppController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="650.0" styleClass="telaFundo" stylesheets="@../css/Style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLVBoxMainAppController">
    <children>
       <MenuBar>
         <menus>
@@ -57,6 +57,6 @@
             <Insets />
          </VBox.margin>
       </MenuBar>
-      <AnchorPane fx:id="anchorPane" prefHeight="530.0" prefWidth="650.0" styleClass="telaFundo" stylesheets="@../css/Style.css" />
+      <AnchorPane fx:id="anchorPane" prefHeight="487.0" prefWidth="661.0" styleClass="telaFundo" stylesheets="@../css/Style.css" />
    </children>
 </VBox>

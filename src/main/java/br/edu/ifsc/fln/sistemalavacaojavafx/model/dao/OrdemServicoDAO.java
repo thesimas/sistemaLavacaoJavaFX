@@ -3,6 +3,7 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.model.dao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.ExceptionLavacao;
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class OrdemServicoDAO {
         this.connection = connection;
     }
 
-    public boolean inserir(OrdemServico ordemServico){
+    public void inserir(OrdemServico ordemServico) throws DAOException {
         String sql = "INSERT INTO ordem_de_servico (numero, total, data_agendamento, desconto, status, id_veiculo) VALUES (?, ?, ?, ?, ?, ?)";
         String sqlItemOs = "INSERT INTO item_os (numero_ordem_de_servico, valor_servico, observacoes, id_servico) VALUES (?, ?, ?, ?)";
         Database database = DatabaseFactory.getDatabase("mysql");
@@ -53,7 +54,7 @@ public class OrdemServicoDAO {
                 stmt.execute();
             }
             connection.commit();
-            return true;
+            stmt.close();
         }catch(SQLException ex){
             Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -61,13 +62,13 @@ public class OrdemServicoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível inserir a ordem de serviço no banco de dados!\nMotivo: ",ex);
         }finally{
             database.desconectar(connection);
         }
     }
 
-    public boolean alterar (OrdemServico ordemServico){
+    public void alterar (OrdemServico ordemServico) throws DAOException {
         String sql = "UPDATE ordem_de_servico SET numero=?, total=?, data_agendamento=?, desconto=?, status=?, id_veiculo=? WHERE numero=?";
         String sqlDeleteItens = "DELETE FROM item_os WHERE numero_ordem_de_servico = ?";
         String sqlItemOs = "INSERT INTO item_os (numero_ordem_de_servico, valor_servico, observacoes, id_servico) VALUES (?, ?, ?, ?)";
@@ -92,6 +93,7 @@ public class OrdemServicoDAO {
             stmt.setInt(6, ordemServico.getVeiculo().getId());
             stmt.setLong(7, ordemServico.getNumero());
             stmt.execute();
+            stmt.close();
 
             // Inserindo os itens da OS no banco.
             for(ItemOS item : ordemServico.getItensOS()){
@@ -102,9 +104,8 @@ public class OrdemServicoDAO {
                 stmt.setInt(4, item.getServico().getId());
                 stmt.execute();
             }
-
+            stmt.close();
             connection.commit();
-            return true;
         }catch(SQLException ex){
             Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -112,13 +113,13 @@ public class OrdemServicoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível alterar a ordem de serviço no banco de dados!\nMotivo: ",ex);
         }finally{
             database.desconectar(connection);
         }
     }
 
-    public boolean excluir (OrdemServico ordemServico){
+    public void excluir (OrdemServico ordemServico) throws DAOException {
         String sql = "DELETE FROM ordem_de_servico WHERE numero=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -128,7 +129,7 @@ public class OrdemServicoDAO {
             stmt.setLong(1, ordemServico.getNumero());
             stmt.execute();
             connection.commit();
-            return true;
+            stmt.close();
         }catch(SQLException ex){
             Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -136,13 +137,13 @@ public class OrdemServicoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível excluir a ordem de serviço no banco de dados!\nMotivo: ",ex);
         }finally{
             database.desconectar(connection);
         }
     }
 
-    public List<OrdemServico> listar (){
+    public List<OrdemServico> listar () throws DAOException {
         String sql = "SELECT os.*, v.placa, v.id_cliente, c.nome AS nome_cliente, pf.cpf, m.descricao AS modelo_descricao, ma.nome as marca_nome, m.categoria as modelo_categoria, p.quantidade as pontuacao FROM ordem_de_servico os " +
                 "INNER JOIN veiculo v ON os.id_veiculo = v.id " +
                 "INNER JOIN cliente c ON v.id_cliente = c.id " +
@@ -155,7 +156,6 @@ public class OrdemServicoDAO {
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
-            connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet resultado = stmt.executeQuery();
             List<OrdemServico> ordensServicos = new ArrayList<>();
@@ -201,17 +201,12 @@ public class OrdemServicoDAO {
 
                 ordensServicos.add(ordemServico);
             }
-            stmt.execute();
-            connection.commit();
+            stmt.close();
+            resultado.close();
             return ordensServicos;
         }catch(SQLException ex){
             Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            try{
-                connection.rollback();
-            }catch(SQLException ex1){
-                throw new RuntimeException(ex1);
-            }
-            return new ArrayList<>();
+            throw new DAOException("Não foi possível alteara a ordem de serviço no banco de dados!\nMotivo: ",ex);
         }finally{
             database.desconectar(connection);
         }
@@ -253,13 +248,10 @@ public class OrdemServicoDAO {
 
                 ordemServico.getItensOS().add(item);
             }
+            stmt.close();
+            resultado.close();
         }catch(SQLException ex){
             Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            try{
-                connection.rollback();
-            }catch(SQLException ex1){
-                throw new RuntimeException(ex1);
-            }
         }finally{
             database.desconectar(connection);
         }

@@ -3,12 +3,12 @@
     -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/*.telaFundo {*/
-/*    -fx-background-image: url('/diagramas/Diagrama de classe completo - Lavacao.png');*/
-/*    -fx-background-size: cover;*/
-/*    -fx-background-position: center center;*/
-/*    -fx-background-repeat: no-repeat;*/
-/*}*/
+.telaFundo {
+    -fx-background-image: url('/imagens/lava_jato.png');
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
 
 .menu-bar {
     -fx-alignment: center;

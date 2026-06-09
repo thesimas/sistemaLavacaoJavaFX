@@ -41,6 +41,7 @@ public class VeiculoDAO {
             stmt.setInt(5, veiculo.getCliente().getId());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -69,6 +70,7 @@ public class VeiculoDAO {
             stmt.setInt(6, veiculo.getId());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -92,6 +94,7 @@ public class VeiculoDAO {
             stmt.setInt(1, veiculo.getId());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -165,6 +168,8 @@ public class VeiculoDAO {
 
                 veiculosRetonados.add(veiculo);
             }
+            stmt.close();
+            resultado.close();
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Não foi possível listar os veículos no banco de dados!\nMotivo: ", ex);
@@ -237,6 +242,8 @@ public class VeiculoDAO {
                 }
                 veiculo.setCliente(cliente);
             }
+            stmt.close();
+            resultado.close();
             return veiculoRetorno;
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -292,6 +299,8 @@ public class VeiculoDAO {
 
                 veiculosRetorno.add(veiculo);
             }
+            stmt.close();
+            resultado.close();
             return veiculosRetorno;
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);

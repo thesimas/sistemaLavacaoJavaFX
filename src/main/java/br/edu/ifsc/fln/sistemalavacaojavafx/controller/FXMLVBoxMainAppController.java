@@ -12,6 +12,7 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 

@@ -42,6 +42,7 @@ public class ConfiguracaoDAO {
             stmt.setInt(6, configuracao.getId());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(ConfiguracaoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -62,7 +63,6 @@ public class ConfiguracaoDAO {
 
         Configuracao configuracaoRetornada = new Configuracao();
         try {
-            connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet resultado = stmt.executeQuery();
@@ -83,14 +83,8 @@ public class ConfiguracaoDAO {
                 configuracaoRetornada.setPontos(pontos);
                 configuracaoRetornada.setPorcentagens(map);
             }
-            connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ConfiguracaoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            try {
-                connection.rollback();
-            }catch(SQLException ex1){
-                throw new RuntimeException(ex1);
-            }
             throw new DAOException("Não foi possível buscar as configurações no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);

@@ -54,6 +54,7 @@ public class ClienteDAO {
             stmt.setInt(1, cliente.getPontuacao().getQuantidade());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -102,6 +103,7 @@ public class ClienteDAO {
             stmt.setInt(2, cliente.getId());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -125,6 +127,7 @@ public class ClienteDAO {
             stmt.setInt(1, cliente.getId());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -156,6 +159,8 @@ public class ClienteDAO {
                 Cliente cliente = povoarDados(resultado);
                 retorno.add(cliente);
             }
+            stmt.close();
+            resultado.close();
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Não foi possível listar os clientes no banco de dados!\nMotivo: ", ex);
@@ -186,6 +191,8 @@ public class ClienteDAO {
             if (resultado.next()) {
                 clienteRetorno = povoarDados(resultado);
             }
+            stmt.close();
+            resultado.close();
             return clienteRetorno;
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);

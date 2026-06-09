@@ -36,6 +36,7 @@ public class MarcaDAO {
             stmt.setString(1, marca.getNome());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -60,6 +61,7 @@ public class MarcaDAO {
             stmt.setInt(2, marca.getId());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -84,6 +86,7 @@ public class MarcaDAO {
             stmt.setInt(1, marca.getId());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -114,6 +117,8 @@ public class MarcaDAO {
                 marca.setNome(resultado.getString("nome"));
                 marcasRetornada.add(marca);
             }
+            stmt.close();
+            resultado.close();
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Não foi possível listar as marcas no banco de dados!\nMotivo: ",ex);
@@ -141,6 +146,8 @@ public class MarcaDAO {
                 marcaRetornada.setId(resultado.getInt("id"));
                 marcaRetornada.setNome(resultado.getString("nome"));
             }
+            resultado.close();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Não foi possível buscar a marca no banco de dados!\nMotivo: ",ex);

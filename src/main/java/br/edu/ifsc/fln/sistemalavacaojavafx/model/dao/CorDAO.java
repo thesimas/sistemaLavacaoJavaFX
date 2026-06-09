@@ -36,6 +36,7 @@ public class CorDAO {
             stmt.setString(1, cor.getNome());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(CorDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -61,6 +62,7 @@ public class CorDAO {
             stmt.setInt(2, cor.getId());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(CorDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -84,6 +86,7 @@ public class CorDAO {
             stmt.setInt(1, cor.getId());
             stmt.execute();
             connection.commit();
+            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(CorDAO.class.getName()).log(Level.SEVERE, null, ex);
             try {
@@ -104,7 +107,6 @@ public class CorDAO {
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
-            connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement(sql);
             ResultSet resultado = stmt.executeQuery();
             while (resultado.next()) {
@@ -113,14 +115,11 @@ public class CorDAO {
                 cor.setNome(resultado.getString("nome"));
                 CoresRetornada.add(cor);
             }
-            connection.commit();
+            stmt.close();
+            resultado.close();
         } catch (SQLException ex) {
             Logger.getLogger(CorDAO.class.getName()).log(Level.SEVERE, null, ex);
-            try {
-                connection.rollback();
-            }catch(SQLException ex1){
-                throw new RuntimeException(ex1);
-            }
+
             throw new DAOException("Não foi possível listar as cores no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
@@ -140,7 +139,6 @@ public class CorDAO {
         
         Cor CorRetornada = new Cor();
         try {
-            connection.setAutoCommit(false);
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             ResultSet resultado = stmt.executeQuery();
@@ -148,14 +146,10 @@ public class CorDAO {
                 CorRetornada.setId(resultado.getInt("id"));
                 CorRetornada.setNome(resultado.getString("nome"));
             }
-            connection.commit();
+            stmt.close();
+            resultado.close();
         } catch (SQLException ex) {
             Logger.getLogger(CorDAO.class.getName()).log(Level.SEVERE, null, ex);
-            try {
-                connection.rollback();
-            }catch(SQLException ex1){
-                throw new RuntimeException(ex1);
-            }
             throw new DAOException("Não foi possível buscar a cor no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
