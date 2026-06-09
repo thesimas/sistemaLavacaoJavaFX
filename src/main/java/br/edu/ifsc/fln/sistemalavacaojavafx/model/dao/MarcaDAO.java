@@ -3,6 +3,7 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.model.dao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Marca;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public class MarcaDAO {
         this.connection = connection;
     }
 
-    public boolean inserir(Marca marca) {
+    public void inserir(Marca marca) throws DAOException {
         String sql = "INSERT INTO marca(nome) VALUES(?)";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -35,7 +36,6 @@ public class MarcaDAO {
             stmt.setString(1, marca.getNome());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -43,13 +43,13 @@ public class MarcaDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível inserir a marca no banco de dados!\nMotivo: ",ex);
         }finally{
             database.desconectar(connection);
         }
     }
 
-    public boolean alterar(Marca marca) {
+    public void alterar(Marca marca) throws DAOException {
         String sql = "UPDATE marca SET nome=? WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -60,7 +60,6 @@ public class MarcaDAO {
             stmt.setInt(2, marca.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -68,14 +67,14 @@ public class MarcaDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível alterar a marca no banco de dados!\nMotivo: ",ex);
         }finally {
 
             database.desconectar(connection);
         }
     }
 
-    public boolean remover(Marca marca) {
+    public void remover(Marca marca) throws DAOException {
         String sql = "DELETE FROM marca WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -85,7 +84,6 @@ public class MarcaDAO {
             stmt.setInt(1, marca.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -93,13 +91,13 @@ public class MarcaDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível remover a marca no banco de dados!\nMotivo: ",ex);
         } finally {
             database.desconectar(connection);
         }
     }
 
-    public List<Marca> listar() {
+    public List<Marca> listar() throws DAOException {
         List<Marca> marcasRetornada = new ArrayList<>();
         String sql = "SELECT * FROM marca";
 
@@ -118,19 +116,19 @@ public class MarcaDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível listar as marcas no banco de dados!\nMotivo: ",ex);
         } finally {
-
             database.desconectar(connection);
         }
         return marcasRetornada;
     }
 
-    public Marca buscar(Marca marca) {
+    public Marca buscar(Marca marca) throws DAOException {
         Marca marcaRetornada = buscar(marca.getId());
         return marcaRetornada;
     }
     
-    public Marca buscar(int id) {
+    public Marca buscar(int id) throws DAOException {
         String sql = "SELECT * FROM marca WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -145,6 +143,7 @@ public class MarcaDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(MarcaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível buscar a marca no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }

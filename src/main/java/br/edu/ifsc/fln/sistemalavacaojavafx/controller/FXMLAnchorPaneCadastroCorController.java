@@ -9,6 +9,9 @@ import java.net.URL;
 import java.sql.Connection;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -53,13 +56,21 @@ public class FXMLAnchorPaneCadastroCorController implements Initializable {
         
         tableViewCores.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> selecionarItemTableViewCores(newValue));
-    }     
+    }
     
     public void carregarTableViewCor() {
         tableColumnCorNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        
-        listaCores = corDAO.listar();
-        
+
+        try {
+            listaCores = corDAO.listar();
+        } catch (DAOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Erro ao Listar");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
+
         observableListCores = FXCollections.observableArrayList(listaCores);
         tableViewCores.setItems(observableListCores);
     }
@@ -79,7 +90,11 @@ public class FXMLAnchorPaneCadastroCorController implements Initializable {
         Cor cor = new Cor();
         boolean btConfirmarClicked = showFXMLAnchorPaneCadastroCorDialog(cor);
         if (btConfirmarClicked) {
-            corDAO.inserir(cor);
+            try {
+                corDAO.inserir(cor);
+            } catch (DAOException e) {
+                AlertDialog.exceptionMessage(e);
+            }
             carregarTableViewCor();
         }
 
@@ -91,7 +106,11 @@ public class FXMLAnchorPaneCadastroCorController implements Initializable {
         if (cor != null) {
             boolean btConfirmarClicked = showFXMLAnchorPaneCadastroCorDialog(cor);
             if (btConfirmarClicked) {
-                corDAO.alterar(cor);
+                try {
+                    corDAO.alterar(cor);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewCor();
             }
         } else {
@@ -109,7 +128,11 @@ public class FXMLAnchorPaneCadastroCorController implements Initializable {
             alert.setContentText("Deseja realmente excluir essa Cor?");
             alert.showAndWait();
             if(alert.getResult() == ButtonType.OK) {
-                corDAO.remover(cor);
+                try {
+                    corDAO.remover(cor);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewCor();
             }
         } else {

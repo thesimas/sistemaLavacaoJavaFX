@@ -5,6 +5,8 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.ECategoria;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.ETipoCombustivel;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Modelo;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Marca;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.collections.FXCollections;
 import javafx.util.StringConverter;
 import javafx.event.ActionEvent;
@@ -49,7 +51,11 @@ public class FXMLAnchorPaneCadastroModeloDialogController implements Initializab
         cbCategoria.setItems(FXCollections.observableArrayList(ECategoria.values()));
         cbTipoCombustivel.setItems(FXCollections.observableArrayList(ETipoCombustivel.values()));
         spPotencia.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
-        cbMarca.setItems(FXCollections.observableArrayList(marcaDAO.listar()));
+        try {
+            cbMarca.setItems(FXCollections.observableArrayList(marcaDAO.listar()));
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         cbMarca.setConverter(new StringConverter<Marca>() {
             @Override
             public String toString(Marca marca) {

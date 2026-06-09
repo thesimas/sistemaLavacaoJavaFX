@@ -4,7 +4,9 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ClienteDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ServicoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.VeiculoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.ExceptionLavacao;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,13 +14,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -102,17 +104,21 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         VeiculoDAO veiculoDAO = new VeiculoDAO();
         ClienteDAO clienteDAO = new ClienteDAO();
                                                                                             // Minimo, maximo, valorInicial, step
-        spValorAlterado.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 1000.0, 0.0, 1.01));
+        spValorAlterado.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 1000.0, 0.0));
         spDesconto.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 100.0, 0.0));
 
         cbStatus.setItems(FXCollections.observableArrayList(EStatus.values()));
 
-        cbServico.setItems(FXCollections.observableArrayList(servicoDAO.listar()));
+        try {
+            cbServico.setItems(FXCollections.observableArrayList(servicoDAO.listar()));
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         cbServico.setConverter(new StringConverter<Servico>() {
             @Override
             public String toString(Servico servico) {
-                if (servico == null) {
-                    return null;
+                if(servico == null) {
+                    return "Selecione um Servico";
                 }
                 return servico.getDescricao();
             }
@@ -121,13 +127,28 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                 return null;
             }
         });
+        cbServico.setButtonCell(new ListCell<Servico>() {
+            @Override
+            protected void updateItem(Servico item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("Selecione um Servico");
+                }else {
+                    setText(item.getDescricao());
+                }
+            }
+        });
 
-        cbCliente.setItems(FXCollections.observableArrayList(clienteDAO.listar()));
+        try {
+            cbCliente.setItems(FXCollections.observableArrayList(clienteDAO.listar()));
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         cbCliente.setConverter(new StringConverter<Cliente>() {
             @Override
             public String toString(Cliente cliente) {
                 if (cliente == null) {
-                    return null;
+                    return "Selecione o Cliente";
                 }
                 return cliente.getNome();
             }
@@ -136,7 +157,11 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                 return null;
             }
         });
-        cbPlaca.setItems(FXCollections.observableArrayList(veiculoDAO.listar()));
+        try {
+            cbPlaca.setItems(FXCollections.observableArrayList(veiculoDAO.listar()));
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         // Ouvinte que irá listar os veiculos de acordo com o cliente selecionado.
         cbCliente.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             // Limpando os dados do veiculo sempre que o cliente for alterado na seleção do comboBox.
@@ -146,7 +171,12 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
             tfMarca.setText("");
             if (newValue != null) {
                 cbPlaca.setDisable(false);
-                List<Veiculo> veiculosCliente = veiculoDAO.buscarVeiculoCliente(newValue.getId());
+                List<Veiculo> veiculosCliente = null;
+                try {
+                    veiculosCliente = veiculoDAO.buscarVeiculoCliente(newValue.getId());
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 ObservableList<Veiculo> veiculos = FXCollections.observableArrayList(veiculosCliente);
                 cbPlaca.setItems(veiculos);
             }else {
@@ -157,7 +187,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
             @Override
             public String toString(Veiculo veiculo) {
                 if (veiculo == null) {
-                    return null;
+                    return "Selecione o veiculo";
                 }
                 return veiculo.getPlaca();
             }
@@ -188,6 +218,11 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
             return new SimpleStringProperty(itemLinha.getObservacoes());
         });
 
+        if(cbServico.getSelectionModel().getSelectedItem() == null) {
+            tfObservacoesServico.setDisable(true);
+            spValorAlterado.setDisable(true);
+        }
+
         cbPlaca.setDisable(true);
         tfMarca.setDisable(true);
         tfCategoria.setDisable(true);
@@ -197,20 +232,26 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
     public void setOrdemDeServico(OrdemServico ordemServico) {
         if(ordemServico != null){
             this.ordemServico = ordemServico;
-            this.tfNumeroOs.setText(String.valueOf(ordemServico.getNumero()));
             if(ordemServico.getVeiculo() != null){
+                //Desabilitando o campo do numero da OS, pois isso irá impedir do usuario alterar esse campo, caso clique em alterar uma OS.
+                tfNumeroOs.setDisable(true);
+                this.cbPlaca.setValue(ordemServico.getVeiculo());
+                this.cbCliente.setValue(ordemServico.getVeiculo().getCliente());
                 this.tfModelo.setText(ordemServico.getVeiculo().getModelo().getDescricao());
                 this.tfMarca.setText(ordemServico.getVeiculo().getModelo().getMarca().getNome());
                 this.tfCategoria.setText(ordemServico.getVeiculo().getModelo().getCategoria().name());
-                this.cbCliente.setValue(ordemServico.getVeiculo().getCliente());
+                this.tfNumeroOs.setText(String.valueOf(ordemServico.getNumero()));
+                this.cbStatus.setValue(ordemServico.getStatus());
+                this.spDesconto.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 100, ordemServico.getDesconto()));
             }
-            DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             if(ordemServico.getDataAgendamento() != null){
-                this.dpData.setValue(LocalDate.parse(ordemServico.getDataAgendamento().format(formatador)));
+                this.dpData.setValue(ordemServico.getDataAgendamento());
             }else {
                 this.dpData.setValue(LocalDate.now());
             }
             if(!ordemServico.getItensOS().isEmpty()){
+                ObservableList<ItemOS> itemOS = FXCollections.observableArrayList(this.ordemServico.getItensOS());
+                tableViewOrdemServicoServicos.setItems(itemOS);
                 try {
                     this.lbValorTotal.setText(String.valueOf(ordemServico.getTotal()));
                 } catch (ExceptionLavacao e) {
@@ -245,6 +286,16 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         this.dialogStage = dialogStage;
     }
 
+    @FXML
+    void btAplicarDesconto(ActionEvent event) {
+        Double desconto = spDesconto.getValue();
+        this.ordemServico.setDesconto(desconto);
+        try {
+            lbValorTotal.setText(String.valueOf(ordemServico.calcularServico()));
+        } catch (ExceptionLavacao e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @FXML
     void handleBtCancelar(ActionEvent event) {
@@ -258,10 +309,22 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
             ordemServico.setStatus(cbStatus.getSelectionModel().getSelectedItem());
             ordemServico.setVeiculo(cbPlaca.getSelectionModel().getSelectedItem());
             ordemServico.setDataAgendamento(dpData.getValue());
-            ordemServico.setTotal(Long.parseLong(lbSubtotal.getText()));
+            ordemServico.setDesconto(spDesconto.getValue());
+            ordemServico.setTotal(Double.parseDouble(lbValorTotal.getText()));
 
             btConfirmarClicked = true;
             dialogStage.close();
+        }
+    }
+
+    @FXML
+    void eventoSelecaoServico(ActionEvent event) {
+        if(cbServico.getSelectionModel().getSelectedItem() == null) {
+            tfObservacoesServico.setDisable(true);
+            spValorAlterado.setDisable(true);
+        }else {
+            tfObservacoesServico.setDisable(false);
+            spValorAlterado.setDisable(false);
         }
     }
 
@@ -282,12 +345,12 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
             // Associando o cliente ao veiculo para evitar erros da pontuação.
             cbPlaca.getSelectionModel().getSelectedItem().setCliente(this.cbCliente.getValue());
             this.ordemServico.setVeiculo(cbPlaca.getSelectionModel().getSelectedItem());
-
             Servico servicoSelecionado = cbServico.getSelectionModel().getSelectedItem();
             String observacao = tfObservacoesServico.getText();
             Double valorAlterado = spValorAlterado.getValue();
+
             if(servicoSelecionado != null){
-                if(valorAlterado > 0 ){
+                if(valorAlterado != null && valorAlterado > 0){
                     try {
                         this.ordemServico.addItemOS(valorAlterado, observacao, servicoSelecionado);
                     } catch (ExceptionLavacao e) {
@@ -302,6 +365,13 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                 }
                 ObservableList<ItemOS> itemOS = FXCollections.observableArrayList(this.ordemServico.getItensOS());
                 tableViewOrdemServicoServicos.setItems(itemOS);
+
+                // Limpar os campos assim que o usuario adcionar um serviço.
+                cbServico.getSelectionModel().clearSelection();
+                cbServico.setValue(null);
+                tfObservacoesServico.setText("");
+                spValorAlterado.getValueFactory().setValue(null);
+
                 try {
                     lbSubtotal.setText(String.valueOf(ordemServico.getTotalServicoSemDesconto()));
                 } catch (ExceptionLavacao e) {
@@ -312,12 +382,6 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                 } catch (ExceptionLavacao e) {
                     throw new RuntimeException(e);
                 }
-                // Limpar os campos assim que o usuario adcionar um serviço.
-                cbServico.getSelectionModel().clearSelection();
-                cbServico.setPromptText("Selecione o Servico");
-                tfObservacoesServico.setText("");
-                spValorAlterado.getValueFactory().setValue(null);
-
             }else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Erro");
@@ -334,11 +398,38 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
     @FXML
     void handleBtRemoverServico(ActionEvent event) {
         if(tableViewOrdemServicoServicos.getSelectionModel().getSelectedItem() != null){
+            ItemOS itemRemovido = tableViewOrdemServicoServicos.getSelectionModel().getSelectedItem();
             try {
-                this.ordemServico.removeItemOS(tableViewOrdemServicoServicos.getSelectionModel().getSelectedIndex());
+                this.ordemServico.removeItemOS(itemRemovido);
             } catch (ExceptionLavacao e) {
                 throw new RuntimeException(e);
             }
+
+            ObservableList<ItemOS> itemOS = FXCollections.observableArrayList(this.ordemServico.getItensOS());
+            tableViewOrdemServicoServicos.setItems(itemOS);
+
+            if(ordemServico.getItensOS().isEmpty()){
+                lbSubtotal.setText("0");
+                lbValorTotal.setText("0");
+                this.ordemServico.setTotal(0);
+            }else {
+                try {
+                    lbSubtotal.setText(String.valueOf(ordemServico.getTotalServicoSemDesconto()));
+                } catch (ExceptionLavacao e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    lbValorTotal.setText(String.valueOf(ordemServico.getTotal()));
+                } catch (ExceptionLavacao e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            // Limpar os campos assim que o usuario remover um serviço.
+            cbServico.getSelectionModel().clearSelection();
+            cbServico.setValue(null);
+            tfObservacoesServico.setText("");
+            spValorAlterado.getValueFactory().setValue(null);
         }
     }
 

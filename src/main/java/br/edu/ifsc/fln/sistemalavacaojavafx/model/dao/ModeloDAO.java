@@ -3,6 +3,7 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.model.dao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public class ModeloDAO {
         this.connection = connection;
     }
 
-    public boolean inserir(Modelo modelo) {
+    public void inserir(Modelo modelo) throws DAOException {
         String sql = "INSERT INTO modelo(descricao, categoria, id_marca) VALUES(?, ?, ?);";
         String sqlMotor = "INSERT INTO motor (id_modelo, potencia, tipo_combustivel) VALUES ((SELECT MAX(id) FROM modelo), ?, ?);";
         Database database = DatabaseFactory.getDatabase("mysql");
@@ -43,7 +44,6 @@ public class ModeloDAO {
             stmt.setString(2, String.valueOf(modelo.getMotor().getTipoCombustivel()));
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -51,13 +51,13 @@ public class ModeloDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível inserir o modelo no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public boolean alterar(Modelo modelo) {
+    public void alterar(Modelo modelo) throws DAOException {
         String sql = "UPDATE modelo SET descricao=?, categoria=?, id_marca=? WHERE id=?";
         String sqlMotor = "UPDATE motor SET potencia=?, tipo_combustivel=? WHERE id_modelo=?";
         Database database = DatabaseFactory.getDatabase("mysql");
@@ -76,7 +76,6 @@ public class ModeloDAO {
             stmt.setInt(3, modelo.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -84,13 +83,13 @@ public class ModeloDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível alterar o modelo no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public boolean remover(Modelo modelo) {
+    public void remover(Modelo modelo) throws DAOException {
         String sql = "DELETE FROM modelo WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -100,7 +99,6 @@ public class ModeloDAO {
             stmt.setInt(1, modelo.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -108,13 +106,13 @@ public class ModeloDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível remover o modelo no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public List<Modelo> listar() {
+    public List<Modelo> listar() throws DAOException {
         String sql = "SELECT modelo.id as id_modelo, modelo.descricao as descricao, marca.nome as nome_marca, marca.id as id_marca, modelo.categoria as categoria , motor.potencia as potencia, motor.tipo_combustivel as tipo_combustivel FROM modelo " +
                 "join marca on modelo.id_marca = marca.id " +
                 "join motor on modelo.id = motor.id_modelo";
@@ -146,18 +144,19 @@ public class ModeloDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível listar os modelos no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }
         return modelosRetornado;
     }
 
-    public Modelo buscar(Modelo modelo) {
+    public Modelo buscar(Modelo modelo) throws DAOException {
         Modelo modeloRetorno = buscar(modelo.getId());
         return modeloRetorno;
     }
 
-    public Modelo buscar(int id) {
+    public Modelo buscar(int id) throws DAOException {
         String sql = "SELECT * FROM modelo JOIN motor ON modelo.id = motor.id_modelo WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -181,13 +180,13 @@ public class ModeloDAO {
             return modeloRetorno;
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível buscar o modelo no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }
-        return null;
     }
 
-    public List<Modelo> buscarModeloPorMarca(Marca marca) {
+    public List<Modelo> buscarModeloPorMarca(Marca marca) throws DAOException {
         String sql = "SELECT modelo.id as id_modelo, marca.id as id_marca, modelo.*, motor.*, marca.* FROM modelo JOIN motor ON modelo.id = motor.id_modelo JOIN marca ON modelo.id_marca = marca.id WHERE modelo.id_marca =?;";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -212,9 +211,9 @@ public class ModeloDAO {
             return modelos;
         } catch (SQLException ex) {
             Logger.getLogger(ModeloDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível listar os modelos por marca no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }
-        return null;
     }
 }

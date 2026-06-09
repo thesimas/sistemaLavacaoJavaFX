@@ -3,6 +3,7 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.model.dao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class ClienteDAO {
         this.connection = connection;
     }
 
-    public boolean inserir(Cliente cliente) {
+    public void inserir(Cliente cliente) throws DAOException {
         String sqlCliente = "INSERT INTO cliente(nome, email, celular, data_cadastro) VALUES(?, ?, ?, ?);";
         String sqlPessoaFisica = "INSERT INTO pessoa_fisica(id_cliente, cpf, data_nascimento) VALUES((SELECT max(id) FROM cliente), ?, ?);";
         String sqlPessoaJuridica = "INSERT INTO pessoa_juridica(id_cliente, cnpj, inscricao_estadual) VALUES((SELECT max(id) FROM cliente), ?, ?);";
@@ -53,7 +54,6 @@ public class ClienteDAO {
             stmt.setInt(1, cliente.getPontuacao().getQuantidade());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -61,13 +61,13 @@ public class ClienteDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível inserir o cliente no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public boolean alterar(Cliente cliente) {
+    public void alterar(Cliente cliente) throws DAOException {
         String sqlCliente = "UPDATE cliente SET nome=?, celular=?, email=?, data_cadastro=?  WHERE id=?";
         String sqlPessoaFisica = "UPDATE pessoa_fisica SET cpf=?, data_nascimento=?  WHERE id_cliente=?";
         String sqlPessoaJuridica = "UPDATE pessoa_juridica SET cnpj=?, inscricao_estadual=?  WHERE id_cliente=?";
@@ -102,7 +102,6 @@ public class ClienteDAO {
             stmt.setInt(2, cliente.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -110,13 +109,13 @@ public class ClienteDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível alterar o cliente no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public boolean remover(Cliente cliente) {
+    public void remover(Cliente cliente) throws DAOException {
         String sql = "DELETE FROM cliente WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -126,7 +125,6 @@ public class ClienteDAO {
             stmt.setInt(1, cliente.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -134,13 +132,13 @@ public class ClienteDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível remover o cliente no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public List<Cliente> listar() {
+    public List<Cliente> listar() throws DAOException {
         String sql = "SELECT cliente.id AS id_principal, cliente.*, pessoa_fisica.*, pessoa_juridica.*, pontuacao.* FROM cliente " +
                 "LEFT JOIN pessoa_fisica ON cliente.id = pessoa_fisica.id_cliente " +
                 "LEFT JOIN pessoa_juridica ON cliente.id = pessoa_juridica.id_cliente " +
@@ -160,18 +158,19 @@ public class ClienteDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível listar os clientes no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
         return retorno;
     }
 
-    public Cliente buscar(Cliente cliente) {
+    public Cliente buscar(Cliente cliente) throws DAOException {
         Cliente retorno = buscar(cliente.getId());
         return retorno;
     }
 
-    public Cliente buscar(int id) {
+    public Cliente buscar(int id) throws DAOException {
         String sql = "SELECT cliente.id AS id_principal, cliente.*, pessoa_fisica.*, pessoa_juridica.*, pontuacao.* FROM cliente " +
                 "LEFT JOIN pessoa_fisica ON pessoa_fisica.id_cliente = cliente.id " +
                 "LEFT JOIN pessoa_juridica ON pessoa_juridica.id_cliente = cliente.id " +
@@ -190,10 +189,10 @@ public class ClienteDAO {
             return clienteRetorno;
         } catch (SQLException ex) {
             Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível buscar o cliente no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
-        return null;
     }
 
     public Cliente povoarDados(ResultSet rs) throws SQLException {
@@ -217,7 +216,12 @@ public class ClienteDAO {
         }
         // Associando o Cliente ao veiculo.
         VeiculoDAO veiculoDAO = new VeiculoDAO();
-        List<Veiculo> veiculos = veiculoDAO.buscarVeiculoCliente(id);
+        List<Veiculo> veiculos = null;
+        try {
+            veiculos = veiculoDAO.buscarVeiculoCliente(id);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
 
         for (int x = 0; x < veiculos.size(); x++) {
             Veiculo veiculo = veiculos.get(x);

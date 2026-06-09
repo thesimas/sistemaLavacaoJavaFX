@@ -67,7 +67,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ComboBox fx:id="cbServico" prefHeight="26.0" prefWidth="193.0" promptText="Selecionar Serviço" GridPane.rowIndex="2" />
+            <ComboBox fx:id="cbServico" onAction="#eventoSelecaoServico" prefHeight="26.0" prefWidth="193.0" promptText="Selecionar Serviço" GridPane.rowIndex="2" />
             <TextField fx:id="tfObservacoesServico" prefHeight="26.0" prefWidth="250.0" promptText="Usar pouco silicone no interior.." GridPane.columnIndex="2" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="5.0" />
@@ -119,10 +119,11 @@
         </columns>
       </TableView>
       <Button layoutX="25.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleBtRemoverServico" text="Remover Item Selecionado" textFill="#f20707" />
-      <GridPane layoutX="390.0" layoutY="415.0">
+      <GridPane layoutX="307.0" layoutY="422.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -151,9 +152,14 @@
             <Label fx:id="lbValorTotal" alignment="CENTER" prefHeight="18.0" prefWidth="106.0" text="0.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <ComboBox fx:id="cbStatus" prefWidth="150.0" promptText="Selecione" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Spinner fx:id="spDesconto" editable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" onAction="#btAplicarDesconto" prefHeight="26.0" prefWidth="106.0" text="Aplicar" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="20.0" />
+               </GridPane.margin>
+            </Button>
          </children>
       </GridPane>
-      <Group layoutX="459.0" layoutY="556.0" AnchorPane.bottomAnchor="26.0" AnchorPane.rightAnchor="19.399999999999977">
+      <Group layoutX="455.0" layoutY="561.0" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="23.399999999999977">
          <children>
             <Button fx:id="btConfirmar" mnemonicParsing="false" onAction="#handleBtConfirmar" prefHeight="25.0" prefWidth="75.0" text="Confirmar" />
             <Button fx:id="btCancelar" layoutX="83.0" mnemonicParsing="false" onAction="#handleBtCancelar" prefHeight="25.0" prefWidth="69.0" text="Cancelar" />

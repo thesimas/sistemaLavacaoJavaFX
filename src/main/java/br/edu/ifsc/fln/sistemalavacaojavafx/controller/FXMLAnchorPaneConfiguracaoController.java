@@ -4,6 +4,8 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ConfiguracaoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Configuracao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.ECategoria;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Servico;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -51,7 +53,11 @@ public class FXMLAnchorPaneConfiguracaoController implements Initializable {
         spPorcentagemGrande.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1, 2.0, 1.0, 0.05));
         spPorcentagemMoto.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1, 2.0, 1.0, 0.05));
 
-        configuracaoAtual = configuracaoDAO.buscar(1);
+        try {
+            configuracaoAtual = configuracaoDAO.buscar(1);
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
 
         HashMap mapaPorcentagens = configuracaoAtual.getPorcentagens();
 
@@ -77,7 +83,11 @@ public class FXMLAnchorPaneConfiguracaoController implements Initializable {
         configuracaoAtual.setPorcentagens(mapaPorcentagensAlterada);
         configuracaoAtual.setPontos(Integer.parseInt(spPontos.getValue().toString()));
 
-        configuracaoDAO.alterar(configuracaoAtual);
+        try {
+            configuracaoDAO.alterar(configuracaoAtual);
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         Servico.setPontos(configuracaoAtual.getPontos());
 
 

@@ -8,6 +8,8 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.MarcaDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Marca;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -62,9 +64,13 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
     
     public void carregarTableViewMarca() {
         tableColumnMarcaNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        
-        listaMarcas = marcaDAO.listar();
-        
+
+        try {
+            listaMarcas = marcaDAO.listar();
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
+
         observableListMarcas = FXCollections.observableArrayList(listaMarcas);
         tableViewMarcas.setItems(observableListMarcas);
     }
@@ -84,7 +90,11 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
         Marca marca = new Marca();
         boolean btConfirmarClicked = showFXMLAnchorPaneCadastroMarcaDialog(marca);
         if (btConfirmarClicked) {
-            marcaDAO.inserir(marca);
+            try {
+                marcaDAO.inserir(marca);
+            } catch (DAOException e) {
+                AlertDialog.exceptionMessage(e);
+            }
             carregarTableViewMarca();
         }
 
@@ -96,7 +106,11 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
         if (marca != null) {
             boolean btConfirmarClicked = showFXMLAnchorPaneCadastroMarcaDialog(marca);
             if (btConfirmarClicked) {
-                marcaDAO.alterar(marca);
+                try {
+                    marcaDAO.alterar(marca);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewMarca();
             }
         } else {
@@ -114,7 +128,11 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
             alert.setContentText("Deseja realmente excluir esse marca ?");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.OK) {
-                marcaDAO.remover(marca);
+                try {
+                    marcaDAO.remover(marca);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewMarca();
             }
         } else {

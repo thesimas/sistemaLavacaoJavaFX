@@ -2,6 +2,8 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ClienteDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -124,7 +126,11 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             return new SimpleStringProperty(veiculo.getPlaca());
         });
 
-        listaClientes = clienteDAO.listar();
+        try {
+            listaClientes = clienteDAO.listar();
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         observableListClientes = FXCollections.observableArrayList(listaClientes);
         tableViewClientes.setItems(observableListClientes);
     }
@@ -175,7 +181,11 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
         Cliente cliente = null;
         Cliente clienteNovo = showFXMLAnchorPaneCadastroClienteDialog(cliente);
         if (clienteNovo != null) {
-            clienteDAO.inserir(clienteNovo);
+            try {
+                clienteDAO.inserir(clienteNovo);
+            } catch (DAOException e) {
+                AlertDialog.exceptionMessage(e);
+            }
             carregarTableViewClientes();
         }
     }
@@ -186,7 +196,11 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
         if (clienteSelecionado != null) {
             Cliente clienteAltualizado = showFXMLAnchorPaneCadastroClienteDialog(clienteSelecionado);
             if (clienteAltualizado != null) {
-                clienteDAO.alterar(clienteAltualizado);
+                try {
+                    clienteDAO.alterar(clienteAltualizado);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewClientes();
             }
         } else {
@@ -204,7 +218,11 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             alert.setContentText("Deseja realmente excluir esse cliente?");
             alert.showAndWait();
             if(alert.getResult() == ButtonType.OK){
-                clienteDAO.remover(cliente);
+                try {
+                    clienteDAO.remover(cliente);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewClientes();
                 System.out.println("Cliente excluido com sucesso");
             }

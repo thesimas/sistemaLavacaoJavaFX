@@ -5,6 +5,8 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.ECategoria;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Servico;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -87,7 +89,11 @@ public class FXMLAnchorPaneCadastroServicoController implements Initializable {
             }
         });
 
-        listaServicos = servicoDAO.listar();
+        try {
+            listaServicos = servicoDAO.listar();
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         observableListServicos = FXCollections.observableArrayList(listaServicos);
         tableViewServicos.setItems(observableListServicos);
     }
@@ -114,7 +120,11 @@ public class FXMLAnchorPaneCadastroServicoController implements Initializable {
         Servico servico = new Servico();
         boolean btConfirmarClicked = showFXMLAnchorPaneCadastroServicoDialog(servico);
         if (btConfirmarClicked) {
-            servicoDAO.inserir(servico);
+            try {
+                servicoDAO.inserir(servico);
+            } catch (DAOException e) {
+                AlertDialog.exceptionMessage(e);
+            }
             carregarTableViewServicos();
         }
     }
@@ -125,7 +135,11 @@ public class FXMLAnchorPaneCadastroServicoController implements Initializable {
         if (servico != null) {
             boolean btConfirmarClicked = showFXMLAnchorPaneCadastroServicoDialog(servico);
             if (btConfirmarClicked) {
-                servicoDAO.alterar(servico);
+                try {
+                    servicoDAO.alterar(servico);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewServicos();
             }
         } else {
@@ -143,7 +157,11 @@ public class FXMLAnchorPaneCadastroServicoController implements Initializable {
             alert.setContentText("Deseja realmente excluir esse Serviço?");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.OK) {
-                servicoDAO.remover(servico);
+                try {
+                    servicoDAO.remover(servico);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewServicos();
             }
         } else {

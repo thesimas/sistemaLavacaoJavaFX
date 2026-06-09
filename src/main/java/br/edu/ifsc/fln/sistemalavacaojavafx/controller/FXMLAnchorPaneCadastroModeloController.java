@@ -10,6 +10,8 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.ETipoCombustivel;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Marca;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Modelo;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -89,9 +91,13 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
             return new SimpleStringProperty(marca.getNome());
         });
         tableColumnModeloCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
-        
-        listaModelos = modeloDAO.listar();
-        
+
+        try {
+            listaModelos = modeloDAO.listar();
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
+
         observableListModelos = FXCollections.observableArrayList(listaModelos);
         tableViewModelos.setItems(observableListModelos);
     }
@@ -119,7 +125,11 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
         Modelo modelo = new Modelo(0 , ETipoCombustivel.GASOLINA);
         boolean btConfirmarClicked = showFXMLAnchorPaneCadastroModeloDialog(modelo);
         if (btConfirmarClicked) {
-            modeloDAO.inserir(modelo);
+            try {
+                modeloDAO.inserir(modelo);
+            } catch (DAOException e) {
+                AlertDialog.exceptionMessage(e);
+            }
             carregarTableViewMarca();
         }
     }
@@ -130,7 +140,11 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
         if (modelo != null) {
             boolean btConfirmarClicked = showFXMLAnchorPaneCadastroModeloDialog(modelo);
             if (btConfirmarClicked) {
-                modeloDAO.alterar(modelo);
+                try {
+                    modeloDAO.alterar(modelo);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewMarca();
             }
         } else {
@@ -148,7 +162,11 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
             alert.setContentText("Deseja realemente excluir esse marca ?");
             alert.showAndWait();
             if (alert.getResult() == ButtonType.OK) {
-                modeloDAO.remover(modelo);
+                try {
+                    modeloDAO.remover(modelo);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewMarca();
             }
         } else {

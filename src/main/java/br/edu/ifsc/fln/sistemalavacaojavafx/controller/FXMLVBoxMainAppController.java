@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ConfiguracaoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Configuracao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Servico;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,7 +27,11 @@ public class FXMLVBoxMainAppController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         ConfiguracaoDAO configuracaoDAO = new ConfiguracaoDAO();
         Configuracao configuracaoAtual = new Configuracao();
-        configuracaoAtual = configuracaoDAO.buscar(1);
+        try {
+            configuracaoAtual = configuracaoDAO.buscar(1);
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         if (configuracaoAtual != null) {
             Servico.setPontos(configuracaoAtual.getPontos());
         }

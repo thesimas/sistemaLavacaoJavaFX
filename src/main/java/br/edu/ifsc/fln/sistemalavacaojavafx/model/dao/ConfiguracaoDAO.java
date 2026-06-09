@@ -4,6 +4,7 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Configuracao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.ECategoria;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public class ConfiguracaoDAO {
         this.connection = connection;
     }
 
-    public boolean alterar(Configuracao configuracao) {
+    public void alterar(Configuracao configuracao) throws DAOException {
         String sql = "UPDATE configuracao_sistema SET pontos=?, porcentagem_pequeno=?, porcentagem_medio=?, porcentagem_grande=?, porcentagem_moto=? WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -41,7 +42,6 @@ public class ConfiguracaoDAO {
             stmt.setInt(6, configuracao.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ConfiguracaoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -49,13 +49,13 @@ public class ConfiguracaoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível alterar as configurações no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public Configuracao buscar(int id) {
+    public Configuracao buscar(int id) throws DAOException {
         String sql = "SELECT * FROM configuracao_sistema WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -91,6 +91,7 @@ public class ConfiguracaoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
+            throw new DAOException("Não foi possível buscar as configurações no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }

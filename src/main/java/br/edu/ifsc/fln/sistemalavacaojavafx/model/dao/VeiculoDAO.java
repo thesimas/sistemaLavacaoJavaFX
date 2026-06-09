@@ -3,6 +3,7 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.model.dao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public class VeiculoDAO {
         this.connection = connection;
     }
 
-    public boolean inserir(Veiculo veiculo) {
+    public void inserir(Veiculo veiculo) throws DAOException {
         String sql = "INSERT INTO veiculo(placa, observacoes, id_cor, id_modelo, id_cliente) VALUES(?, ?, ?, ?, ?);";
 
         Database database = DatabaseFactory.getDatabase("mysql");
@@ -40,7 +41,6 @@ public class VeiculoDAO {
             stmt.setInt(5, veiculo.getCliente().getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -48,13 +48,13 @@ public class VeiculoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível inserir o veículo no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public boolean alterar(Veiculo veiculo) {
+    public void alterar(Veiculo veiculo) throws DAOException {
         String sql = "UPDATE veiculo SET placa=?, observacoes=?, id_cor=?, id_modelo=?, id_cliente=?  WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -69,7 +69,6 @@ public class VeiculoDAO {
             stmt.setInt(6, veiculo.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -77,13 +76,13 @@ public class VeiculoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível alterar o veículo no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public boolean remover(Veiculo veiculo) {
+    public void remover(Veiculo veiculo) throws DAOException {
         String sql = "DELETE FROM veiculo WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -93,7 +92,6 @@ public class VeiculoDAO {
             stmt.setInt(1, veiculo.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -101,13 +99,13 @@ public class VeiculoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível remover o veículo no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public List<Veiculo> listar() {
+    public List<Veiculo> listar() throws DAOException {
         String sql = "SELECT veiculo.id AS veiculo_id, veiculo.placa AS veiculo_placa, veiculo.observacoes AS veiculo_observacoes, cor.id AS cor_id, cor.nome AS cor_nome, " +
                 "marca.id AS marca_id, marca.nome AS marca_nome, modelo.id AS modelo_id, modelo.descricao AS modelo_descricao, modelo.categoria " +
                 "AS modelo_categoria, motor.potencia AS motor_potencia, motor.tipo_combustivel AS motor_combustivel, " +
@@ -169,18 +167,19 @@ public class VeiculoDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível listar os veículos no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
         return veiculosRetonados;
     }
 
-    public Veiculo buscar(Veiculo veiculo) {
+    public Veiculo buscar(Veiculo veiculo) throws DAOException {
         Veiculo veiculoRetonado = buscar(veiculo.getId());
         return veiculoRetonado;
     }
 
-    public Veiculo buscar(int id) {
+    public Veiculo buscar(int id) throws DAOException {
         String sql = "SELECT veiculo.id AS veiculo_id, veiculo.placa AS veiculo_placa, veiculo.observacoes AS veiculo_observacoes, cor.id AS cor_id, cor.nome AS cor_nome, " +
                 "marca.id AS marca_id, marca.nome AS marca_nome, modelo.id AS modelo_id, modelo.descricao AS modelo_descricao, modelo.categoria " +
                 "AS modelo_categoria, motor.potencia AS motor_potencia, motor.tipo_combustivel AS motor_combustivel, " +
@@ -241,13 +240,13 @@ public class VeiculoDAO {
             return veiculoRetorno;
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível buscar o veículo no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
-        return null;
     }
 
-    public List<Veiculo> buscarVeiculoCliente(int id) {
+    public List<Veiculo> buscarVeiculoCliente(int id) throws DAOException {
         String sql = "SELECT v.id AS veiculo_id, v.placa AS veiculo_placa, v.observacoes AS veiculo_observacoes, " +
                 "c.id AS cor_id, c.nome AS cor_nome, ma.id AS marca_id, ma.nome AS marca_nome, m.id AS modelo_id, m.descricao AS modelo_descricao, " +
                 "m.categoria AS modelo_categoria, mo.potencia AS motor_potencia, mo.tipo_combustivel AS motor_combustivel " +
@@ -296,9 +295,9 @@ public class VeiculoDAO {
             return veiculosRetorno;
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível buscar o veículo pelo cliente no banco de dados!\nMotivo: ", ex);
         }finally {
             database.desconectar(connection);
         }
-        return null;
     }
 }

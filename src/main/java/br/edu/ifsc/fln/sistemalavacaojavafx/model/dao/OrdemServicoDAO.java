@@ -24,6 +24,7 @@ public class OrdemServicoDAO {
 
     public boolean inserir(OrdemServico ordemServico){
         String sql = "INSERT INTO ordem_de_servico (numero, total, data_agendamento, desconto, status, id_veiculo) VALUES (?, ?, ?, ?, ?, ?)";
+        String sqlItemOs = "INSERT INTO item_os (numero_ordem_de_servico, valor_servico, observacoes, id_servico) VALUES (?, ?, ?, ?)";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
@@ -40,9 +41,17 @@ public class OrdemServicoDAO {
             stmt.setDouble(4, ordemServico.getDesconto());
             stmt.setString(5, ordemServico.getStatus().name());
             stmt.setInt(6, ordemServico.getVeiculo().getId());
-            // Inserindo os itens da OS no banco.
-
             stmt.execute();
+
+            // Inserindo os itens da OS no banco.
+            for(ItemOS item : ordemServico.getItensOS()){
+                stmt = connection.prepareStatement(sqlItemOs);
+                stmt.setLong(1, item.getOrdemServico().getNumero());
+                stmt.setDouble(2, item.getValorServico());
+                stmt.setString(3, item.getObservacoes());
+                stmt.setInt(4, item.getServico().getId());
+                stmt.execute();
+            }
             connection.commit();
             return true;
         }catch(SQLException ex){
@@ -60,15 +69,20 @@ public class OrdemServicoDAO {
 
     public boolean alterar (OrdemServico ordemServico){
         String sql = "UPDATE ordem_de_servico SET numero=?, total=?, data_agendamento=?, desconto=?, status=?, id_veiculo=? WHERE numero=?";
+        String sqlDeleteItens = "DELETE FROM item_os WHERE numero_ordem_de_servico = ?";
+        String sqlItemOs = "INSERT INTO item_os (numero_ordem_de_servico, valor_servico, observacoes, id_servico) VALUES (?, ?, ?, ?)";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
             connection.setAutoCommit(false);
-            PreparedStatement stmt = connection.prepareStatement(sql);
+            PreparedStatement stmt = connection.prepareStatement(sqlDeleteItens);
+            stmt.setLong(1, ordemServico.getNumero());
+            stmt.execute();
+
+            stmt = connection.prepareStatement(sql);
             stmt.setLong(1, ordemServico.getNumero());
             try {
                 stmt.setDouble(2, ordemServico.getTotal());
-                // Chama o metodo calcular Serviço, que já pecorrer todos os itens da OS.
             } catch (ExceptionLavacao e) {
                 throw new RuntimeException(e);
             }
@@ -78,6 +92,17 @@ public class OrdemServicoDAO {
             stmt.setInt(6, ordemServico.getVeiculo().getId());
             stmt.setLong(7, ordemServico.getNumero());
             stmt.execute();
+
+            // Inserindo os itens da OS no banco.
+            for(ItemOS item : ordemServico.getItensOS()){
+                stmt = connection.prepareStatement(sqlItemOs);
+                stmt.setLong(1, item.getOrdemServico().getNumero());
+                stmt.setDouble(2, item.getValorServico());
+                stmt.setString(3, item.getObservacoes());
+                stmt.setInt(4, item.getServico().getId());
+                stmt.execute();
+            }
+
             connection.commit();
             return true;
         }catch(SQLException ex){
@@ -118,13 +143,14 @@ public class OrdemServicoDAO {
     }
 
     public List<OrdemServico> listar (){
-        String sql = "SELECT os.*, v.placa, v.id_cliente, c.nome AS nome_cliente, pf.cpf, m.descricao AS modelo_descricao FROM ordem_de_servico os " +
+        String sql = "SELECT os.*, v.placa, v.id_cliente, c.nome AS nome_cliente, pf.cpf, m.descricao AS modelo_descricao, ma.nome as marca_nome, m.categoria as modelo_categoria, p.quantidade as pontuacao FROM ordem_de_servico os " +
                 "INNER JOIN veiculo v ON os.id_veiculo = v.id " +
                 "INNER JOIN cliente c ON v.id_cliente = c.id " +
                 "INNER JOIN modelo m ON v.id_modelo = m.id " +
-                "INNER JOIN pessoa_fisica pf ON c.id = pf.id_cliente " +
-                "INNER JOIN item_os ON item_os.numero_ordem_de_servico = os.numero " +
-                "INNER JOIN servico ON item_os.id_servico = servico.id;";
+                "INNER JOIN marca ma ON m.id_marca = ma.id " +
+                "LEFT JOIN pessoa_fisica pf ON c.id = pf.id_cliente " +
+                "LEFT JOIN pessoa_juridica pj ON c.id = pj.id_cliente " +
+                "LEFT JOIN pontuacao p ON c.id = p.id_cliente";
 
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -152,13 +178,23 @@ public class OrdemServicoDAO {
                     cliente.setId(resultado.getInt("id_cliente"));
                     cliente.setNome(resultado.getString("nome_cliente"));
                 }else {
-                    cliente = new PessoaFisica();
+                    cliente = new PessoaJuridica();
                     cliente.setId(resultado.getInt("id_cliente"));
                     cliente.setNome(resultado.getString("nome_cliente"));
                 }
+                try {
+                    cliente.getPontuacao().adicionar(resultado.getInt("pontuacao"));
+                } catch (ExceptionLavacao e) {
+                    throw new RuntimeException(e);
+                }
+                // Associando Marca ao modelo;
+                Marca marca = new Marca();
+                marca.setNome(resultado.getString("marca_nome"));
                 // Associando o Modelo ao Veiculo;
                 Modelo modelo = new Modelo(0, ETipoCombustivel.GASOLINA); // Dados ficticios;
                 modelo.setDescricao(resultado.getString("modelo_descricao"));
+                modelo.setCategoria(ECategoria.valueOf(resultado.getString("modelo_categoria")));
+                modelo.setMarca(marca);
                 veiculo.setModelo(modelo);
                 veiculo.setCliente(cliente);
                 ordemServico.setVeiculo(veiculo);

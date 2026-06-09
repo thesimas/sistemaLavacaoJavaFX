@@ -2,6 +2,8 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.*;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -53,7 +55,11 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
         ModeloDAO modeloDAO = new ModeloDAO();
         ClienteDAO clienteDAO = new ClienteDAO();
 
-        cbCliente.setItems(FXCollections.observableArrayList(clienteDAO.listar()));
+        try {
+            cbCliente.setItems(FXCollections.observableArrayList(clienteDAO.listar()));
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         cbCliente.setConverter(new StringConverter<Cliente>() {
             @Override
             public String toString(Cliente cliente) {
@@ -67,7 +73,11 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
                 return null;
             }
         });
-        cbCor.setItems(FXCollections.observableArrayList(corDAO.listar()));
+        try {
+            cbCor.setItems(FXCollections.observableArrayList(corDAO.listar()));
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         cbCor.setConverter(new StringConverter<Cor>() {
             @Override
             public String toString(Cor cor) {
@@ -82,7 +92,11 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
                 return null;
             }
         });
-        cbMarca.setItems(FXCollections.observableArrayList(marcaDAO.listar()));
+        try {
+            cbMarca.setItems(FXCollections.observableArrayList(marcaDAO.listar()));
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         cbMarca.setConverter(new StringConverter<Marca>() {
             @Override
             public String toString(Marca marca) {
@@ -98,7 +112,12 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
         });
         cbMarca.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
-                List<Modelo> modelosDaMarca = modeloDAO.buscarModeloPorMarca(newValue);
+                List<Modelo> modelosDaMarca = null;
+                try {
+                    modelosDaMarca = modeloDAO.buscarModeloPorMarca(newValue);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
 
                 ObservableList<Modelo> modelos = FXCollections.observableArrayList(modelosDaMarca);
                 cbModelo.setItems(modelos);
@@ -106,7 +125,11 @@ public class FXMLAnchorPaneCadastroVeiculoDialogController implements Initializa
                 cbModelo.setItems(FXCollections.observableArrayList());
             }
         });
-        cbModelo.setItems(FXCollections.observableArrayList(modeloDAO.listar()));
+        try {
+            cbModelo.setItems(FXCollections.observableArrayList(modeloDAO.listar()));
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
         cbModelo.setConverter(new  StringConverter<Modelo>() {
             @Override
             public String toString(Modelo modelo) {

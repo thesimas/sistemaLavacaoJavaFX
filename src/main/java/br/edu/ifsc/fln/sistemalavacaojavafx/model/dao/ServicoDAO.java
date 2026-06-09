@@ -4,6 +4,7 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.ECategoria;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Servico;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +27,7 @@ public class ServicoDAO {
         this.connection = connection;
     }
 
-    public boolean inserir(Servico servico) {
+    public void inserir(Servico servico) throws DAOException {
         String sql = "INSERT INTO servico(descricao, categoria, valor) VALUES(?, ?, ?)";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -38,7 +39,6 @@ public class ServicoDAO {
             stmt.setDouble(3, servico.getValor());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -46,13 +46,13 @@ public class ServicoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível inserir o serviço no banco de dados!\nMotivo: ",ex);
         }finally{
             database.desconectar(connection);
         }
     }
 
-    public boolean alterar(Servico servico) {
+    public void alterar(Servico servico) throws DAOException {
         String sql = "UPDATE servico SET descricao=?, valor=?, categoria=? WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -65,7 +65,6 @@ public class ServicoDAO {
             stmt.setInt(4, servico.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -73,13 +72,13 @@ public class ServicoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível alterar o serviço no banco de dados!\nMotivo: ",ex);
         }finally{
             database.desconectar(connection);
         }
     }
 
-    public boolean remover(Servico servico) {
+    public void remover(Servico servico) throws DAOException {
         String sql = "DELETE FROM servico WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -89,7 +88,6 @@ public class ServicoDAO {
             stmt.setInt(1, servico.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -97,13 +95,13 @@ public class ServicoDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível excluir o serviço no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public List<Servico> listar() {
+    public List<Servico> listar() throws DAOException {
         String sql = "SELECT * FROM servico";
         List<Servico> retorno = new ArrayList<>();
 
@@ -125,6 +123,7 @@ public class ServicoDAO {
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível listar os serviços no banco de dados!\nMotivo: ",ex);
         }try {
             connection.rollback();
         }catch(SQLException ex1){
@@ -136,12 +135,12 @@ public class ServicoDAO {
         return retorno;
     }
 
-    public Servico buscar(Servico servico) {
+    public Servico buscar(Servico servico) throws DAOException {
         Servico retorno = buscar(servico.getId());
         return retorno;
     }
     
-    public Servico buscar(int id) {
+    public Servico buscar(int id) throws DAOException {
         String sql = "SELECT * FROM servico WHERE id=?";
         Servico retorno = new Servico();
         Database database = DatabaseFactory.getDatabase("mysql");
@@ -158,6 +157,7 @@ public class ServicoDAO {
             connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DAOException("Não foi possível buscar o serviço no banco de dados!\nMotivo: ", ex);
         }try {
             connection.rollback();
         }catch(SQLException ex1){

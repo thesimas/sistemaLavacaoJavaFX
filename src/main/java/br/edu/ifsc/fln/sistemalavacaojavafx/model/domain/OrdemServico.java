@@ -90,18 +90,19 @@ public class OrdemServico {
         }
     }
 
-    public void removeItemOS(int index) throws  ExceptionLavacao{
+    public void removeItemOS(ItemOS itemOS) throws  ExceptionLavacao{
         if(status == EStatus.FECHADA || status == EStatus.CANCELADA) {
             throw new ExceptionLavacao("Não é possivel remover itens na OS fechada/cancelada!");
         }
-        try {
-            ItemOS itemOrdem = itensOrdemServico.get(index);
-            itensOrdemServico.remove(index); // Removendo pelo indice que o cliente for passar.
-            itemOrdem.setOrdemServico(null);
+        try{
+            itemOS.setOrdemServico(null);
+            int pontosItem = itemOS.getServico().getPontos();
             // Removendo a pontuação do cliente.
-            this.veiculo.getCliente().getPontuacao().subtrair(Servico.getPontos());
-        }catch (IndexOutOfBoundsException e){
-            throw new ExceptionLavacao("Não existe item nessa posição para remover (Lista vazia ou índice inválido).");
+            this.veiculo.getCliente().getPontuacao().subtrair(pontosItem);
+            itensOrdemServico.remove(itemOS);
+
+        }catch(ExceptionLavacao ex){
+            ex.printStackTrace();
         }
     }
 

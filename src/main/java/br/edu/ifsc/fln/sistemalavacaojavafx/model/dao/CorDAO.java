@@ -3,6 +3,8 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.model.dao;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.Database;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.database.DatabaseFactory;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Cor;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +26,7 @@ public class CorDAO {
         this.connection = connection;
     }
 
-    public boolean inserir(Cor cor) {
+    public void inserir(Cor cor) throws DAOException {
         String sql = "INSERT INTO cor(nome) VALUES(?)";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -34,7 +36,6 @@ public class CorDAO {
             stmt.setString(1, cor.getNome());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(CorDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -42,13 +43,14 @@ public class CorDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
-        }finally {
+            throw new DAOException("Não foi possível inserir a cor no banco de dados!\nMotivo: ",ex);
+        }
+        finally {
             database.desconectar(connection);
         }
     }
 
-    public boolean alterar(Cor cor) {
+    public void alterar(Cor cor) throws DAOException {
         String sql = "UPDATE cor SET nome=? WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -59,7 +61,6 @@ public class CorDAO {
             stmt.setInt(2, cor.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(CorDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -67,13 +68,13 @@ public class CorDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível alterar a cor no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public boolean remover(Cor cor) {
+    public void remover(Cor cor) throws DAOException {
         String sql = "DELETE FROM cor WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -83,7 +84,6 @@ public class CorDAO {
             stmt.setInt(1, cor.getId());
             stmt.execute();
             connection.commit();
-            return true;
         } catch (SQLException ex) {
             Logger.getLogger(CorDAO.class.getName()).log(Level.SEVERE, null, ex);
             try {
@@ -91,13 +91,13 @@ public class CorDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
-            return false;
+            throw new DAOException("Não foi possível excluir a cor no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }
     }
 
-    public List<Cor> listar() {
+    public List<Cor> listar() throws DAOException {
         String sql = "SELECT * FROM cor";
         List<Cor> CoresRetornada = new ArrayList<>();
 
@@ -121,18 +121,19 @@ public class CorDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
+            throw new DAOException("Não foi possível listar as cores no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }
         return CoresRetornada;
     }
 
-    public Cor buscar(Cor cor) {
+    public Cor buscar(Cor cor) throws DAOException {
         Cor CorRetornada = buscar(cor.getId());
         return CorRetornada;
     }
     
-    public Cor buscar(int id) {
+    public Cor buscar(int id) throws DAOException {
         String sql = "SELECT * FROM cor WHERE id=?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
@@ -155,6 +156,7 @@ public class CorDAO {
             }catch(SQLException ex1){
                 throw new RuntimeException(ex1);
             }
+            throw new DAOException("Não foi possível buscar a cor no banco de dados!\nMotivo: ",ex);
         }finally {
             database.desconectar(connection);
         }

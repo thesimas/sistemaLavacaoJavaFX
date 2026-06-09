@@ -157,11 +157,12 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
             if (ordemServicoAtualizada != null) {
                 ordemServicoDAO.alterar(ordemServicoAtualizada);
                 carregarTableViewOrdensDeServico();
-            }else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Esta operação requer a seleção de uma Ordem de Serviço na tabela ao lado!");
-                alert.show();
+                System.out.println("Ordem de Serviço alterada com sucesso");
             }
+        }else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Esta operação requer a seleção de uma Ordem de Serviço na tabela ao lado!");
+            alert.show();
         }
     }
 
@@ -170,7 +171,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
         OrdemServico ordemServico = tableViewOrdensDeServicos.getSelectionModel().getSelectedItem();
         if(ordemServico != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setContentText("Deseja realmente excluir esse cliente?");
+            alert.setContentText("Deseja realmente excluir essa Ordem de Serviço?");
             alert.showAndWait();
             if(alert.getResult() == ButtonType.OK){
                 ordemServicoDAO.excluir(ordemServico);

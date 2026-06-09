@@ -6,6 +6,8 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.VeiculoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -107,9 +109,13 @@ public class FXMLAnchorPaneCadastroVeiculoController implements Initializable {
             Modelo modelo = cellData.getValue().getModelo();
             return new SimpleStringProperty(modelo.getDescricao());
         });
-        
-        listaVeiculos = veiculoDAO.listar();
-        
+
+        try {
+            listaVeiculos = veiculoDAO.listar();
+        } catch (DAOException e) {
+            AlertDialog.exceptionMessage(e);
+        }
+
         observableListVeiculos = FXCollections.observableArrayList(listaVeiculos);
         tableViewVeiculos.setItems(observableListVeiculos);
     }
@@ -145,7 +151,11 @@ public class FXMLAnchorPaneCadastroVeiculoController implements Initializable {
         Veiculo veiculo = new Veiculo();
         boolean btConfirmarClicked = showFXMLAnchorPaneCadastroVeiculoDialog(veiculo);
         if (btConfirmarClicked) {
-            veiculoDAO.inserir(veiculo);
+            try {
+                veiculoDAO.inserir(veiculo);
+            } catch (DAOException e) {
+                AlertDialog.exceptionMessage(e);
+            }
             carregarTableViewVeiculos();
         }
     }
@@ -156,7 +166,11 @@ public class FXMLAnchorPaneCadastroVeiculoController implements Initializable {
         if (veiculo != null) {
             boolean btConfirmarClicked = showFXMLAnchorPaneCadastroVeiculoDialog(veiculo);
             if (btConfirmarClicked) {
-                veiculoDAO.alterar(veiculo);
+                try {
+                    veiculoDAO.alterar(veiculo);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewVeiculos();
             }
         } else {
@@ -174,7 +188,11 @@ public class FXMLAnchorPaneCadastroVeiculoController implements Initializable {
             alert.setContentText("Deseja realmente excluir esse Veículo?");
             alert.showAndWait();
             if(alert.getResult() == ButtonType.OK){
-                veiculoDAO.remover(veiculo);
+                try {
+                    veiculoDAO.remover(veiculo);
+                } catch (DAOException e) {
+                    AlertDialog.exceptionMessage(e);
+                }
                 carregarTableViewVeiculos();
             }
         } else {
