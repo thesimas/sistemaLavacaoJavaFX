@@ -6,10 +6,11 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.ExceptionLavacao;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class OrdemServicoDAO {
 
@@ -255,5 +256,54 @@ public class OrdemServicoDAO {
         }finally{
             database.desconectar(connection);
         }
+    }
+
+    public Map<Integer, ArrayList> listarQuantidadeVendasPorMes() {
+        String sql = "select count(numero) as count, extract(year from data_agendamento) as ano, "
+                + " extract(month from data_agendamento) as mes from ordem_de_servico group by ano, "
+                + "mes order by ano, mes";
+        Map<Integer, ArrayList> retorno = new HashMap();
+
+        Database database = DatabaseFactory.getDatabase("mysql");
+        Connection connection = database.conectar();
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet resultado = stmt.executeQuery();
+
+            while (resultado.next()) {
+                ArrayList linha = new ArrayList();
+                if (!retorno.containsKey(resultado.getInt("ano")))
+                {
+                    linha.add(resultado.getInt("mes"));
+                    linha.add(resultado.getInt("count"));
+                    retorno.put(resultado.getInt("ano"), linha);
+                }else{
+                    ArrayList linhaNova = retorno.get(resultado.getInt("ano"));
+                    linhaNova.add(resultado.getInt("mes"));
+                    linhaNova.add(resultado.getInt("count"));
+                }
+            }
+            if (retorno.size() > 0) {
+                retorno = ordenar(retorno);
+            }
+            return retorno;
+        } catch (SQLException ex) {
+            Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            database.desconectar(connection);
+        }
+        return retorno;
+    }
+
+    private Map<Integer, ArrayList> ordenar(Map<Integer, ArrayList> vendas) {
+        LinkedHashMap<Integer, ArrayList> orderedMap = vendas.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        Map.Entry::getValue, //
+                        (key, content) -> content, //
+                        LinkedHashMap::new));
+        return orderedMap;
     }
 }

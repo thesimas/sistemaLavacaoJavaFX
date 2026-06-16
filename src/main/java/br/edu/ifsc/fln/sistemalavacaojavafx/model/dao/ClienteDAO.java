@@ -221,20 +221,6 @@ public class ClienteDAO {
             String inscricaoEstadual = rs.getString("inscricao_estadual");
             cliente = new PessoaJuridica(id, nome, celular, email, dataCadastro.toLocalDate(), cnpj, inscricaoEstadual);
         }
-        // Associando o Cliente ao veiculo.
-        VeiculoDAO veiculoDAO = new VeiculoDAO();
-        List<Veiculo> veiculos = null;
-        try {
-            veiculos = veiculoDAO.buscarVeiculoCliente(id);
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
-
-        for (int x = 0; x < veiculos.size(); x++) {
-            Veiculo veiculo = veiculos.get(x);
-            cliente.addVeiculo(veiculo);
-        }
-
         //Associando os pontos ao cliente.
         cliente.getPontuacao().setQuantidade(pontuacao);
 

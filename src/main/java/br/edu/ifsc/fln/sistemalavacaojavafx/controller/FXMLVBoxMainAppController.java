@@ -111,7 +111,12 @@ public class FXMLVBoxMainAppController implements Initializable {
 
     @FXML
     public void handleMenuItemGraficosVendasPorMes() throws IOException {
-        //TODO not implemented yet
+        AnchorPane a = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/FXNLAnchorPaneGraficoVendasPorMes.fxml"));
+        AnchorPane.setTopAnchor(a, 0.0);
+        AnchorPane.setBottomAnchor(a, 0.0);
+        AnchorPane.setLeftAnchor(a, 0.0);
+        AnchorPane.setRightAnchor(a, 0.0);
+        anchorPane.getChildren().setAll(a);
     }
 
     @FXML

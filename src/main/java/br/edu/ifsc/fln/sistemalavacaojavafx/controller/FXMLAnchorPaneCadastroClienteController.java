@@ -1,6 +1,7 @@
 package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ClienteDAO;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.VeiculoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
@@ -15,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -89,9 +91,20 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         carregarTableViewClientes();
-        
+
         tableViewClientes.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> selecionarItemTableViewClientes(newValue));
+                (observable, oldValue, newValue) -> {
+                    selecionarItemTableViewClientes(newValue);
+                    if (newValue != null) {
+                        VeiculoDAO veiculoDAO = new VeiculoDAO();
+                        try {
+                            List<Veiculo> veiculosDoCliente = veiculoDAO.buscarVeiculoCliente(newValue.getId());
+                            tableViewClientesVeiculos.setItems(FXCollections.observableArrayList(veiculosDoCliente));
+                        } catch (DAOException e) {
+                            AlertDialog.exceptionMessage(e);
+                        }
+                    }
+                });
 
     }
 
@@ -100,19 +113,19 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
 
         tableColumnClienteTipo.setCellValueFactory(celldata -> {
             Cliente cliente = celldata.getValue();
-            if(cliente instanceof PessoaFisica){
+            if (cliente instanceof PessoaFisica) {
                 return new SimpleStringProperty(((PessoaFisica) cliente).getTipo());
-            }else {
+            } else {
                 return new SimpleStringProperty(((PessoaJuridica) cliente).getTipo());
             }
         });
 
         tableColumnClienteDocumento.setCellValueFactory(celldata -> {
             Cliente cliente = celldata.getValue();
-            if (cliente instanceof PessoaJuridica){
-                return new SimpleStringProperty(((PessoaJuridica)cliente).getCnpj());
-            }else {
-                return new SimpleStringProperty(((PessoaFisica)cliente).getCpf());
+            if (cliente instanceof PessoaJuridica) {
+                return new SimpleStringProperty(((PessoaJuridica) cliente).getCnpj());
+            } else {
+                return new SimpleStringProperty(((PessoaFisica) cliente).getCpf());
             }
         });
 
@@ -134,7 +147,7 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
         observableListClientes = FXCollections.observableArrayList(listaClientes);
         tableViewClientes.setItems(observableListClientes);
     }
-    
+
     public void selecionarItemTableViewClientes(Cliente cliente) {
         if (cliente != null) {
             lbClienteId.setText(String.valueOf(cliente.getId()));
@@ -148,18 +161,18 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
                 lbInscricaoEstadual.setText("Data de Nascimento:");
                 lbClienteDocumento.setText(((PessoaFisica) cliente).getCpf());
                 lbClienteLegenda.setText(String.valueOf(((PessoaFisica) cliente).getDataNascimento()));
-            }else {
+            } else {
                 lbCnpj.setText("CNPJ:");
                 lbInscricaoEstadual.setText("Incrisção Estadual:");
-                lbClienteDocumento.setText(((PessoaJuridica)cliente).getCnpj());
-                lbClienteLegenda.setText(((PessoaJuridica)cliente).getInscricaoEstadual());
+                lbClienteDocumento.setText(((PessoaJuridica) cliente).getCnpj());
+                lbClienteLegenda.setText(((PessoaJuridica) cliente).getInscricaoEstadual());
             }
 
             List<Veiculo> veiculosCliente = cliente.getListaDeVeiculos();
             if (veiculosCliente != null) {
                 ObservableList<Veiculo> veiculos = FXCollections.observableArrayList(veiculosCliente);
                 tableViewClientesVeiculos.setItems(veiculos);
-            }else {
+            } else {
                 tableViewClientesVeiculos.setItems(FXCollections.observableArrayList());
             }
             lbClientePontos.setText(String.valueOf(cliente.getPontuacao().getQuantidade()));
@@ -175,7 +188,7 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             tableViewClientesVeiculos.setItems(FXCollections.observableArrayList());
         }
     }
-    
+
     @FXML
     public void handleBtInserir() throws IOException {
         Cliente cliente = null;
@@ -189,8 +202,8 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             carregarTableViewClientes();
         }
     }
-    
-    @FXML 
+
+    @FXML
     public void handleBtAlterar() throws IOException {
         Cliente clienteSelecionado = tableViewClientes.getSelectionModel().getSelectedItem();
         if (clienteSelecionado != null) {
@@ -209,7 +222,7 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             alert.show();
         }
     }
-    
+
     @FXML
     public void handleBtExcluir() throws IOException {
         Cliente cliente = tableViewClientes.getSelectionModel().getSelectedItem();
@@ -217,7 +230,7 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setContentText("Deseja realmente excluir esse cliente?");
             alert.showAndWait();
-            if(alert.getResult() == ButtonType.OK){
+            if (alert.getResult() == ButtonType.OK) {
                 try {
                     clienteDAO.remover(cliente);
                 } catch (DAOException e) {
@@ -252,7 +265,7 @@ public class FXMLAnchorPaneCadastroClienteController implements Initializable {
         //apresenta o diálogo e aguarda a confirmação do usuário
         dialogStage.showAndWait();
 
-        if(controller.isBtConfirmarClicked()){
+        if (controller.isBtConfirmarClicked()) {
             return controller.getCliente();
         }
         return null;

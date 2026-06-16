@@ -304,9 +304,9 @@ VALUES ('ABC-1234', 'Carro de uso diário', 1, 1, 1),
 
 INSERT INTO ordem_de_servico (numero, total, data_agendamento, desconto, status, id_veiculo)
 VALUES
-    (2026001, 430.00, '2026-06-10', 0.00, 'FECHADA', 1),  -- OS do Onix (Luciano)
-    (2026002, 250.00, '2026-06-11', 0.00, 'ABERTA', 2),   -- OS do Civic (Marina)
-    (2026003, 120.00, '2026-06-12', 0.00, 'ABERTA', 10);  -- OS do veiculo da frota Uber
+    (2026001, 430.00, '2026-05-10', 0.00, 'FECHADA', 1),  -- OS do Onix (Luciano)
+    (2026002, 250.00, '2026-05-11', 0.00, 'FECHADA', 2),   -- OS do Civic (Marina)
+    (2026003, 200.00, '2026-04-12', 0.00, 'ABERTA', 10);-- OS do veiculo da frota Uber
 
 INSERT INTO item_os (numero_ordem_de_servico, valor_servico, observacoes, id_servico)
 VALUES

@@ -255,15 +255,18 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                 ObservableList<ItemOS> itemOS = FXCollections.observableArrayList(this.ordemServico.getItensOS());
                 tableViewOrdemServicoServicos.setItems(itemOS);
                 try {
-                    this.lbValorTotal.setText(String.valueOf(ordemServico.getTotal()));
-                } catch (ExceptionLavacao e) {
-                    AlertDialog.exceptionMessage(e);
-                }
-                try {
                     this.lbSubtotal.setText(String.valueOf(ordemServico.getTotalServicoSemDesconto()));
                 } catch (ExceptionLavacao e) {
                     AlertDialog.exceptionMessage(e);
                 }
+                try {
+                    this.lbValorTotal.setText(String.valueOf(ordemServico.getTotal()));
+                } catch (ExceptionLavacao e) {
+                    AlertDialog.exceptionMessage(e);
+                }
+            } else {
+                ObservableList<ItemOS> itemOS = FXCollections.observableArrayList();
+                tableViewOrdemServicoServicos.setItems(itemOS);
             }
         }
     }
@@ -440,6 +443,12 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         }
         if (ordemServico.getItensOS().isEmpty()) {
             errorMessage += "A Ordem de Serviço deve ter ao menos um serviço adcionado!\n";
+        }
+        if(tfNumeroOs.getText().isEmpty()){
+            errorMessage += "A ordem de serviço deverá ter um número de OS informado!\n";
+        }
+        if(dpData.getValue().isAfter(LocalDate.now())){
+            errorMessage += "Não é possivel criar uma Ordem de Serviço com datas futuras!\n";
         }
 
         if (errorMessage.length() == 0) {

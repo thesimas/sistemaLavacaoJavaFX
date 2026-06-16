@@ -40,8 +40,8 @@ public class VeiculoDAO {
             stmt.setInt(4, veiculo.getModelo().getId());
             stmt.setInt(5, veiculo.getCliente().getId());
             stmt.execute();
-            connection.commit();
             stmt.close();
+            connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -69,8 +69,8 @@ public class VeiculoDAO {
             stmt.setInt(5, veiculo.getCliente().getId());
             stmt.setInt(6, veiculo.getId());
             stmt.execute();
-            connection.commit();
             stmt.close();
+            connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -93,8 +93,8 @@ public class VeiculoDAO {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, veiculo.getId());
             stmt.execute();
-            connection.commit();
             stmt.close();
+            connection.commit();
         } catch (SQLException ex) {
             Logger.getLogger(VeiculoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{

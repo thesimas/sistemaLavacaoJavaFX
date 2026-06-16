@@ -134,6 +134,7 @@ public class CorDAO {
     
     public Cor buscar(int id) throws DAOException {
         String sql = "SELECT * FROM cor WHERE id=?";
+
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         
@@ -154,6 +155,7 @@ public class CorDAO {
         }finally {
             database.desconectar(connection);
         }
+
         return CorRetornada;
     }
 }
