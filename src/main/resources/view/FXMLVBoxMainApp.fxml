@@ -57,6 +57,6 @@
             <Insets />
          </VBox.margin>
       </MenuBar>
-      <AnchorPane fx:id="anchorPane" prefHeight="487.0" prefWidth="661.0" styleClass="telaFundo" stylesheets="@../css/Style.css" />
+       <AnchorPane fx:id="anchorPane" prefHeight="487.0" prefWidth="661.0" />
    </children>
 </VBox>

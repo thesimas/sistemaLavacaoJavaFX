@@ -1,10 +1,10 @@
-. root {
+.root {
     -fx-background-color: lightgray;
     -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .telaFundo {
-    -fx-background-image: url('/imagens/lava_jato.png');
+    -fx-background-image: url('../imagens/lava_jato.png');
     -fx-background-size: cover;
     -fx-background-position: center center;
     -fx-background-repeat: no-repeat;
