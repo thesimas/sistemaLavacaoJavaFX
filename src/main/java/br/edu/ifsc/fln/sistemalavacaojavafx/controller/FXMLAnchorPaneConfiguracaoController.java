@@ -6,11 +6,18 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.ECategoria;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Servico;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -71,7 +78,6 @@ public class FXMLAnchorPaneConfiguracaoController implements Initializable {
 
     }
 
-
     @FXML
     public void handleBtConfirmar() {
 
@@ -90,15 +96,14 @@ public class FXMLAnchorPaneConfiguracaoController implements Initializable {
         }
         Servico.setPontos(configuracaoAtual.getPontos());
 
-
-        AnchorPane painelPrincipal = (AnchorPane) AnchorPaneConfiguracoes.getParent();
-        painelPrincipal.getChildren().clear();
+        Stage stage = (Stage) btConfirmar.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
     public void handleBtCancelar() {
-        AnchorPane painelPrincipal = (AnchorPane) AnchorPaneConfiguracoes.getParent();
-        painelPrincipal.getChildren().clear();
+        Stage stage = (Stage) btCancelar.getScene().getWindow();
+        stage.close();
     }
 
     public void informativo(){
@@ -114,10 +119,6 @@ public class FXMLAnchorPaneConfiguracaoController implements Initializable {
 
         alert.setContentText(instrucoes);
         alert.showAndWait();
-        if (alert.getResult() == ButtonType.CANCEL) {
-            AnchorPane painelPrincipal = (AnchorPane) AnchorPaneConfiguracoes.getParent();
-            painelPrincipal.getChildren().clear();
-        }
     }
 
 }

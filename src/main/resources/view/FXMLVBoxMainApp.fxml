@@ -41,7 +41,7 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Relatórios">
               <items>
-                <MenuItem fx:id="menuItemRelatorioEstoque" mnemonicParsing="false" onAction="#handleMenuItemRelatorioEstoqueProdutos" text="Lavação" />
+                <MenuItem fx:id="menuItemRelatorios" mnemonicParsing="false" onAction="#handleMenuItemRelatorios" text="Lavação" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Configurações">

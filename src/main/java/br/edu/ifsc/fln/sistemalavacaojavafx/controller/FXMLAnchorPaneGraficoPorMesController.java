@@ -3,12 +3,16 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.OrdemServicoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +21,8 @@ import java.util.ResourceBundle;
 
 public class FXMLAnchorPaneGraficoPorMesController implements Initializable {
 
-
+    @FXML
+    private Button btFechar;
     @FXML
     private BarChart<String, Integer> barChart;
     @FXML
@@ -51,6 +56,13 @@ public class FXMLAnchorPaneGraficoPorMesController implements Initializable {
             }
             barChart.getData().add(series);
         }
+    }
+
+    @FXML
+    public void handleBtFechar() {
+        // Pega a janela atual a partir do botão e fecha
+        Stage stage = (Stage) btFechar.getScene().getWindow();
+        stage.close();
     }
 
     private String retornaNomeMes(int mes) {
