@@ -3,6 +3,7 @@ module br.edu.ifsc.fln.sistemalavacaojavafx {
     requires javafx.fxml;
     requires java.sql;
     requires jdk.jshell;
+    requires jasperreports;
 
 
     opens br.edu.ifsc.fln.sistemalavacaojavafx to javafx.fxml;

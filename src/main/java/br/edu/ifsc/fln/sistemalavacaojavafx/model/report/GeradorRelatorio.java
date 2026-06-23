@@ -11,10 +11,37 @@ import net.sf.jasperreports.view.JasperViewer;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
 
 public class GeradorRelatorio {
 
-    public void imprimirRelatorioPadrao(String caminhoRelatorio, String tituloJanela) {
+    public void imprimirRelatorio(String caminhoRelatorio, String tituloJanela, HashMap<String, Object> parametros) {
+        Database database = DatabaseFactory.getDatabase("mysql");
+        Connection connection = database.conectar();
+
+        try {
+            URL url = getClass().getResource(caminhoRelatorio);
+            if (url == null) {
+                System.out.println("ERRO: Arquivo Jasper não encontrado no caminho: " + caminhoRelatorio);
+                return;
+            }
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(url);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, connection);
+
+            JasperViewer viewer = new JasperViewer(jasperPrint, false);
+            viewer.setTitle(tituloJanela);
+            viewer.setVisible(true);
+        } catch (JRException ex) {
+            System.err.println("Erro ao gerar o relatório Jasper: " + ex.getMessage());
+            ex.printStackTrace();
+        } finally {
+            database.desconectar(connection);
+        }
+    }
+
+    public void imprimirRelatorio(String caminhoRelatorio, String tituloJanela) {
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
 

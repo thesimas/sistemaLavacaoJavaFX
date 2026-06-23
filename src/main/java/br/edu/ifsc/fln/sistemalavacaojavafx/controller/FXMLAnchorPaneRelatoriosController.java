@@ -20,10 +20,11 @@ public class FXMLAnchorPaneRelatoriosController {
     @FXML
     private Button btImprimirVeiculos;
 
+    private GeradorRelatorio geradorRelatorio = new GeradorRelatorio();
+
     @FXML
     void handleBtClientes(ActionEvent event) {
-        GeradorRelatorio geradorRelatorio = new GeradorRelatorio();
-        geradorRelatorio.imprimirRelatorioPadrao("/relatorios/listagemDosClientes.jasper", "Relatório dos Clientes");
+        geradorRelatorio.imprimirRelatorio("/relatorios/listagemDosClientes.jasper", "Relatório dos Clientes");
     }
 
     @FXML
@@ -34,13 +35,11 @@ public class FXMLAnchorPaneRelatoriosController {
 
     @FXML
     void handleBtServicos(ActionEvent event) {
-        GeradorRelatorio geradorRelatorio = new GeradorRelatorio();
-        geradorRelatorio.imprimirRelatorioPadrao("/relatorios/listagemDosServicos.jasper", "Relatório dos Serviços");
+        geradorRelatorio.imprimirRelatorio("/relatorios/listagemDosServicos.jasper", "Relatório dos Serviços");
     }
 
     @FXML
     void handleBtVeiculos(ActionEvent event) {
-        GeradorRelatorio geradorRelatorio = new GeradorRelatorio();
-        geradorRelatorio.imprimirRelatorioPadrao("/relatorios/listagemDosVeiculos.jasper", "Relatório dos Veiculos");
+        geradorRelatorio.imprimirRelatorio("/relatorios/listagemDosVeiculos.jasper", "Relatório dos Veiculos");
     }
 }

@@ -4,6 +4,7 @@ import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.OrdemServicoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.DAOException;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.exceptions.ExceptionLavacao;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.report.GeradorRelatorio;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.utils.AlertDialog;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -157,6 +159,31 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
             tableViewOrdemDeServicoItemOs.setItems(FXCollections.observableArrayList());
         }
     }
+
+    @FXML
+    void handleBtImprimir(ActionEvent event) {
+        OrdemServico ordemServicoSelecionada = tableViewOrdensDeServicos.getSelectionModel().getSelectedItem();
+        if(ordemServicoSelecionada != null) {
+            if(ordemServicoSelecionada.getStatus() == EStatus.FECHADA){
+                HashMap<String, Object> parametros = new HashMap<>();
+                parametros.put("ordemServicoSelecionada", ordemServicoSelecionada.getNumero());
+
+                GeradorRelatorio gerador = new GeradorRelatorio();
+                gerador.imprimirRelatorio("/relatorios/ordemDeServico.jasper", "Comprovante de Serviço", parametros);
+            }else {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Atenção");
+                alert.setHeaderText("Ordem de Serviço não finalizada");
+                alert.setContentText("Apenas Ordens de Serviço com status FECHADA podem ser impressas.");
+                alert.show();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Por favor, selecione uma Ordem de Serviço na tabela.");
+            alert.show();
+        }
+    }
+
 
     @FXML
     void handleBtAlterar(ActionEvent event) throws IOException {
