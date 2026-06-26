@@ -21,6 +21,7 @@ import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -166,11 +167,35 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         }
         // Ouvinte que irá listar os veiculos de acordo com o cliente selecionado.
         cbCliente.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+
             // Limpando os dados do veiculo sempre que o cliente for alterado na seleção do comboBox.
             cbPlaca.getSelectionModel().clearSelection();
             tfCategoria.setText("");
             tfModelo.setText("");
             tfMarca.setText("");
+
+            // Limpando a tableView de ItensOS sempre que o cliente for alterado.
+            // Criando uma cópia da lista de itens de OS para evitar a exceção do ConcurrentModification.
+            List<ItemOS> itensParaRemover = new ArrayList<>(ordemServico.getItensOS());
+            for(ItemOS item : itensParaRemover){
+                try {
+                    ordemServico.removeItemOS(item);
+                } catch (ExceptionLavacao e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            ObservableList<ItemOS> itemOS = FXCollections.observableArrayList();
+            tableViewOrdemServicoServicos.setItems(itemOS);
+
+            //Limpando os valores.
+            cbServico.getSelectionModel().clearSelection();
+            cbServico.setValue(null);
+            tfObservacoesServico.setText("");
+            spValorAlterado.getValueFactory().setValue(null);
+            spDesconto.getValueFactory().setValue(null);
+            lbValorTotal.setText("0.0");
+            lbSubtotal.setText("0.0");
+
             if (newValue != null) {
                 cbPlaca.setDisable(false);
                 List<Veiculo> veiculosCliente = null;
@@ -362,6 +387,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                         }else {
                             this.ordemServico.addItemOS(observacao, servicoSelecionado);
                         }
+
                         ObservableList<ItemOS> itemOS = FXCollections.observableArrayList(this.ordemServico.getItensOS());
                         tableViewOrdemServicoServicos.setItems(itemOS);
 
