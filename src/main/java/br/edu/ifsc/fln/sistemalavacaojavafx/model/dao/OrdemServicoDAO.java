@@ -27,6 +27,7 @@ public class OrdemServicoDAO {
     public void inserir(OrdemServico ordemServico) throws DAOException {
         String sql = "INSERT INTO ordem_de_servico (numero, total, data_agendamento, desconto, status, id_veiculo) VALUES (?, ?, ?, ?, ?, ?)";
         String sqlItemOs = "INSERT INTO item_os (numero_ordem_de_servico, valor_servico, observacoes, id_servico) VALUES (?, ?, ?, ?)";
+        String sqlPontuacao = "UPDATE pontuacao SET quantidade = ? WHERE id_cliente = ?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
@@ -54,8 +55,12 @@ public class OrdemServicoDAO {
                 stmt.setInt(4, item.getServico().getId());
                 stmt.execute();
             }
-            connection.commit();
+            stmt = connection.prepareStatement(sqlPontuacao);
+            stmt.setInt(1, ordemServico.getVeiculo().getCliente().getPontuacao().getQuantidade());
+            stmt.setInt(2, ordemServico.getVeiculo().getCliente().getId());
+            stmt.execute();
             stmt.close();
+            connection.commit();
         }catch(SQLException ex){
             Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             try{
@@ -73,6 +78,7 @@ public class OrdemServicoDAO {
         String sql = "UPDATE ordem_de_servico SET numero=?, total=?, data_agendamento=?, desconto=?, status=?, id_veiculo=? WHERE numero=?";
         String sqlDeleteItens = "DELETE FROM item_os WHERE numero_ordem_de_servico = ?";
         String sqlItemOs = "INSERT INTO item_os (numero_ordem_de_servico, valor_servico, observacoes, id_servico) VALUES (?, ?, ?, ?)";
+        String sqlPontuacao = "UPDATE pontuacao SET quantidade = ? WHERE id_cliente = ?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
@@ -105,6 +111,10 @@ public class OrdemServicoDAO {
                 stmt.setInt(4, item.getServico().getId());
                 stmt.execute();
             }
+            stmt = connection.prepareStatement(sqlPontuacao);
+            stmt.setInt(1, ordemServico.getVeiculo().getCliente().getPontuacao().getQuantidade());
+            stmt.setInt(2, ordemServico.getVeiculo().getCliente().getId());
+            stmt.execute();
             stmt.close();
             connection.commit();
         }catch(SQLException ex){
@@ -122,6 +132,7 @@ public class OrdemServicoDAO {
 
     public void excluir (OrdemServico ordemServico) throws DAOException {
         String sql = "DELETE FROM ordem_de_servico WHERE numero=?";
+        String sqlPontuacao = "UPDATE pontuacao SET quantidade = ? WHERE id_cliente = ?";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
         try {
@@ -129,6 +140,13 @@ public class OrdemServicoDAO {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setLong(1, ordemServico.getNumero());
             stmt.execute();
+            //Sempre que uma OS é excluida os pontos daquele cliente é removido também.
+            int pontuacao = Servico.getPontos() * ordemServico.getItensOS().size();
+            stmt =  connection.prepareStatement(sqlPontuacao);
+            stmt.setInt(1, pontuacao);
+            stmt.setLong(2, ordemServico.getVeiculo().getCliente().getId());
+            stmt.execute();
+
             connection.commit();
             stmt.close();
         }catch(SQLException ex){
