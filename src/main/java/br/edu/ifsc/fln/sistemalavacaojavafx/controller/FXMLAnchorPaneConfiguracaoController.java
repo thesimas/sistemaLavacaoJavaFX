@@ -55,10 +55,10 @@ public class FXMLAnchorPaneConfiguracaoController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //                                                                  Valor Mínimo, Valor Máximo, Valor Inicial, Passo (Step)
         spPontos.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 200, 0, 1));
-        spPorcentagemPequeno.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1, 2.0, 1.0, 0.05));
-        spPorcentagemMedio.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1, 2.0, 1.0, 0.05));
-        spPorcentagemGrande.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1, 2.0, 1.0, 0.05));
-        spPorcentagemMoto.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.1, 2.0, 1.0, 0.05));
+        spPorcentagemPequeno.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100, 200, 0, 1));
+        spPorcentagemMedio.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100, 200, 0, 1));
+        spPorcentagemGrande.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100, 200, 0, 1));
+        spPorcentagemMoto.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(-100, 200, 0, 1));
 
         try {
             configuracaoAtual = configuracaoDAO.buscar(1);
@@ -112,9 +112,9 @@ public class FXMLAnchorPaneConfiguracaoController implements Initializable {
         alert.setHeaderText("Como funcionam os multiplicadores de valor?");
 
         String instrucoes = "Os valores definidos abaixo funcionam como fatores multiplicadores sobre o preço base de cada serviço:\n\n"
-                + "• Valor 1.0: Mantém o valor original do serviço (100%).\n"
-                + "• Valores maiores que 1.0: Aplicam um acréscimo. (Ex: 1.20 aumenta o valor em 20%).\n"
-                + "• Valores menores que 1.0: Aplicam um desconto. (Ex: 0.90 concede 10% de desconto).\n"
+                + "• Valor 0: Mantém o valor original do serviço (100%).\n"
+                + "• Valores maiores que 0: Aplicam um acréscimo. (Ex: 20 aumenta o valor em 20%).\n"
+                + "• Valores menores que 0: Aplicam um desconto. (Ex: -10 concede 10% de desconto).\n"
                 + "Ajuste as setas ou digite o valor decimal desejado para cada categoria.";
 
         alert.setContentText(instrucoes);

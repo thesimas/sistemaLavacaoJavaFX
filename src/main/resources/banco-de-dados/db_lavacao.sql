@@ -165,7 +165,7 @@ VALUES ('Polimento Cristalizado', 350.00, 'PADRAO'),
        ('Lavação Caminhonete', 180.00, 'GRANDE');
 
 INSERT INTO configuracao_sistema (pontos, porcentagem_pequeno, porcentagem_medio, porcentagem_grande, porcentagem_moto)
-VALUES (20, 1, 1, 1, 1);
+VALUES (20, 0, 0, 0, 0);
 
 INSERT INTO modelo (descricao, categoria, id_marca)
 VALUES ('Onix', 'PEQUENO', 1),

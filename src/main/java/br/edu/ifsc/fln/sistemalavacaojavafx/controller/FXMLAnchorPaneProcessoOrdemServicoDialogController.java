@@ -1,6 +1,7 @@
 package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ClienteDAO;
+import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ConfiguracaoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.ServicoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.VeiculoDAO;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.*;
@@ -22,6 +23,7 @@ import javafx.util.StringConverter;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -69,7 +71,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
     private TableColumn<ItemOS, String> tableColumnOSServico;
 
     @FXML
-    private TableColumn<ItemOS, Double> tableColumnOSValor;
+    private TableColumn<ItemOS, String> tableColumnOSValor;
 
     @FXML
     private TableView<ItemOS> tableViewOrdemServicoServicos;
@@ -107,7 +109,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         // Minimo, maximo, valorInicial, step
         spValorAlterado.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 1000.0, 0.0));
         spDesconto.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 100.0, 0.0));
-
+        spDesconto.setEditable(false);
         cbStatus.setItems(FXCollections.observableArrayList(EStatus.values()));
 
         try {
@@ -191,8 +193,8 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
             cbServico.getSelectionModel().clearSelection();
             cbServico.setValue(null);
             tfObservacoesServico.setText("");
-            spValorAlterado.getValueFactory().setValue(null);
-            spDesconto.getValueFactory().setValue(null);
+            spValorAlterado.getValueFactory().setValue(0.0);
+            spDesconto.getValueFactory().setValue(0.0);
             lbValorTotal.setText("0.0");
             lbSubtotal.setText("0.0");
 
@@ -237,7 +239,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
 
         tableColumnOSValor.setCellValueFactory(cellData -> {
             ItemOS itemLinha = cellData.getValue();
-            return new SimpleObjectProperty<>(itemLinha.getValorServico());
+            return new SimpleObjectProperty<>(String.format("%.2f", itemLinha.getValorServico()));
         });
 
         tableColumnOSObservacao.setCellValueFactory(cellData -> {
@@ -385,7 +387,19 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                         if (valorAlterado != null && valorAlterado > 0) {
                             this.ordemServico.addItemOS(valorAlterado, observacao, servicoSelecionado);
                         }else {
-                            this.ordemServico.addItemOS(observacao, servicoSelecionado);
+
+                            ConfiguracaoDAO configuracaoDAO = new ConfiguracaoDAO();
+                            Configuracao configuracaoAtual;
+                            try {
+                                configuracaoAtual = configuracaoDAO.buscar(1);
+                            } catch (DAOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            HashMap<ECategoria, Double> hashPorcentagens = configuracaoAtual.getPorcentagens();
+                            double porcentagem = hashPorcentagens.get(ECategoria.valueOf(tfCategoria.getText()));
+                            double valorDaCategoria = cbServico.getSelectionModel().getSelectedItem().CalcularValorPelaCategoria(porcentagem);
+
+                            this.ordemServico.addItemOS(valorDaCategoria, observacao, servicoSelecionado);
                         }
 
                         ObservableList<ItemOS> itemOS = FXCollections.observableArrayList(this.ordemServico.getItensOS());

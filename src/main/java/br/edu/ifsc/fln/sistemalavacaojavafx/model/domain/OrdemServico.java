@@ -62,14 +62,10 @@ public class OrdemServico {
         } else if (status == EStatus.CANCELADA) {
             throw new ExceptionLavacao("Não é possivel adicionar itens na OS, pois ela está cancelada!");
         }else {
-            //Quando eu fizer a lógica de calcular o valor do serviço pela categoria, terei que consultar
-            // o banco de dados da tabela configuracoes_sistema, pois ela guarda as porcentagens de cada categoria.
-
             double valor = servico.calculaValorPelaCategoria(veiculo.getModelo().getCategoria());
-            int pontosCliente = servico.getPontos();
 
             // Associando os pontos a pontuação do cliente.
-            this.veiculo.getCliente().getPontuacao().adicionar(pontosCliente);
+            this.veiculo.getCliente().getPontuacao().adicionar(servico.getPontos());
 
             ItemOS itemOrdem = new ItemOS(valor, observacoes, this, servico);
             itensOrdemServico.add(itemOrdem);
@@ -86,7 +82,7 @@ public class OrdemServico {
             itemOrdem.setOrdemServico(this);
 
             // Associando os pontos a pontuação do cliente.
-            this.veiculo.getCliente().getPontuacao().adicionar(Servico.getPontos());
+            this.veiculo.getCliente().getPontuacao().adicionar(servico.getPontos());
         }
     }
 

@@ -125,6 +125,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
     }
 
     public void selecionarItemTableViewOrdensDeServico(OrdemServico ordemServico) {
+        System.out.println(ordemServico.getVeiculo().getCliente().getPontuacao().getQuantidade());
         if(ordemServico != null) {
             if(ordemServico.getItensOS().isEmpty()){
                 ordemServicoDAO.carregarItemOS(ordemServico);

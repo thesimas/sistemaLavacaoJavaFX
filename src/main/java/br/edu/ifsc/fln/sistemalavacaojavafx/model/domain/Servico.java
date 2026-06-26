@@ -19,17 +19,8 @@ public class Servico {
         this.categoria = categoria;
     }
 
-    public double CalcularValorPelaCategoria(ECategoria categoria, Configuracao configuracao) {
-
-        if(categoria == ECategoria.PADRAO) {
-            return this.valor;
-        }
-
-        HashMap<ECategoria, Double> porcentagens = configuracao.getPorcentagens();
-
-        double precoFinal = this.valor * porcentagens.get(categoria);
-
-        return precoFinal;
+    public double CalcularValorPelaCategoria(double porcentagem) {
+        return this.valor + (this.valor * porcentagem / 100);
     }
 
     // Lógica do valor do serviço referente a categoria do veiculo.
