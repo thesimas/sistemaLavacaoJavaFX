@@ -100,6 +100,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
     private Stage dialogStage;
     private boolean btConfirmarClicked = false;
     private OrdemServico ordemServico;
+    private List<Servico> todosServicos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -113,7 +114,8 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         cbStatus.setItems(FXCollections.observableArrayList(EStatus.values()));
 
         try {
-            cbServico.setItems(FXCollections.observableArrayList(servicoDAO.listar()));
+            todosServicos = servicoDAO.listar();
+            cbServico.setItems(FXCollections.observableArrayList(todosServicos));
         } catch (DAOException e) {
             AlertDialog.exceptionMessage(e);
         }
@@ -368,6 +370,17 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
             tfMarca.setText(cbPlaca.getSelectionModel().getSelectedItem().getModelo().getMarca().getNome());
             tfModelo.setText(cbPlaca.getSelectionModel().getSelectedItem().getModelo().getDescricao());
             tfCategoria.setText(cbPlaca.getSelectionModel().getSelectedItem().getModelo().getCategoria().name());
+
+            // Filtrando serviços com base na categoria do veiculo
+            List<Servico> servicosFiltrado = new ArrayList<>();
+            ECategoria categoriaDoVeiculo = cbPlaca.getSelectionModel().getSelectedItem().getModelo().getCategoria();
+            for(Servico servico : todosServicos) {
+                if(servico.getCategoria() == categoriaDoVeiculo || servico.getCategoria() == ECategoria.PADRAO) {
+                    servicosFiltrado.add(servico);
+                }
+            }
+
+            cbServico.setItems(FXCollections.observableArrayList(servicosFiltrado));
         }
     }
 
