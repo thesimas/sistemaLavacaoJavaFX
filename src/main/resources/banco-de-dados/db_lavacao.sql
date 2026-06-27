@@ -316,19 +316,31 @@ VALUES ('ABC-1234', 'Carro de uso diário', 1, 1, 1),
 
 INSERT INTO ordem_de_servico (numero, total, data_agendamento, desconto, status, id_veiculo)
 VALUES
-    (2026001, 430.00, '2026-05-10', 0.00, 'FECHADA', 1),  -- OS do Onix (Luciano)
-    (2026002, 250.00, '2026-05-11', 0.00, 'FECHADA', 2),   -- OS do Civic (Marina)
-    (2026003, 200.00, '2026-04-12', 0.00, 'ABERTA', 10);-- OS do veiculo da frota Uber
+    (2026001, 340.00, '2026-05-10', 0.00, 'FECHADA', 1),  -- OS do Onix (Luciano)
+    (2026002, 85.00, '2026-05-11', 0.00, 'FECHADA', 2),   -- OS do Civic (Marina)
+    (2026003, 85.00, '2026-04-12', 0.00, 'FECHADA', 10),
+    (2026004, 430.00, '2026-01-15', 0.00, 'FECHADA', 3),  -- Caminhonete da Locadora
+    (2026005, 440.00, '2026-02-10', 0.00, 'FECHADA', 5),  -- Jeep Compass
+    (2026006, 85.00, '2026-02-22', 0.00, 'FECHADA', 12),  -- Táxi VIP
+    (2026007, 85.00, '2026-03-05', 0.00, 'FECHADA', 15),  -- Veículo de Apoio
+    (2026008, 600.00, '2026-04-18', 0.00, 'FECHADA', 8),  -- Cliente Ana Beatriz
+    (2026009, 340.00, '2026-06-02', 0.00, 'FECHADA', 14), -- Carro Blindado
+    (2026010, 85.00, '2026-07-20', 0.00, 'FECHADA', 9);   -- Chave Presencial
 
 INSERT INTO item_os (numero_ordem_de_servico, valor_servico, observacoes, id_servico)
 VALUES
-    -- Itens da OS 2026001 (Total = 430.00)
-    (2026001, 350.00, 'Polimento cristalizado com foco no capô', 1), -- Serviço 1: Polimento
-    (2026001, 80.00, 'Lavação de motor a seco', 3),                  -- Serviço 3: Lavação Motor
-
-    -- Item da OS 2026002 (Total = 250.00)
-    (2026002, 250.00, 'Cliente pediu atenção especial aos tapetes', 2), -- Serviço 2: Higienização
-
-    -- Itens da OS 2026003 (Total = 120.00)
-    (2026003, 40.00, 'Lavação rápida', 4),                           -- Serviço 4: Lavação Simples
-    (2026003, 80.00, 'Incluir motor para revisão mecânica', 3);      -- Serviço 3: Lavação Motor
+    (2026001, 90.00, 'Lavação completa no capricho', 16),
+    (2026001, 250.00, 'Tirar manchas do banco', 2),
+    (2026002, 85.00, 'Apenas por fora', 15),
+    (2026003, 85.00, 'Lavação rápida padrão', 15),
+    (2026004, 180.00, 'Lavação pesada da carroceria', 17),
+    (2026004, 250.00, 'Higienização após trilha', 2),
+    (2026005, 350.00, 'Polimento para realçar brilho', 1),
+    (2026005, 90.00, 'Lavação completa', 16),
+    (2026006, 85.00, 'Lavação rápida', 15),
+    (2026007, 85.00, 'Padrão', 15),
+    (2026008, 350.00, 'Polimento cristalizado premium', 1),
+    (2026008, 250.00, 'Higienização para tirar cheiro de cigarro', 2),
+    (2026009, 90.00, 'Lavação completa', 16),
+    (2026009, 250.00, 'Limpeza dos dutos de ar', 2),
+    (2026010, 85.00, 'Veículo de aplicativo, foco interno', 15);
