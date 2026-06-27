@@ -44,6 +44,8 @@
                         <MenuItem fx:id="menuItemGraficoVendasPorMes" mnemonicParsing="false" onAction="#handleMenuItemGraficosVendasPorMes" text="Vendas por  Mês" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMenuItemGraficosServicosMaisContratados" text="Serviços Mais Contratados" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemGraficosFaturamentoMensal" text="Faturamento Mensal" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Relatórios">

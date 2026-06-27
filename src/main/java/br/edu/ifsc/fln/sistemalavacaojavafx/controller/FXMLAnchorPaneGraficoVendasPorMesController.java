@@ -3,7 +3,6 @@ package br.edu.ifsc.fln.sistemalavacaojavafx.controller;
 import br.edu.ifsc.fln.sistemalavacaojavafx.model.dao.OrdemServicoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
@@ -19,7 +18,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class FXMLAnchorPaneGraficoPorMesController implements Initializable {
+public class FXMLAnchorPaneGraficoVendasPorMesController implements Initializable {
 
     @FXML
     private Button btFechar;
@@ -46,7 +45,7 @@ public class FXMLAnchorPaneGraficoPorMesController implements Initializable {
         Map<Integer, ArrayList> dados = ordemServicoDAO.listarQuantidadeVendasPorMes();
         for (Map.Entry<Integer, ArrayList> dadosItem : dados.entrySet()) {
             XYChart.Series<String, Integer> series = new XYChart.Series<>();
-            series.setName(dadosItem.getKey().toString());
+            series.setName("Quantidade de Ordem de Serviços Finalizadas");
             for (int i = 0; i < dadosItem.getValue().size(); i += 2) {
                 String mes;
                 Integer quantidade;

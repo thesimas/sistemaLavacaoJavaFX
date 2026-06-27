@@ -305,6 +305,7 @@ public class OrdemServicoDAO {
             if (retorno.size() > 0) {
                 retorno = ordenar(retorno);
             }
+            stmt.close();
             return retorno;
         } catch (SQLException ex) {
             Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -344,6 +345,41 @@ public class OrdemServicoDAO {
         }catch (SQLException exception){
             Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, exception);
         }finally{
+            database.desconectar(connection);
+        }
+        return retorno;
+    }
+
+    public Map<String, Double> listarFaturamentoMensal() throws DAOException {
+        String sql = "SELECT extract(year from data_agendamento) as ano, "
+                + "extract(month from data_agendamento) as mes, "
+                + "SUM(total) as total_faturado "
+                + "FROM ordem_de_servico "
+                + "WHERE status = 'FECHADA' "
+                + "GROUP BY ano, mes "
+                + "ORDER BY ano, mes";
+
+        Map<String, Double> retorno = new LinkedHashMap<>();
+
+        Database database = DatabaseFactory.getDatabase("mysql");
+        Connection connection = database.conectar();
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet resultado = stmt.executeQuery();
+
+            while (resultado.next()) {
+
+                String mesAno = resultado.getString("mes") + "/" + resultado.getString("ano");
+
+                Double faturamento = resultado.getDouble("total_faturado");
+
+                retorno.put(mesAno, faturamento);
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             database.desconectar(connection);
         }
         return retorno;

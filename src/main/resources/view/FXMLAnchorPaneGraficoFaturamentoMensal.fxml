@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="429.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLAnchorPaneGraficoFaturamentoMensalController">
+    <children>
+      <Button fx:id="btFechar" layoutX="444.0" layoutY="377.0" mnemonicParsing="false" onAction="#handleBtFechar" prefHeight="26.0" prefWidth="122.0" text="Fechar" />
+      <LineChart fx:id="lineChartFaturamento" layoutX="15.0" layoutY="14.0" prefHeight="353.0" prefWidth="570.0" title="Faturamento Mensal">
+        <xAxis>
+          <CategoryAxis fx:id="categoryAxis" side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </LineChart>
+    </children>
+</AnchorPane>

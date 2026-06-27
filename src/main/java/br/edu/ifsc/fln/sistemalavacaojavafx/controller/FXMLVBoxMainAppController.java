@@ -138,13 +138,32 @@ public class FXMLVBoxMainAppController implements Initializable {
         dialogStage.showAndWait();
     }
 
+
+    @FXML
+    void handleMenuItemGraficosFaturamentoMensal(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAnchorPaneGraficoFaturamentoMensal.fxml"));
+        Parent root = loader.load();
+
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Gráfico de Faturamento mensal");
+
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
+        dialogStage.setScene(scene);
+        dialogStage.setResizable(false);
+
+        dialogStage.showAndWait();
+    }
+
     @FXML
     void handleMenuItemGraficosServicosMaisContratados(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/FXMLAnchorPaneGraficoServicosMaisContratados.fxml"));
         Parent root = loader.load();
 
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Gráfico de Vendas por Mês");
+        dialogStage.setTitle("Gráfico de Servicos Mais Contratados");
 
         dialogStage.initModality(Modality.APPLICATION_MODAL);
 
