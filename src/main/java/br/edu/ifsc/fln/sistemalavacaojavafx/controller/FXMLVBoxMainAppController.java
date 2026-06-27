@@ -36,6 +36,17 @@ public class FXMLVBoxMainAppController implements Initializable {
         if (configuracaoAtual != null) {
             Servico.setPontos(configuracaoAtual.getPontos());
         }
+        // Deixando as View sem a possibilidade de esticar/tela cheia
+        javafx.application.Platform.runLater(() -> {
+            Stage stage = (Stage) anchorPane.getScene().getWindow();
+            stage.setResizable(false);
+        });
+    }
+
+
+    @FXML
+    void handleMenuInicio(ActionEvent event) throws IOException {
+        anchorPane.getChildren().clear();
     }
 
     @FXML
