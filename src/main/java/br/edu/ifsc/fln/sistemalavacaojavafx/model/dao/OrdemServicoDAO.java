@@ -324,4 +324,28 @@ public class OrdemServicoDAO {
                         LinkedHashMap::new));
         return orderedMap;
     }
+
+    public Map<String, Integer> listarServicosMaisContratados() throws DAOException{
+        String sql = "SELECT COUNT(item_os.id_servico) as quantidade, servico.descricao as descricao FROM item_os " +
+                "JOIN servico ON item_os.id_servico = servico.id " +
+                "GROUP BY descricao ORDER BY quantidade DESC;";
+
+        Database database = DatabaseFactory.getDatabase("mysql");
+        Connection connection = database.conectar();
+
+        Map<String, Integer> retorno = new LinkedHashMap<>();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            ResultSet resultado = stmt.executeQuery();
+            while (resultado.next()) {
+                retorno.put(resultado.getString("descricao"), resultado.getInt("quantidade"));
+            }
+            stmt.close();
+        }catch (SQLException exception){
+            Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, exception);
+        }finally{
+            database.desconectar(connection);
+        }
+        return retorno;
+    }
 }

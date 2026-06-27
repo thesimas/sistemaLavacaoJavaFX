@@ -9,72 +9,61 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0"
-      prefWidth="650.0" styleClass="telaFundo" stylesheets="@../css/Style.css" xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLVBoxMainAppController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="650.0" styleClass="telaFundo" stylesheets="@../css/Style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.edu.ifsc.fln.sistemalavacaojavafx.controller.FXMLVBoxMainAppController">
     <children>
         <MenuBar>
             <menus>
                 <Menu mnemonicParsing="false" text="Sistema">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#handleMenuInicio" text="Tela Inicial"/>
+                        <MenuItem mnemonicParsing="false" onAction="#handleMenuInicio" text="Tela Inicial" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Cadastros">
                     <items>
-                        <MenuItem fx:id="menuItemCadastroCor" mnemonicParsing="false"
-                                  onAction="#handleMenuItemCadastroCor" text="Cor"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="menuItemCadastroMarca" mnemonicParsing="false"
-                                  onAction="#handleMenuItemCadastroMarca" text="Marca"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="menuItemCadastroServico" mnemonicParsing="false"
-                                  onAction="#handleMenuItemCadastroServico" text="Serviço"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="menuItemCadastroModelo" mnemonicParsing="false"
-                                  onAction="#handleMenuItemCadastroModelo" text="Modelo"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="menuItemCadastroVeiculo" mnemonicParsing="false"
-                                  onAction="#handleMenuItemCadastroVeiculo" text="Veiculo"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
-                        <MenuItem fx:id="menuItemCadastroCliente" mnemonicParsing="false"
-                                  onAction="#handleMenuItemCadastroCliente" text="Cliente"/>
-                        <SeparatorMenuItem mnemonicParsing="false"/>
+                        <MenuItem fx:id="menuItemCadastroCor" mnemonicParsing="false" onAction="#handleMenuItemCadastroCor" text="Cor" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="menuItemCadastroMarca" mnemonicParsing="false" onAction="#handleMenuItemCadastroMarca" text="Marca" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="menuItemCadastroServico" mnemonicParsing="false" onAction="#handleMenuItemCadastroServico" text="Serviço" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="menuItemCadastroModelo" mnemonicParsing="false" onAction="#handleMenuItemCadastroModelo" text="Modelo" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="menuItemCadastroVeiculo" mnemonicParsing="false" onAction="#handleMenuItemCadastroVeiculo" text="Veiculo" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="menuItemCadastroCliente" mnemonicParsing="false" onAction="#handleMenuItemCadastroCliente" text="Cliente" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Processos">
                     <items>
-                        <MenuItem fx:id="menuItemProcessoOrdemDeServico" mnemonicParsing="false"
-                                  onAction="#handleMenuItemProcessoOrdemDeServico" text="Ordem de Serviço"/>
+                        <MenuItem fx:id="menuItemProcessoOrdemDeServico" mnemonicParsing="false" onAction="#handleMenuItemProcessoOrdemDeServico" text="Ordem de Serviço" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Gráficos">
                     <items>
-                        <MenuItem fx:id="menuItemGraficoVendasPorMes" mnemonicParsing="false"
-                                  onAction="#handleMenuItemGraficosVendasPorMes" text="Vendas por  Mês"/>
+                        <MenuItem fx:id="menuItemGraficoVendasPorMes" mnemonicParsing="false" onAction="#handleMenuItemGraficosVendasPorMes" text="Vendas por  Mês" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuItemGraficosServicosMaisContratados" text="Serviços Mais Contratados" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Relatórios">
                     <items>
-                        <MenuItem fx:id="menuItemRelatorios" mnemonicParsing="false"
-                                  onAction="#handleMenuItemRelatorios" text="Lavação"/>
+                        <MenuItem fx:id="menuItemRelatorios" mnemonicParsing="false" onAction="#handleMenuItemRelatorios" text="Lavação" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Configurações">
                     <items>
-                        <MenuItem fx:id="menuItemConfigDefinir" mnemonicParsing="false"
-                                  onAction="#handleMenuItemConfigDefinir" text="Definir"/>
+                        <MenuItem fx:id="menuItemConfigDefinir" mnemonicParsing="false" onAction="#handleMenuItemConfigDefinir" text="Definir" />
                     </items>
                 </Menu>
             </menus>
             <cursor>
-                <Cursor fx:constant="DEFAULT"/>
+                <Cursor fx:constant="DEFAULT" />
             </cursor>
             <VBox.margin>
-                <Insets/>
+                <Insets />
             </VBox.margin>
         </MenuBar>
-        <AnchorPane fx:id="anchorPane" prefHeight="650.0" prefWidth="650.0"/>
+        <AnchorPane fx:id="anchorPane" prefHeight="650.0" prefWidth="650.0" />
     </children>
 </VBox>
