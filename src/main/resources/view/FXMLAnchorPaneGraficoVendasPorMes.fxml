@@ -16,6 +16,6 @@
                 <NumberAxis fx:id="numberAxis" side="LEFT" />
             </yAxis>
         </BarChart>
-      <Button fx:id="btFechar" layoutX="410.0" layoutY="371.0" mnemonicParsing="false" onAction="#handleBtFechar" prefHeight="26.0" prefWidth="122.0" text="Voltar para o Menu" />
+      <Button fx:id="btFechar" layoutX="410.0" layoutY="371.0" mnemonicParsing="false" onAction="#handleBtFechar" prefHeight="26.0" prefWidth="122.0" text="Fechar" />
     </children>
 </AnchorPane>

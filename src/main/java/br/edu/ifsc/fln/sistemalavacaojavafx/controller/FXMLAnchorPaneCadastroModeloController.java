@@ -185,7 +185,11 @@ public class FXMLAnchorPaneCadastroModeloController implements Initializable {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Cadastro de Modelo");
         Scene scene = new Scene(page);
+        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
         dialogStage.setScene(scene);
+
+        dialogStage.setResizable(false);
+        dialogStage.sizeToScene();
 
         //enviando o objeto Modelo para o controller
         FXMLAnchorPaneCadastroModeloDialogController controller = loader.getController();

@@ -151,7 +151,11 @@ public class FXMLAnchorPaneCadastroMarcaController implements Initializable {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Cadastro de Marca");
         Scene scene = new Scene(page);
+        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
         dialogStage.setScene(scene);
+
+        dialogStage.setResizable(false);
+        dialogStage.sizeToScene();
 
         //enviando o objeto Marca para o controller
         FXMLAnchorPaneCadastroMarcaDialogController controller = loader.getController();

@@ -120,6 +120,7 @@ public class FXMLVBoxMainAppController implements Initializable {
         dialogStage.initModality(Modality.APPLICATION_MODAL);
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
         dialogStage.setScene(scene);
         dialogStage.setResizable(false);
 
@@ -138,6 +139,7 @@ public class FXMLVBoxMainAppController implements Initializable {
         dialogStage.initModality(Modality.APPLICATION_MODAL);
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
         dialogStage.setScene(scene);
         dialogStage.setResizable(false);
 
@@ -156,6 +158,7 @@ public class FXMLVBoxMainAppController implements Initializable {
         dialogStage.initModality(Modality.APPLICATION_MODAL);
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
         dialogStage.setScene(scene);
         dialogStage.setResizable(false);
 

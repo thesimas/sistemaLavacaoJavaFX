@@ -31,3 +31,111 @@
 .label {
     -fx-text-alignment: center;
 }
+
+#btFechar{
+    -fx-background-color: #ed3f3f;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+    -fx-min-width: 100px;
+}
+
+#btFechar:hover{
+    -fx-background-color: #780909;
+}
+
+#btImprimirClientes{
+    -fx-background-color: #2d52bf;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+}
+
+#btImprimirServico {
+    -fx-background-color: #2d52bf;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+}
+
+#btImprimirVeiculos {
+    -fx-background-color: #2d52bf;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+}
+
+#btImprimir {
+    -fx-background-color: #2d52bf;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+}
+
+#btImprimir:hover {
+    -fx-background-color: #2c2cb8;
+}
+
+#btInserir {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+}
+#btInserir:hover {
+    -fx-background-color: #218838; /* Fica mais escuro ao passar o mouse */
+}
+
+/* Botão Alterar - Amarelo */
+#btAlterar {
+    -fx-background-color: #ffc107;
+    -fx-text-fill: black; /* Texto preto para dar contraste com o amarelo */
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+}
+#btAlterar:hover {
+    -fx-background-color: #e0a800;
+}
+
+/* Botão Excluir - Vermelho */
+#btExcluir {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+}
+#btExcluir:hover {
+    -fx-background-color: #c82333;
+}
+
+/* Opcional: Padronizar também os botões de Confirmar e Cancelar nos Dialogs */
+#btConfirmar {
+    -fx-background-color: #007bff; /* Azul */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+    -fx-min-width: 73px;
+}
+#btConfirmar:hover {
+    -fx-background-color: #0056b3;
+}
+
+#btCancelar {
+    -fx-background-color: #6c757d; /* Cinza */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+}
+#btCancelar:hover {
+    -fx-background-color: #5a6268;
+}

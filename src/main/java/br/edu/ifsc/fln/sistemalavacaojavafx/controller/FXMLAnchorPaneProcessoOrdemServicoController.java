@@ -37,6 +37,9 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
     private Button btInserir;
 
     @FXML
+    private Button btImprimir;
+
+    @FXML
     private Label lbData;
 
     @FXML
@@ -125,7 +128,6 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
     }
 
     public void selecionarItemTableViewOrdensDeServico(OrdemServico ordemServico) {
-        System.out.println(ordemServico.getVeiculo().getCliente().getPontuacao().getQuantidade());
         if(ordemServico != null) {
             if(ordemServico.getItensOS().isEmpty()){
                 ordemServicoDAO.carregarItemOS(ordemServico);
@@ -253,7 +255,11 @@ public class FXMLAnchorPaneProcessoOrdemServicoController implements Initializab
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Cadastro de Ordem de Servico");
         Scene scene = new Scene(page);
+        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
         dialogStage.setScene(scene);
+
+        dialogStage.setResizable(false);
+        dialogStage.sizeToScene();
 
         //enviando o objeto Ordem de Servico para o controller
         FXMLAnchorPaneProcessoOrdemServicoDialogController controller = loader.getController();

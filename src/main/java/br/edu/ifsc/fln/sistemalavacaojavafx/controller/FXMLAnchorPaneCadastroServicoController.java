@@ -180,7 +180,11 @@ public class FXMLAnchorPaneCadastroServicoController implements Initializable {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Cadastro de Serviço");
         Scene scene = new Scene(page);
+        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
         dialogStage.setScene(scene);
+
+        dialogStage.setResizable(false);
+        dialogStage.sizeToScene();
 
         //enviando o obejto Servico para o controller
         FXMLAnchorPaneCadastroServicoDialogController controller = loader.getController();

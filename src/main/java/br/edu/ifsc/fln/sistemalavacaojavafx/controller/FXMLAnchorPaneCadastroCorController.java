@@ -151,7 +151,11 @@ public class FXMLAnchorPaneCadastroCorController implements Initializable {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Cadastro de Cor");
         Scene scene = new Scene(page);
+        scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
         dialogStage.setScene(scene);
+
+        dialogStage.setResizable(false);
+        dialogStage.sizeToScene();
 
         //enviando o obejto cor para o controller
         FXMLAnchorPaneCadastroCorDialogController controller = loader.getController();
