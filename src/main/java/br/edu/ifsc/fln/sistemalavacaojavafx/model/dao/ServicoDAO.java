@@ -105,7 +105,7 @@ public class ServicoDAO {
     }
 
     public List<Servico> listar() throws DAOException {
-        String sql = "SELECT * FROM servico";
+        String sql = "SELECT * FROM servico ORDER BY servico.descricao ASC";
         List<Servico> retorno = new ArrayList<>();
 
         Database database = DatabaseFactory.getDatabase("mysql");

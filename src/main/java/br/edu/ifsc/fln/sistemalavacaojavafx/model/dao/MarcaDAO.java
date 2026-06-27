@@ -102,7 +102,7 @@ public class MarcaDAO {
 
     public List<Marca> listar() throws DAOException {
         List<Marca> marcasRetornada = new ArrayList<>();
-        String sql = "SELECT * FROM marca";
+        String sql = "SELECT * FROM marca ORDER BY marca.nome ASC";
 
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();

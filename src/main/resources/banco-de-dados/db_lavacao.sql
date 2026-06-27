@@ -162,6 +162,18 @@ VALUES ('Polimento Cristalizado', 350.00, 'PADRAO'),
        ('Higienização Interna', 250.00, 'PADRAO'),
        ('Lavação de Motor', 80.00, 'PADRAO'),
        ('Lavação Moto Simples', 40.00, 'MOTO'),
+       ('Polimento Técnico', 750.00, 'PADRAO'),
+       ('Espelhamento de Pintura', 550.00, 'PADRAO'),
+       ('Vitrificação de Pintura', 1200.00, 'PADRAO'),
+       ('Revitalização de Plásticos Externos', 80.00, 'PADRAO'),
+       ('Revitalização de Faróis', 150.00, 'PADRAO'),
+       ('Hidratação de Bancos em Couro', 180.00, 'PADRAO'),
+       ('Hidratação de Plásticos Internos', 70.00, 'PADRAO'),
+       ('Limpeza de Teto', 90.00, 'PADRAO'),
+       ('Remoção de Chuva Ácida', 180.00, 'PADRAO'),
+       ('Pretinho nos Pneus', 30.00, 'PADRAO'),
+       ('Lavação Simples', 85.00, 'PADRAO'),
+       ('Lavação Completa', 90.00, 'PADRAO'),
        ('Lavação Caminhonete', 180.00, 'GRANDE');
 
 INSERT INTO configuracao_sistema (pontos, porcentagem_pequeno, porcentagem_medio, porcentagem_grande, porcentagem_moto)

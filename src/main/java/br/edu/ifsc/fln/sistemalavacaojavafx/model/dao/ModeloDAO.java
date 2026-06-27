@@ -118,7 +118,7 @@ public class ModeloDAO {
     public List<Modelo> listar() throws DAOException {
         String sql = "SELECT modelo.id as id_modelo, modelo.descricao as descricao, marca.nome as nome_marca, marca.id as id_marca, modelo.categoria as categoria , motor.potencia as potencia, motor.tipo_combustivel as tipo_combustivel FROM modelo " +
                 "join marca on modelo.id_marca = marca.id " +
-                "join motor on modelo.id = motor.id_modelo";
+                "join motor on modelo.id = motor.id_modelo ORDER BY modelo.descricao ASC";
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
 

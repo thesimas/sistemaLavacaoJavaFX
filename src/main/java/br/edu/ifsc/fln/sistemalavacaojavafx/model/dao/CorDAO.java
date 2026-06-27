@@ -101,7 +101,7 @@ public class CorDAO {
     }
 
     public List<Cor> listar() throws DAOException {
-        String sql = "SELECT * FROM cor";
+        String sql = "SELECT * FROM cor ORDER BY cor.nome ASC;";
         List<Cor> CoresRetornada = new ArrayList<>();
 
         Database database = DatabaseFactory.getDatabase("mysql");

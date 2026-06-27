@@ -145,7 +145,7 @@ public class ClienteDAO {
         String sql = "SELECT cliente.id AS id_principal, cliente.*, pessoa_fisica.*, pessoa_juridica.*, pontuacao.* FROM cliente " +
                 "LEFT JOIN pessoa_fisica ON cliente.id = pessoa_fisica.id_cliente " +
                 "LEFT JOIN pessoa_juridica ON cliente.id = pessoa_juridica.id_cliente " +
-                "LEFT JOIN pontuacao ON cliente.id = pontuacao.id_cliente;";
+                "LEFT JOIN pontuacao ON cliente.id = pontuacao.id_cliente ORDER BY cliente.nome ASC;";
 
         Database database = DatabaseFactory.getDatabase("mysql");
         Connection connection = database.conectar();
