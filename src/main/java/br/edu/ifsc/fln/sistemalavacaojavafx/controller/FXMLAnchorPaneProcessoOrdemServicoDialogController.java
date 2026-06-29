@@ -15,7 +15,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -28,7 +27,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initializable {
-
 
     @FXML
     private Button btCancelar;
@@ -101,6 +99,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
     private boolean btConfirmarClicked = false;
     private OrdemServico ordemServico;
     private List<Servico> todosServicos;
+    private boolean flagSalvaAlteracao = false;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -164,14 +163,19 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                 return null;
             }
         });
+
         try {
             cbPlaca.setItems(FXCollections.observableArrayList(veiculoDAO.listar()));
         } catch (DAOException e) {
             AlertDialog.exceptionMessage(e);
         }
+
         // Ouvinte que irá listar os veiculos de acordo com o cliente selecionado.
         cbCliente.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
+            if(flagSalvaAlteracao){
+                return;
+            }
             // Limpando os dados do veiculo sempre que o cliente for alterado na seleção do comboBox.
             cbPlaca.getSelectionModel().clearSelection();
             tfCategoria.setText("");
@@ -261,6 +265,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
     }
 
     public void setOrdemDeServico(OrdemServico ordemServico) {
+        flagSalvaAlteracao = true;
         if (ordemServico != null) {
             this.ordemServico = ordemServico;
             if (ordemServico.getVeiculo() != null) {
@@ -482,7 +487,6 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         }
     }
 
-
     private boolean validarEntradaDeDados() {
         String errorMessage = "";
         if (cbCliente.getSelectionModel() == null) {
@@ -516,5 +520,4 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
             return false;
         }
     }
-
 }
