@@ -5,9 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import br.edu.ifsc.fln.sistemalavacaojavafx.model.domain.Servico;
 import java.io.IOException;
-import java.util.Objects;
 
 public class JavaFXApp extends Application {
     @Override
@@ -19,5 +17,9 @@ public class JavaFXApp extends Application {
         scene.getStylesheets().add(getClass().getResource("/css/Style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

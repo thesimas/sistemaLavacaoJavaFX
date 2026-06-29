@@ -130,6 +130,7 @@ public class FXMLAnchorPaneCadastroClienteDialogController implements Initializa
         if(event.getSource() == rbPessoaFisica){
             this.lbCpfCnpj.setText("CPF:");
             this.lbNascimentoInscricao.setText("Data de Nascimento:");
+            this.tfClienteNascimentoInscricaoEstadual.setPromptText("Ex: 10/10/2000");
         }
     }
 
@@ -138,6 +139,7 @@ public class FXMLAnchorPaneCadastroClienteDialogController implements Initializa
         if(event.getSource() == rbPessoaJuridica){
             this.lbCpfCnpj.setText("CNPJ:");
             this.lbNascimentoInscricao.setText("Inscricao Estadual:");
+            this.tfClienteNascimentoInscricaoEstadual.setPromptText("");
         }
     }
 

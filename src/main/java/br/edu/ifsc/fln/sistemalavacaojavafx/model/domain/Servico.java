@@ -19,7 +19,11 @@ public class Servico {
         this.categoria = categoria;
     }
 
-    public double CalcularValorPelaCategoria(double porcentagem) {
+    public double CalcularValorPelaCategoria(double porcentagem, Veiculo veiculo) {
+        // Se a categoria do veiculo for igual a categoria do serviço o valor é igual, sem acrescimo de valor;
+        if(veiculo.getModelo().getCategoria().equals(this.categoria)) {
+            return this.valor;
+        }
         return this.valor + (this.valor * porcentagem / 100);
     }
 

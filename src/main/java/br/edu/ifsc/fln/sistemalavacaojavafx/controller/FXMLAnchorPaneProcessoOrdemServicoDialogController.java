@@ -410,7 +410,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
                             }
                             HashMap<ECategoria, Double> hashPorcentagens = configuracaoAtual.getPorcentagens();
                             double porcentagem = hashPorcentagens.get(ECategoria.valueOf(tfCategoria.getText()));
-                            double valorDaCategoria = cbServico.getSelectionModel().getSelectedItem().CalcularValorPelaCategoria(porcentagem);
+                            double valorDaCategoria = cbServico.getSelectionModel().getSelectedItem().CalcularValorPelaCategoria(porcentagem, cbPlaca.getSelectionModel().getSelectedItem());
 
                             this.ordemServico.addItemOS(valorDaCategoria, observacao, servicoSelecionado);
                         }
