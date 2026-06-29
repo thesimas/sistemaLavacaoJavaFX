@@ -99,7 +99,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
     private boolean btConfirmarClicked = false;
     private OrdemServico ordemServico;
     private List<Servico> todosServicos;
-    private boolean flagSalvaAlteracao = false;
+    private boolean flagAlteracao = false;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -173,7 +173,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
         // Ouvinte que irá listar os veiculos de acordo com o cliente selecionado.
         cbCliente.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 
-            if(flagSalvaAlteracao){
+            if(flagAlteracao){
                 return;
             }
             // Limpando os dados do veiculo sempre que o cliente for alterado na seleção do comboBox.
@@ -265,10 +265,10 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
     }
 
     public void setOrdemDeServico(OrdemServico ordemServico) {
-        flagSalvaAlteracao = true;
         if (ordemServico != null) {
             this.ordemServico = ordemServico;
             if (ordemServico.getVeiculo() != null) {
+                flagAlteracao = true;
                 //Desabilitando o campo do numero da OS, pois isso irá impedir do usuario alterar esse campo, caso clique em alterar uma OS.
                 tfNumeroOs.setDisable(true);
                 this.cbPlaca.setValue(ordemServico.getVeiculo());
