@@ -225,7 +225,7 @@ public class OrdemServicoDAO {
             return ordensServicos;
         }catch(SQLException ex){
             Logger.getLogger(OrdemServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new DAOException("Não foi possível alteara a ordem de serviço no banco de dados!\nMotivo: ",ex);
+            throw new DAOException("Não foi possível listar as ordens de serviço no banco de dados!\nMotivo: ",ex);
         }finally{
             database.desconectar(connection);
         }

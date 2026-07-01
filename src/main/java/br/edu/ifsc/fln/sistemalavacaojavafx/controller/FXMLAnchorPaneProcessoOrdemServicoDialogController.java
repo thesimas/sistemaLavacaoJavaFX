@@ -499,7 +499,7 @@ public class FXMLAnchorPaneProcessoOrdemServicoDialogController implements Initi
             errorMessage += "O status deve ser selecionado!\n";
         }
         if (ordemServico.getItensOS().isEmpty()) {
-            errorMessage += "A Ordem de Serviço deve ter ao menos um serviço adcionado!\n";
+            errorMessage += "A Ordem de Serviço deve ter ao menos um serviço adicionado!\n";
         }
         if(tfNumeroOs.getText().isEmpty()){
             errorMessage += "A ordem de serviço deverá ter um número de OS informado!\n";
